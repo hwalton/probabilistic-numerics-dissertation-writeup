@@ -21,8 +21,16 @@
 \date{\today}
 
 \begin{document}
+    \pagenumbering{roman}
 
+    \thispagestyle{empty}
     \includepdf[pages=1, frame, scale=1.09, pagecommand={}, offset=0 -35]{figures/titlepage.pdf}
+
+
+    \tableofcontents
+    \newpage
+
+    \pagenumbering{arabic}
 
     \section{Background and understanding of the problem}
     Your text goes here.

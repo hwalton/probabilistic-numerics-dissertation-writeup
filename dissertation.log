@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.20)  20 NOV 2023 18:08
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.20)  20 NOV 2023 18:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -609,19 +609,23 @@ File: figures/titlepage.pdf Graphic file (type pdf)
 <use figures/titlepage.pdf, page 1>
  [1
 
-] [2]
-(./dissertation.aux)
+]
+(./dissertation.toc)
+\tf@toc=\write4
+\openout4 = `dissertation.toc'.
+
+ [2] [1] (./dissertation.aux)
 Package logreq Info: Writing requests to 'dissertation.run.xml'.
 \openout1 = `dissertation.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 12682 strings out of 481804
- 274668 string characters out of 5937875
+ 12689 strings out of 481804
+ 274809 string characters out of 5937875
  967939 words of memory out of 5000000
- 29563 multiletter control sequences out of 15000+600000
- 532466 words of font info for 40 fonts, out of 8000000 for 9000
+ 29566 multiletter control sequences out of 15000+600000
+ 532474 words of font info for 41 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,20n,67p,832b,4511s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on dissertation.pdf (2 pages).
+Output written on dissertation.pdf (3 pages).
