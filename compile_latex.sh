@@ -1,6 +1,6 @@
 #!/bin/bash
 xelatex dissertation.tex
-bibtex dissertation
+biber dissertation
 xelatex dissertation.tex
 xelatex dissertation.tex
 

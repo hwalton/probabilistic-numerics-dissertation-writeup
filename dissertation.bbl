@@ -1,0 +1,53 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{q-candela}{article}{}
+      \name{author}{2}{}{%
+        {{hash=4a253e96d421a7f8e7e6f168fbd9a544}{%
+           family={Quinonero-Candela},
+           familyi={Q\bibinithyphendelim C\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=5731d34f7419b2301ed11e938e25e15d}{%
+           family={Rasmussen},
+           familyi={R\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{b5648e6bda2ee9d26a6379273ae62759}
+      \strng{fullhash}{b5648e6bda2ee9d26a6379273ae62759}
+      \strng{bibnamehash}{b5648e6bda2ee9d26a6379273ae62759}
+      \strng{authorbibnamehash}{b5648e6bda2ee9d26a6379273ae62759}
+      \strng{authornamehash}{b5648e6bda2ee9d26a6379273ae62759}
+      \strng{authorfullhash}{b5648e6bda2ee9d26a6379273ae62759}
+      \field{sortinit}{Q}
+      \field{sortinithash}{c54e16deb53fc904a621fa8fd8703b5a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{title}{A Unifying View of Sparse Approximate Gaussian Process Regression}
+      \field{volume}{6}
+      \field{year}{2005}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
