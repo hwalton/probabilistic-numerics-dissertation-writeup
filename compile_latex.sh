@@ -1,6 +1,6 @@
 #!/bin/bash
-
-pdflatex dissertation.tex
+xelatex dissertation.tex
 bibtex dissertation
-pdflatex dissertation.tex
-pdflatex dissertation.tex
+xelatex dissertation.tex
+xelatex dissertation.tex
+
