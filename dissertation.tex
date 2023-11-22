@@ -81,7 +81,7 @@
     However, to collect data for real world events, it must be sampled or else the amount of information needed to represent the event, as well as the amount of computing power to perform analysis on the event, would tend to infinity.
     Similarly, many problems in the real world are too complex to be solved analytically and so numerical methods are used to approximate the solution to these problems.
     However, what if there was a better approach?
-    What if instead of resorting to numerical methods to solve the problem discretely, the original continous data could be reconstructed in "closed form".
+    What if instead of resorting to numerical methods to solve the problem discretely, the original continous data could be reconstructed in ``closed form``.
 
         However, these methods are not perfect, and introduce error into the solutions.
         This error can be quantified, and is often done so using error bounds
@@ -105,6 +105,15 @@
     \section{The use of generative AI (ChatGPT)}
     OpenAI's ChatGPT interface, powered by the GPT-4 large language model, was used to create some code.
     \subsection{\_inverse\_triangluar\_matrix\ function}
+    This method is used to calculate the inverse of R in my method that computes the NLML in my FITC sparse GP approximation.
+    It was generated using ChatGPT using the prompt: ``Write a Python function named \_inverse\_upper\_triangular that calculates the inverse of an upper triangular matrix in a faster and more numerically stable way than the standard np.linalg.inv function``.
+    The output is provided below:
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{figures/chat-iut/chat-iut.png}
+        \caption{ChatGPT output providing a function used to inverse an upper triangular matrix in a faster and more numerically stable way}
+        \label{fig:chat-iut}
+    \end{figure}
 
     \begin{lstlisting}[language=Python]
 # Python code sample
