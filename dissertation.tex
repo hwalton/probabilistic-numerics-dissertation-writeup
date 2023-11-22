@@ -6,9 +6,10 @@
 \usepackage{setspace}
 \setstretch{1.15}
 
-\usepackage{float}
 
 \usepackage{graphicx}
+\usepackage{float}
+
 %\usepackage[backend=biber, style=authoryear]{biblatex}
 \usepackage[backend=biber, style=numeric]{biblatex}
 \addbibresource{references.bib}
@@ -76,8 +77,15 @@
     However, there are many situations where this analytical approach is unsuitable.
     The first reason for this is that the analytical approach may be too complex for anyone to have solved.
     A good example of this is the Gaussian (normal) distribution.
-    This definite integral of this is often needed to be found in order to find the cumulative distribution function.
-    This process can be visualised as finding the area underneath th
+    This definite integral of this is often needed in order to find cumulative probabilities.
+    This process can be visualised as finding the area underneath the curve between 2 input values (Figure~\ref{fig:ndi})
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{figures/ndi/ndi.png}
+        \caption{Definite integral of the Gaussian (normal) distribution. Used to find cululative probabilities}
+        \label{fig:ndi}
+    \end{figure}
 
 
     However, to collect data for real world events, it must be sampled or else the amount of information needed to represent the event, as well as the amount of computing power to perform analysis on the event, would tend to infinity.
@@ -112,7 +120,7 @@
     The output is provided in Figure~\ref{fig:chat-iut}.:
     \begin{figure}[H]
         \centering
-        \includegraphics[width=1\linewidth]{figures/chat-iut/chat-iut.png}
+        \includegraphics[width=1.1\linewidth]{figures/chat-iut/chat-iut.png}
         \caption{ChatGPT output providing a function used to inverse an upper triangular matrix in a faster and more numerically stable way}
         \label{fig:chat-iut}
     \end{figure}

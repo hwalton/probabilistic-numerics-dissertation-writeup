@@ -5,6 +5,9 @@ import matplotlib.patches as mpatches
 
 plt.figure(figsize=(8, 4.8))
 
+# Set global font size
+plt.rcParams.update({'font.size': 12})
+
 # Define the range and density of the x-axis
 x = np.linspace(-4, 4, 1000)
 
@@ -33,7 +36,7 @@ for i in range(num_rectangles):
                                       edgecolor='red', facecolor='lightcoral', alpha=0.5))
 
 # Create a custom patch for the legend
-rect_patch = mpatches.Patch(color='lightcoral', edgecolor='red', label='Numerical Approximation')
+rect_patch = mpatches.Patch(facecolor='lightcoral', edgecolor='red', label='Numerical\nApproximation')
 
 # Add labels, title, and legend
 plt.xlabel('x')

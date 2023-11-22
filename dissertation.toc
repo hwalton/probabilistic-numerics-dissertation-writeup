@@ -2,17 +2,17 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1}Background and Understanding of the Problem}{1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.1}}{1}%
+\contentsline {subsection}{\numberline {1.1}}{2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Aims and Objectives}{1}%
+\contentsline {section}{\numberline {2}Aims and Objectives}{2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Work completed to date}{1}%
+\contentsline {section}{\numberline {3}Work completed to date}{2}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for future work}{2}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ function}{2}%
+\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{2}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {A.2}Figures for the report}{6}%
 \defcounter {refsection}{0}\relax 

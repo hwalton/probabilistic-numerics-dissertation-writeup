@@ -4,6 +4,9 @@ from scipy.stats import norm
 
 plt.figure(figsize=(8, 4.8))
 
+# Set global font size
+plt.rcParams.update({'font.size': 12})
+
 # Define the range and density of the x-axis
 x = np.linspace(-4, 4, 1000)
 
