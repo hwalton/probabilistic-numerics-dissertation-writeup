@@ -12,7 +12,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.1}inverse\_triangluar\_matrix\ function}{2}%
+\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ function}{2}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {A.2}Figures for the report}{2}%
 \defcounter {refsection}{0}\relax 

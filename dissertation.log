@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.20)  22 NOV 2023 17:48
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.20)  22 NOV 2023 17:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -646,17 +646,21 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write4
 \openout4 = `dissertation.toc'.
 
- [2] [1] [2] (./dissertation.aux)
+ [2] [1]
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2019/09/10 1.8c listings language file
+) [2]
+(./dissertation.aux)
 Package logreq Info: Writing requests to 'dissertation.run.xml'.
 \openout1 = `dissertation.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 13905 strings out of 481804
- 292887 string characters out of 5937875
- 992112 words of memory out of 5000000
- 30758 multiletter control sequences out of 15000+600000
- 535242 words of font info for 54 fonts, out of 8000000 for 9000
+ 14076 strings out of 481804
+ 294854 string characters out of 5937875
+ 1008112 words of memory out of 5000000
+ 30920 multiletter control sequences out of 15000+600000
+ 535266 words of font info for 57 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,20n,67p,832b,4521s stack positions out of 5000i,500n,10000p,200000b,80000s
 
