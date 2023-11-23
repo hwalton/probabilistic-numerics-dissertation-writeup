@@ -83,10 +83,10 @@
     \subsection{Intractable Complexity}
 
     The first reason for this is that the analytical approach may be too complex for anyone to solve.
-    A good example of this is the Gaussian (normal) distribution\cite{NIST2023}:
+    A good example of this is the Gaussian (normal) distribution\cite{NIST2023} (Equation~\ref{eq:norm}).
 
     \begin{equation}
-        f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)
+        f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
     \end{equation}
 
     This definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
@@ -132,7 +132,8 @@
     Sampling continuous data in this way discretises the data, which means that analytical mathematical methods that rely on the data being continuous cannot be implemented.
     Again, there are numerical methods that are commonly used to approximate this.
     For example, differentiation is the process of finding the gradient of a continuous function at any location along the curve.
-    For a discrete function, where there is
+    For a discrete function, the gradient at any point is undefined because you cannot have a tangent of a point.
+    However, it is possible to approximate the gradient of the underlying continuous function from which the data was sampled using a numerical method.
 
 
 
