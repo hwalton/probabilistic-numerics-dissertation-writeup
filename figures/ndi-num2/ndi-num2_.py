@@ -41,7 +41,7 @@ rect_patch = mpatches.Patch(facecolor='lightcoral', edgecolor='red', label='Nume
 # Add labels, title, and legend
 plt.xlabel('x')
 plt.ylabel('Probability Density')
-plt.title('Numerical Integration Approximation')
+plt.title('Numerical Integration Approximation: Upper Bound')
 plt.legend(handles=[rect_patch, plt.Line2D([0], [0], color='blue', label='Normal Distribution'),
                     plt.Rectangle((0, 0), 1, 1, color='blue', label='Definite Integral', alpha=0.5)],
            loc='upper right')
