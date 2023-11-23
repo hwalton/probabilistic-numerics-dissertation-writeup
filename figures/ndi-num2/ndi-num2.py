@@ -47,5 +47,5 @@ plt.legend(handles=[rect_patch, plt.Line2D([0], [0], color='blue', label='Normal
            loc='upper right')
 
 # Save the figure
-plt.savefig('ndi-num.png')
+plt.savefig('ndi-num2.png')
 plt.show()
