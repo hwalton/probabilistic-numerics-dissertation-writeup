@@ -1,17 +1,17 @@
 [0] Config.pm:304> INFO - This is Biber 2.14 (beta)
 [0] Config.pm:307> INFO - Logfile is 'dissertation.blg'
-[246] biber:322> INFO - === Thu Nov 23, 2023, 15:08:04
-[290] Biber.pm:415> INFO - Reading 'dissertation.bcf'
-[489] Biber.pm:943> INFO - Found 3 citekeys in bib section 0
-[511] Biber.pm:4256> INFO - Processing section 0
-[511] Utils.pm:75> INFO - Globbing data source 'references.bib'
-[512] Utils.pm:91> INFO - Globbed data source 'references.bib' to references.bib
-[530] Biber.pm:4455> INFO - Looking for bibtex format file 'references.bib' for section 0
-[536] bibtex.pm:1653> INFO - LaTeX decoding ...
-[543] bibtex.pm:1471> INFO - Found BibTeX data source 'references.bib'
-[620] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[620] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[621] Biber.pm:4084> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[621] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
-[633] bbl.pm:652> INFO - Writing 'dissertation.bbl' with encoding 'UTF-8'
-[635] bbl.pm:755> INFO - Output to dissertation.bbl
+[181] biber:322> INFO - === Thu Nov 23, 2023, 20:09:09
+[223] Biber.pm:415> INFO - Reading 'dissertation.bcf'
+[304] Biber.pm:943> INFO - Found 4 citekeys in bib section 0
+[315] Biber.pm:4256> INFO - Processing section 0
+[316] Utils.pm:75> INFO - Globbing data source 'references.bib'
+[316] Utils.pm:91> INFO - Globbed data source 'references.bib' to references.bib
+[334] Biber.pm:4455> INFO - Looking for bibtex format file 'references.bib' for section 0
+[335] bibtex.pm:1653> INFO - LaTeX decoding ...
+[340] bibtex.pm:1471> INFO - Found BibTeX data source 'references.bib'
+[387] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[387] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[387] Biber.pm:4084> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[387] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
+[393] bbl.pm:652> INFO - Writing 'dissertation.bbl' with encoding 'UTF-8'
+[394] bbl.pm:755> INFO - Output to dissertation.bbl

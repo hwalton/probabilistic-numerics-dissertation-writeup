@@ -78,12 +78,15 @@
     Continuous functions in turn can often be manipulated analytically using mathematics.
     For example, if the velocity of a particle is given as a continuous function of time, a continuous acceleration function can be derived from the velocity analytically through a mathematical process called differentiation.
 
-    However, there are many situations where this analytical approach is unsuitable:
+    \subsection{The Limits of the analytical approach}
 
-    \subsection{Intractable Complexity}
+    However, there are many situations where this analytical approach is unsuitable.
+    Classically, numerical methods will be used to approximate the true solution.
+
+    \subsubsection{Intractable Complexity}
 
     The first reason for this is that the analytical approach may be too complex for anyone to solve.
-    A good example of this is the Gaussian (normal) distribution\cite{NIST2023} (Equation~\ref{eq:norm}).
+    A good example of this is the Gaussian (normal) distribution (Equation~\ref{eq:norm}). %\cite{NIST2023}
 
     \begin{equation}
         f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
@@ -125,32 +128,72 @@
     This provides an overestimate, which we can use as an upper bound to the true value of the integral.
     Classically, the quality of this numerical method is computed using the ``error bounds`` ie range between these upper and lower values.
 
-    \subsection{Practical Limits of Data Sampling}
-    The second reason is that in practice, the real world continuous data must be sampled at a number of individual points in time.
+    \subsubsection{Data Sampling}
+    The second situation where the analytical approach is unsuitable is when working with real world data.
+    Here, the real world continuous datastreams of the variables you are measuring must be sampled at a number of individual (or ``discrete``) points in time.
     A simple example of this is how a video camera discretises the continuous events of the world into individual frames (or ``samples``) that can be replayed back-to-back to recreate an approximation of the events.
     As the frame rate increases, the events are captured in more detail, but the amount of information required to store the approximation tends to infinity and the length of time between frames tends to zero.
-    Sampling continuous data in this way discretises the data, which means that analytical mathematical methods that rely on the data being continuous cannot be implemented.
-    Again, there are numerical methods that are commonly used to approximate this.
+    This discrete data is unsuitable for analytical mathematical methods that rely on the data being continuous cannot be implemented.
+    Again, there are numerical methods that are commonly used to approximate this instead.
     For example, differentiation is the process of finding the gradient of a continuous function at any location along the curve.
     For a discrete function, the gradient at any point is undefined because you cannot have a tangent of a point.
-    However, it is possible to approximate the gradient of the underlying continuous function from which the data was sampled using a numerical method.
+    However, it is possible to approximate the gradient of the underlying continuous function from which the data was sampled using a numerical method, such as the Forward Difference Method.
+    This simply approximates the underlying continuous function as a straight line joining each point.
+    Therefore, the gradient at a point is calculated as the slope between that point and a point at a distance h ahead.
+
+    Data from experimentally measured signals also contains noise from many sources.
+    For example, accelerometer data may be mixed with noise from random vibrations caused by the surroundings (people walking, movement of traffic nearby etc.), as well as simply the imprecision of the measuring device, which may be significant in proportion to the signal.
+    Again, the uncertainty caused by this noise is classically defined by error bounds (i.e., giving a measurement with a tolerance such as $3.5 \pm 0.7 ms^{-2}$)
+
+    \subsection{An alternative to numerical methods}
+
+    However, this paper investigates an alternative modelling and analysis process that allows the continuous signal to be reconstructed from discrete sample data.
+    Since this reconstruction is in closed form, it can still be manipulated using analytical techniques.
+    The alternative process uses a type of machine learning model called a Gaussian Process, which uses discrete data points to create a continuous function that interpolates between these points.
+    This model is special because it generates outputs probabalistically, meaning that the output for a given input (point) is not a single point.
+    Instead, it is a Gaussian probability distribution defined by a mean and standard deviation, which are both a continuous closed form function of the input (time).
+    Therefore, not only does this technique allow for experimentally collected data to be manipulated using analytical mathematical techniques, it also captures the noise in a new way - by modeling it with uncertainty (i.e., a probability distribution) instead of error bounds (as is used classically).
+    The model will be applied to an analytical continuous technique called the Fourier transform as defined in Equation~\ref{eq:ft} where \( \omega \) is the angular frequency.
+
+    \begin{equation}
+        F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
+    \end{equation}
+
+
+    This is an extremely powerful technique that is used widely in engineering applications such as image compression, signal processing, or control theory\cite{Byjus2023}), among many others.
+    It is a transformation that takes a function in the time domain, and produces a function in the frequency domain.
+    It has a mathematical definition that takes function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
+    Therefore, the gaussian process will be used to preprocess the discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
+    The efficiency of this approach will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
+    This is classically used when working with sampled data, but has numerous drawbacks when compared to the continous Fourier transform.
+
+    \subsection{Drawbacks of the Fast Fourier Transform Algorithm}
+    The first drawback is that the FFT assumes the signal is periodic, which can lead to a phenominon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
+    This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
+
+    Secondly, the FFT can be highly sensitive to noise in the data, which can create fluctuations in the frequecy spectrum, masking the true underlying frequencies\cite{MathStackExchange2023}.
+
+    \subsection{Implications of the Findings}
+
+    This comparison of the two approaches is done in the context of modal analysis of a Multi-Degree of Freedom (MDOF) system, which is when the vibration of a structure is analysed in response to a force signal in order to find its damping ratios, resonant frequencies, and the shapes that the structure vibrates at these frequencies (modeshapes).
 
 
 
 
-    However, to collect data for real world events, it must be sampled or else the amount of information needed to represent the event, as well as the amount of computing power to perform analysis on the event, would tend to infinity.
-    Similarly, many problems in the real world are too complex to be solved analytically and so numerical methods are used to approximate the solution to these problems.
-    However, what if there was a better approach?
-    What if instead of resorting to numerical methods to solve the problem discretely, the original continous data could be reconstructed in ``closed form``.
-
-        However, these methods are not perfect, and introduce error into the solutions.
-        This error can be quantified, and is often done so using error bounds
 
 
-    However, instead, what if the error was quantified using a probability distribution
 
-    Instead, what if we use uncertainty define a pdf of result using (mean and standard deviation)
-    in this case, it may be easier to quantify concepts like risk and improve automation of decision-making within engineering
+%    However, what if there was another approach to solving discretised?
+%    What if instead of resorting to numerical methods to solve the problem discretely, the original continous data could be reconstructed in ``closed form``.
+%
+%        However, these methods are not perfect, and introduce error into the solutions.
+%        This error can be quantified, and is often done so using error bounds
+%
+%
+%    However, instead, what if the error was quantified using a probability distribution
+%
+%    Instead, what if we use uncertainty define a pdf of result using (mean and standard deviation)
+%    in this case, it may be easier to quantify concepts like risk and improve automation of decision-making within engineering
     \subsection{}
 
     \section{Aims and Objectives}

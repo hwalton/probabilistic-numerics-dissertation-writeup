@@ -2182,9 +2182,11 @@
     <bcf:datasource type="file" datatype="bibtex">references.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">NIST2023</bcf:citekey>
-    <bcf:citekey order="2">NumericalAnalysis2023</bcf:citekey>
-    <bcf:citekey order="3">q-candela</bcf:citekey>
+    <bcf:citekey order="1">NumericalAnalysis2023</bcf:citekey>
+    <bcf:citekey order="2">Byjus2023</bcf:citekey>
+    <bcf:citekey order="3">MathStackExchange2023</bcf:citekey>
+    <bcf:citekey order="4">MathStackExchange2023</bcf:citekey>
+    <bcf:citekey order="5">q-candela</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nty">
