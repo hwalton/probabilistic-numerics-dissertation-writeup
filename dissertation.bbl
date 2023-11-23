@@ -19,6 +19,20 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{NumericalAnalysis2023}{misc}{}
+      \field{sortinit}{N}
+      \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
+      \field{labeltitlesource}{title}
+      \field{note}{Accessed: 2023-11-23}
+      \field{title}{Numerical Integration: Rectangle Method}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://engcourses-uofa.ca/books/numericalanalysis/numerical-integration/rectangle-method/
+      \endverb
+      \verb{url}
+      \verb https://engcourses-uofa.ca/books/numericalanalysis/numerical-integration/rectangle-method/
+      \endverb
+    \endentry
     \entry{q-candela}{article}{}
       \name{author}{2}{}{%
         {{hash=4a253e96d421a7f8e7e6f168fbd9a544}{%

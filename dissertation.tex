@@ -53,6 +53,10 @@
 \author{Harvey Walton}
 \date{\today}
 
+%Repeated Text
+\newcommand{\ndiFigCaption}[1]{The rectangle method for finding the #1 bound of the integral of the Gaussian (normal) distribution.}
+
+
 \begin{document}
     \pagenumbering{roman}
 
@@ -78,23 +82,31 @@
     The first reason for this is that the analytical approach may be too complex for anyone to solve.
     A good example of this is the Gaussian (normal) distribution.
     This definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
-    This process can be visualised as finding the area underneath the curve between 2 input values (Figure~\ref{fig:ndi}).
+    This process can be visualised as finding the area underneath the curve between 2 input values (Figure~\ref{fig:ndi_}).
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{figures/ndi/ndi_}
+        \caption{The definite integral of the Gaussian (normal) distribution which is used to find cululative probabilities.}
+        \label{fig:ndi_}
+    \end{figure}
+
     In this case, a numerical method is typically used instead such as the Rectangle Method, which uses the Riemann integral definition.
-    This states that an integral can be approximated by summing the area of many adjacent rectangles between the function and the axis~\cite{NumericalAnalysis2023}, as shown in Figure~\ref{fig:ndi-num} and Figure~\ref{fig:ndi-num2}.
+    This states that an integral can be approximated by summing the area of many adjacent rectangles between the function and the axis~\cite{NumericalAnalysis2023}, as shown in Figure~\ref{fig:ndi-num_} and Figure~\ref{fig:ndi-num2_}.
     As you can see
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\linewidth]{figures/ndi-num/ndi-num.png}
-        \caption{The rectangle method for }
-        \label{fig:ndi-num}
+        \includegraphics[width=0.8\linewidth]{figures/ndi-num/ndi-num_}
+        \caption{\ndiFigCaption{lower}}
+        \label{fig:ndi-num_}
     \end{figure}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\linewidth]{figures/ndi-num2/ndi-num2.png}
-        \caption{The rectangle method for }
-        \label{fig:ndi-num2}
+        \includegraphics[width=0.8\linewidth]{figures/ndi-num2/ndi-num2_}
+        \caption{\ndiFigCaption{upper}}
+        \label{fig:ndi-num2_}
     \end{figure}
 
     The second reason is that in practice, the real world continuous data must be sampled at a number of individual points in time.
@@ -103,12 +115,7 @@
     For example, differentiation is the process of finding the gradient of a continuous function at any location along the curve.
     For a discrete function, where there is
 
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.8\linewidth]{figures/ndi/ndi.png}
-        \caption{Definite integral of the Gaussian (normal) distribution. Used to find cululative probabilities}
-        \label{fig:ndi}
-    \end{figure}
+
 
 
     However, to collect data for real world events, it must be sampled or else the amount of information needed to represent the event, as well as the amount of computing power to perform analysis on the event, would tend to infinity.

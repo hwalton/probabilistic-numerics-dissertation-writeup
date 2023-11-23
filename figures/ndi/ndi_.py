@@ -28,5 +28,5 @@ plt.title('Definite Integral of the Normal Distribution')
 plt.legend()
 
 # Save the figure
-plt.savefig('ndi.png')
+plt.savefig('ndi_.png')
 plt.show()
