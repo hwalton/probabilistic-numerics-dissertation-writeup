@@ -10,9 +10,9 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for future work}{3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{3}%
+\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{3}%
+\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{4}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {A.2}Figures for the report}{8}%
 \defcounter {refsection}{0}\relax 

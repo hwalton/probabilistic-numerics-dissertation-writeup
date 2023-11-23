@@ -78,7 +78,10 @@
     Continuous functions in turn can often be manipulated analytically using mathematics.
     For example, if the velocity of a particle is given as a continuous function of time, a continuous acceleration function can be derived from the velocity analytically through a mathematical process called differentiation.
 
-    However, there are many situations where this analytical approach is unsuitable.
+    However, there are many situations where this analytical approach is unsuitable:
+
+    \subsection{Intractable Complexity}
+
     The first reason for this is that the analytical approach may be too complex for anyone to solve.
     A good example of this is the Gaussian (normal) distribution.
     This definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
@@ -115,7 +118,9 @@
     This provides an underestimate, which we can use as a lower bound to the true value of the integral.
     Whereas in the second method, the top corner of the two that touches the curve is chosen such that the top edge is above the curve.
     This provides an overestimate, which we can use as an upper bound to the true value of the integral.
+    Classically, the quality of this numerical method is computed using the ``error bounds`` ie range between these upper and lower values.
 
+    \subsection{Practical Limits of Data Sampling}
     The second reason is that in practice, the real world continuous data must be sampled at a number of individual points in time.
     This discretises the data, which means that analytical mathematical methods that rely on the data being continuous cannot be implemented.
     Again, there are numerical methods to approximate this.
