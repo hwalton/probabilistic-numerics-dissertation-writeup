@@ -107,9 +107,14 @@
         \caption{\ndiFigCaption{upper}}
         \label{fig:ndi-num2_}
     \end{figure}
-
+    As the width of the rectangles approaches zero, the approximation increasingly converges to the exact value of the integral.
+    This can never happen in practice, however, because it would require infinite computational work.
+    However, we can get good
     As you can see, there are two ways to draw the rectangles.
-    In
+    In the first method, the top corner of the two that touches the curve is chosen such that the top edge is below the curve.
+    This provides an underestimate, which we can use as a lower bound to the true value of the integral.
+    Whereas in the second method, the top corner of the two that touches the curve is chosen such that the top edge is above the curve.
+    This provides an overestimate, which we can use as an upper bound to the true value of the integral.
 
     The second reason is that in practice, the real world continuous data must be sampled at a number of individual points in time.
     This discretises the data, which means that analytical mathematical methods that rely on the data being continuous cannot be implemented.
