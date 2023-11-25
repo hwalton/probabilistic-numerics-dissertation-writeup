@@ -255,7 +255,7 @@
     The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
     For simplicity, only the data from hitting the first position was imported, using a function that converts the hammer (input) and turbine blade (response) accelerometer data, and the time of each sample into 3 numpy arrays.
-    This was plotted as two functions of time, from which a small set of 100 samples was selected from the centre (to reduce computation time initially) was used as time series data to be fit by the GP\@ as shown in Figure~\ref{fig:input-response-plot}.
+    This was plotted as two functions of time, from which a small set of 100 samples was selected from the centre (to reduce computation time initially) was used as time series training data to be fit by the GP\@ as shown in Figure~\ref{fig:input-response-plot}.
 
     \begin{figure}[htbp]
         \centering
@@ -288,6 +288,50 @@
     \begin{equation}
         k(x, x') = \sigma^2 \exp\left(- \frac{2 \sin^2\left(\frac{\pi}{p} |x - x'|\right)}{l^2}\right)\label{eq:periodic-kernel}
     \end{equation}
+
+    \subsection{Hyperparameter Optimisation}
+    Next, this kernel class was added as an attribute to a class for the GP model itself.
+    This allowed the kernel to be computed for different pairs of arrays as needed.
+    This GP model also contained a method to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood.
+    The algorithm did this by
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
