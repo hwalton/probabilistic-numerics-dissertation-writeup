@@ -32,6 +32,32 @@
       \verb https://byjus.com/maths/fourier-transform/
       \endverb
     \endentry
+    \entry{StudyComSuperposition}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=96bcb6dcdbd76c28250842973759ea80}{%
+           family={{Girish Hedau}},
+           familyi={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{96bcb6dcdbd76c28250842973759ea80}
+      \strng{fullhash}{96bcb6dcdbd76c28250842973759ea80}
+      \strng{bibnamehash}{96bcb6dcdbd76c28250842973759ea80}
+      \strng{authorbibnamehash}{96bcb6dcdbd76c28250842973759ea80}
+      \strng{authornamehash}{96bcb6dcdbd76c28250842973759ea80}
+      \strng{authorfullhash}{96bcb6dcdbd76c28250842973759ea80}
+      \field{sortinit}{G}
+      \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{[Online; accessed 25-11-2023]}
+      \field{title}{The Superposition Principle of Waves | Definition \& Examples}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://study.com/learn/lesson/principle-superposition.html
+      \endverb
+      \verb{url}
+      \verb https://study.com/learn/lesson/principle-superposition.html
+      \endverb
+    \endentry
     \entry{NumericalAnalysis2023}{misc}{}
       \field{sortinit}{N}
       \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
