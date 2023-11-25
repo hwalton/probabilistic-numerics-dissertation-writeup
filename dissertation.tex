@@ -199,6 +199,43 @@
     A working implementation of new proposed analytical method would be valuable because it could perform a transformation and then its inverse to get back to the original set of data many times without losing quality.
     This is not the case with numerical methods because the discretion process is lossy.
 
+    \subsection{The Gaussian Process Model}
+    How it works...
+
+    NLML
+
+    Predict
+
+    Sparse GP
+        FITC
+
+
+    \section{Aims and Objectives}
+    \subsection{Aim}
+    To improve the noise resilience of time series data when converted to frequency domain.
+
+    \subsection{Objectives}
+    The overarching aim can be broken down into four objectives:
+    \begin{enumerate}
+        \item Get a working Gaussian Process model.
+        This involves:
+            \begin{itemize}
+                \item Choosing and creating a Kernel.
+                \item Implementing optimisation of Kernel hyperparameters. \label{item:nll}
+                \item Creating a prediction function to predict the outputs of new inputs \label{item:predict}
+            \end{itemize}
+        \item Scale to Large data by implementing a Sparse GP approximation.
+        \item Adjust this model to enable the closed form Fourier transform to be found.
+        \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.
+    \end{enumerate}
+
+    \subsubsection{Scale to large data}
+
+
+
+
+
+
 
 
 
