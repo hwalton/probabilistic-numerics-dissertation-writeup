@@ -28,18 +28,16 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{\numberline {2.2.1}Scale to large data}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}}{7}%
+\contentsline {section}{\numberline {3}Work Completed to Date}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Aims and Objectives}{7}%
+\contentsline {subsection}{\numberline {3.1}The Data}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Work completed to date}{7}%
+\contentsline {subsection}{\numberline {3.2}The Kernel}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Plan for future work}{7}%
+\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{7}%
+\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{7}%
+\contentsline {subsection}{\numberline {A.2}Figures for the report}{12}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.2}Figures for the report}{11}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {A.2.1}Cumulative Distribution Function}{11}%
+\contentsline {subsubsection}{\numberline {A.2.1}Cumulative Distribution Function}{12}%

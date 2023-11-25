@@ -8,7 +8,7 @@
 
 \usepackage{graphicx}
 \usepackage{float}
-
+\usepackage{placeins}
 %\usepackage[backend=biber, style=authoryear]{biblatex}
 \usepackage[backend=biber, style=numeric]{biblatex}
 \addbibresource{references.bib}
@@ -47,6 +47,15 @@
 }
 
 \lstset{style=mystyle}
+
+\usepackage{amsmath} % For mathematical features
+
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+\counterwithin{equation}{section}
 
 \title{Identifying Dynamic Systems with Probabilistic Numerics}
 \author{Harvey Walton}
@@ -94,7 +103,7 @@
     This definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
     This process can be visualised as finding the area underneath the curve between 2 input values (Figure~\ref{fig:ndi_}).
 
-    \begin{figure}[H]
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=0.8\linewidth]{figures/ndi/ndi_}
         \caption{A definite integral between -2 and 1 of the standard Gaussian (normal) distribution. This is used to find cululative probabilities.}
@@ -104,14 +113,18 @@
     In this case, a numerical method is typically used instead such as the Rectangle Method, which uses the Riemann integral definition.
     This states that an integral can be approximated by summing the area of many adjacent rectangles between the function and the axis~\cite{NumericalAnalysis2023}, as shown in Figure~\ref{fig:ndi-num_} and Figure~\ref{fig:ndi-num2_}.
 
-    \begin{figure}[H]
+    \FloatBarrier
+
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=0.8\linewidth]{figures/ndi-num/ndi-num_}
         \caption{\ndiFigCaption{lower}}
         \label{fig:ndi-num_}
     \end{figure}
 
-    \begin{figure}[H]
+    \FloatBarrier
+
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=0.8\linewidth]{figures/ndi-num2/ndi-num2_}
         \caption{\ndiFigCaption{upper}}
@@ -231,6 +244,29 @@
 
     \subsubsection{Scale to large data}
 
+    \section{Work Completed to Date}
+    The first thing needed to be complete was the basic Gaussian Process before it could be extended into Sparse GP\@.
+    This was implemented using the programming language Python.
+    This consisted of the following components:
+    \subsection{The Data}
+    Previously collected turbine tap test data~\ref{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.
+    The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
+    This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
+    For simplicity, only the data from hitting the first position was imported, using a function that converts the hammer (input) and turbine blade (response) accelerometer data, and the time of each sample into 3 numpy arrays.
+    This was plotted as two functions of time, which was used as time series data to be fit by the GP\@ as shown in Figure~\ref{fig:input-response-plot}.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\linewidth]{figures/input-response-plot/input-response-plot.png}
+        \caption{The time series data which the GP was fit to.}
+        \label{fig:input-response-plot}
+    \end{figure}
+
+
+
+    \subsection{The Kernel}
+    Next, a python class was created to contain the kernel.
+    This is a matrix that measures the similarity between two input arrays based on a particular
 
 
 
@@ -244,27 +280,11 @@
 
 
 
-%    However, what if there was another approach to solving discretised?
-%    What if instead of resorting to numerical methods to solve the problem discretely, the original continous data could be reconstructed in ``closed form``.
-%
-%        However, these methods are not perfect, and introduce error into the solutions.
-%        This error can be quantified, and is often done so using error bounds
-%
-%
-%    However, instead, what if the error was quantified using a probability distribution
-%
-%    Instead, what if we use uncertainty define a pdf of result using (mean and standard deviation)
-%    in this case, it may be easier to quantify concepts like risk and improve automation of decision-making within engineering
-    \subsection{}
 
-    \section{Aims and Objectives}
-    Your text goes here.
 
-    \section{Work completed to date}
-    Your text goes here. \cite{q-candela}
-    \section{Plan for future work}
-    Your text goes here.
 
+
+    \FloatBarrier
     \appendix
     \section{The use of generative AI (ChatGPT)}
     OpenAI's ChatGPT interface, powered by the GPT-4 large language model, was used to create some code.
@@ -272,17 +292,22 @@
     This method is used to calculate the inverse of R in my method that computes the NLML in my FITC sparse GP approximation.
     It was generated using ChatGPT using the prompt: ``Write a Python function named \_inverse\_upper\_triangular that calculates the inverse of an upper triangular matrix in a faster and more numerically stable way than the standard np.linalg.inv function``.
     The output is provided in Figure~\ref{fig:chat-iut}.:
-    \begin{figure}[H]
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=1.1\linewidth]{figures/chat-iut/chat-iut.png}
         \caption{ChatGPT output providing a function used to inverse an upper triangular matrix in a faster and more numerically stable way}
         \label{fig:chat-iut}
     \end{figure}
 
+
+
     After this was generated, it was modified slightly to make it work in my FITC class.
     Firstly, it was made a method instead of a function by adding ``self`` to the inputs.
     Secondly, the output was transformed into a np.array type which is expected for the subsequent code.
     The resulting method is provided below:
+
+    \FloatBarrier
+
     \begin{lstlisting}[language=Python]
     def _inverse_upper_triangular(self, matrix):
         # Convert the input matrix to a NumPy array for easier manipulation
@@ -315,6 +340,8 @@
     \end{lstlisting}
 
     This was proven to work by writing a unit test:
+
+    \FloatBarrier
 
     \begin{lstlisting}[language=Python]
     def test__inverse_upper_triangular(self):
@@ -378,6 +405,7 @@
         assert np.allclose(result2, correct2, atol=1E-5, rtol=1E-5)
     \end{lstlisting}
 
+
     This compared the result calculated by the method with an expected result calculated using the standard \texttt{np.linalg.inv} function for the two different input matrices.
     If they were the same within both a relative and absolute tolerance of $1E-5.$
 
@@ -385,6 +413,7 @@
     The inverse of the first matrix was calculated in $0.000246$ and $0.001368$ seconds using \texttt{\_inverse\_upper\_triangular} and \texttt{np.linalg.inv} methods respectively, whereas the inverse of the second matrix was calculated in $0.000312$ and $0.00005$ seconds respectively.
     This indicates that the fastest method depends on the input matrix, which is likely true for larger matrices also since both functions are of the $O(n^3)$ for an $n \times n$ matrix.
     However, the \texttt{\_inverse\_upper\_triangular} function will be more numerically stable and memory efficient because it is taking adavantages of the fact that the input matrix is upper triangular which allows the inverse to be found by back substitution instead of it being computed naively.
+    \FloatBarrier
 
     \subsection{Figures for the report}
     \subsubsection{Cumulative Distribution Function}
