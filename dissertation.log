@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  25 NOV 2023 17:59
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  25 NOV 2023 18:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -735,18 +735,18 @@ p)
 File: figures/chat-iut/chat-iut.png Graphic file (type bmp)
 <figures/chat-iut/chat-iut.png>
 
-Overfull \hbox (47.206pt too wide) in paragraph at lines 297--298
+Overfull \hbox (47.206pt too wide) in paragraph at lines 317--318
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 50.37683pt on input line 300.
+LaTeX Warning: Float too large for page by 50.37683pt on input line 320.
 
 [8] [9] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2019/09/10 1.8c listings language file
 )
 [10] [11]
-Overfull \hbox (26.23015pt too wide) in paragraph at lines 412--416
+Overfull \hbox (26.23015pt too wide) in paragraph at lines 432--436
 \TU/TimesNewRoman(0)/m/n/12 calculated in $\OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\
 OT1/cmr/m/n/12 000246$ \TU/TimesNewRoman(0)/m/n/12 and $\OT1/cmr/m/n/12 0\OML/c
 mm/m/it/12 :\OT1/cmr/m/n/12 001368$ \TU/TimesNewRoman(0)/m/n/12 seconds using \
@@ -755,7 +755,7 @@ tt/m/n/12 np.linalg.inv
  []
 
 
-Overfull \hbox (18.9604pt too wide) in paragraph at lines 424--424
+Overfull \hbox (18.9604pt too wide) in paragraph at lines 444--444
 [][][][][][][][][][] [][] [][][][] [] [][] [] [][][][][] [] [][][][][][][][][][
 ][][][][][][][] [] [][][][][][][][][] [][] [][][][][][][][][][][] [] [][][][][]
 [][][][] [][]
@@ -770,11 +770,11 @@ Package logreq Info: Writing requests to 'dissertation.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 14891 strings out of 481804
- 305531 string characters out of 5937875
- 1169605 words of memory out of 5000000
- 31691 multiletter control sequences out of 15000+600000
- 535940 words of font info for 60 fonts, out of 8000000 for 9000
+ 14899 strings out of 481804
+ 305833 string characters out of 5937875
+ 1169688 words of memory out of 5000000
+ 31697 multiletter control sequences out of 15000+600000
+ 535956 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,20n,67p,832b,4603s stack positions out of 5000i,500n,10000p,200000b,80000s
 

@@ -253,7 +253,7 @@
     The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
     For simplicity, only the data from hitting the first position was imported, using a function that converts the hammer (input) and turbine blade (response) accelerometer data, and the time of each sample into 3 numpy arrays.
-    This was plotted as two functions of time, which was used as time series data to be fit by the GP\@ as shown in Figure~\ref{fig:input-response-plot}.
+    This was plotted as two functions of time, from which a small set of 100 samples was selected from the centre (to reduce computation time initially) was used as time series data to be fit by the GP\@ as shown in Figure~\ref{fig:input-response-plot}.
 
     \begin{figure}[htbp]
         \centering
@@ -266,7 +266,27 @@
 
     \subsection{The Kernel}
     Next, a python class was created to contain the kernel.
-    This is a matrix that measures the similarity between two input arrays based on a particular
+    This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs.
+    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semidefiniteness.
+    To begin with, a white noise kernel (equation~\ref{eq:white-noise-kernel}) was chosen for the force input plot because there was no trend to the force input data in the centre of the time series data (seconds after the inital impulse from the impact from the hammer).
+    This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated``~\cite{RoelantsGPKernels}
+
+    \begin{equation}
+        K_{ij} =
+        \begin{cases}
+            \sigma^2 & \text{if } \mathbf{x}_i = \mathbf{x}_j \\
+            0 & \text{otherwise}
+        \end{cases}\label{eq:white-noise-kernel}
+    \end{equation}
+
+    For the force response plot, a periodic kernel was chosen (Equation~\ref{eq:periodic-kernel}), which is ideal for such periodic data since it gives pairs of points a high similarity score if the difference between them is near an integer multiple of the `period` hyperparameter.
+    The `length` hyperparameter determines how quickly this similarity drops off as the difference between the pair of points changes.
+    Practically, this controls how smooth vs how wiggly the function is.
+
+    \begin{equation}
+        k(x, x') = \sigma^2 \exp\left(- \frac{2 \sin^2\left(\frac{\pi}{p} |x - x'|\right)}{l^2}\right)\label{eq:periodic-kernel}
+    \end{equation}
+
 
 
 

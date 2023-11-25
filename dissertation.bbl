@@ -48,7 +48,7 @@
       \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{note}{[Online; accessed 25-11-2023]}
+      \field{note}{Accessed 25-11-2023}
       \field{title}{The Superposition Principle of Waves | Definition \& Examples}
       \field{year}{2023}
       \verb{urlraw}
@@ -70,6 +70,34 @@
       \endverb
       \verb{url}
       \verb https://engcourses-uofa.ca/books/numericalanalysis/numerical-integration/rectangle-method/
+      \endverb
+    \endentry
+    \entry{RoelantsGPKernels}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=de530cf2de4daa9c6e64bc4a84a1536a}{%
+           family={Roelants},
+           familyi={R\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{de530cf2de4daa9c6e64bc4a84a1536a}
+      \strng{fullhash}{de530cf2de4daa9c6e64bc4a84a1536a}
+      \strng{bibnamehash}{de530cf2de4daa9c6e64bc4a84a1536a}
+      \strng{authorbibnamehash}{de530cf2de4daa9c6e64bc4a84a1536a}
+      \strng{authornamehash}{de530cf2de4daa9c6e64bc4a84a1536a}
+      \strng{authorfullhash}{de530cf2de4daa9c6e64bc4a84a1536a}
+      \field{sortinit}{R}
+      \field{sortinithash}{b9c68a358aea118dfa887b6e902414a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Accessed 25-11-2023}
+      \field{title}{Gaussian processes (3/3) - exploring kernels}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://peterroelants.github.io/posts/gaussian-process-kernels/
+      \endverb
+      \verb{url}
+      \verb https://peterroelants.github.io/posts/gaussian-process-kernels/
       \endverb
     \endentry
     \entry{MathStackExchange2023}{misc}{}
