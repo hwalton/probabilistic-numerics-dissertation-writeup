@@ -216,18 +216,18 @@
 
     \subsection{Objectives}
     The overarching aim can be broken down into four objectives:
-    \begin{enumerate}
-        \item Get a working Gaussian Process model.
-        This involves:
-            \begin{itemize}
-                \item Choosing and creating a Kernel.
-                \item Implementing optimisation of Kernel hyperparameters. \label{item:nll}
-                \item Creating a prediction function to predict the outputs of new inputs \label{item:predict}
-            \end{itemize}
-        \item Scale to Large data by implementing a Sparse GP approximation.
-        \item Adjust this model to enable the closed form Fourier transform to be found.
-        \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.
-    \end{enumerate}
+        \begin{enumerate}
+            \item Get a working Gaussian Process model.
+            This involves:
+                \begin{itemize}
+                    \item Choosing and creating a Kernel.
+                    \item Implementing optimisation of Kernel hyperparameters. \label{item:nll}
+                    \item Creating a prediction function to predict the outputs of new inputs. \label{item:predict}
+                \end{itemize}
+            \item Scale to Large data by implementing a Sparse GP approximation.
+            \item Adjust this model to enable the closed form Fourier transform to be found.
+            \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.
+        \end{enumerate}
 
     \subsubsection{Scale to large data}
 
