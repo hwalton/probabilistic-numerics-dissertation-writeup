@@ -259,7 +259,7 @@
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.8\linewidth]{figures/input-response-plot/input-response-plot.png}
+        \includegraphics[width=1.0\linewidth]{figures/input-response-plot/input-response-plot.png}
         \caption{The time series data which the GP was fit to.}
         \label{fig:input-response-plot}
     \end{figure}
@@ -302,14 +302,21 @@
     \subsection{Predict Function}
     Next, the predict function was constructed to predict the output to new inputs.
     This accurately predicted the mean and variance for locations between the training points, as shown in Figure~\ref{fig:input-response-predict}.
-    The data is more noisy in the top Force Input than the Force Response plot, so the standard deviation is larger to take account for the noise
+    The data is more noisy in the top Force Input than the Force Response plot, so the standard deviation is larger to take account for the noise.
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.8\linewidth]{figures/input-response-plot/input-response-plot.png}
-        \caption{The predictions made by the .}
+        \includegraphics[width=1.0\linewidth]{figures/input-response-predict/input-response-predict.png}
+        \caption{The prediction function fit by the GP overlayed on the training data. Note that the standard Deviation increases for data with more noise.}
         \label{fig:input-response-predict}
     \end{figure}
+
+    \subsection{Sparse GP}
+    Finally, the model modified to scale to large data, by converting it to a type of Sparse GP approximation known as FITC.
+    This changed the $O()$ from $O(n^3)$ to $O(mn^2)$ for a set of m inducing points chosen to be a subset of the original training points, evenly spaced, where $n >> m$.
+    This modification was made to the NLML and predict functions, which required a very specific implementation involving multiple mathematical tricks in order to keep the calculations numerically stable and efficient in terms of computation time and memory required
+    This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers (a format that computors use to store continuous variables as a decimal, (as opposed to integers type variables)).
+    After this was complete, the GP could be fit for functions containing more than 1000 data points with ease...
 
 
 
@@ -376,7 +383,7 @@
     The output is provided in Figure~\ref{fig:chat-iut}.:
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=1.1\linewidth]{figures/chat-iut/chat-iut.png}
+        \includegraphics[width=0.8\linewidth]{figures/chat-iut/chat-iut.png}
         \caption{ChatGPT output providing a function used to inverse an upper triangular matrix in a faster and more numerically stable way}
         \label{fig:chat-iut}
     \end{figure}
