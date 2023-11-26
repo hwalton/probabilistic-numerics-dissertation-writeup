@@ -293,7 +293,23 @@
     Next, this kernel class was added as an attribute to a class for the GP model itself.
     This allowed the kernel to be computed for different pairs of arrays as needed.
     This GP model also contained a method to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood.
-    The algorithm did this by
+    The algorithm did this by multiplying each hyperparameter in turn by the exponent of a normally distributed continuous random variable.
+    If the new NLML was lower than the previous, the hyperparameter was updated.
+    However, it also has a mechanism to help the algorithm from getting stuck in local minima.
+    This is analogous to a ball rolling down a hill to towards the global minimum, if it always goes directly downhill, it may get stuck in a small valley before the lowest point, so it never optimises to find the global minimum, and should be avoided.
+    The mechanism is as follows; if the new NLML was higher than the previous, the hyperparameter was maybe still updated at random, but with the probability of this occuring increasing as the new NLML became closer to the previous NLML.
+
+    \subsection{Predict Function}
+    Next, the predict function was constructed to predict the output to new inputs.
+    This accurately predicted the mean and variance for locations between the training points, as shown in Figure~\ref{fig:input-response-predict}.
+    The data is more noisy in the top Force Input than the Force Response plot, so the standard deviation is larger to take account for the noise
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\linewidth]{figures/input-response-plot/input-response-plot.png}
+        \caption{The predictions made by the .}
+        \label{fig:input-response-predict}
+    \end{figure}
 
 
 
