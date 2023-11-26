@@ -144,7 +144,7 @@
 
     \subsubsection{Data Sampling}
     The second situation where the analytical approach is unsuitable is when working with real world data.
-    Here, the real world continuous datastreams of the variables you are measuring must be sampled at a number of individual (or ``discrete``) points in time.
+    Here, the real world continuous data streams of the variables you are measuring must be sampled at a number of individual (or ``discrete``) points in time.
     A simple example of this is how a video camera discretises the continuous events of the world into individual frames (or ``samples``) that can be replayed back-to-back to recreate an approximation of the events.
     As the frame rate increases, the events are captured in more detail, but the amount of information required to store the approximation tends to infinity and the length of time between frames tends to zero.
     This discrete data is unsuitable for analytical mathematical methods that rely on the data being continuous cannot be implemented.
@@ -164,7 +164,7 @@
     However, this paper investigates an alternative modelling and analysis process that allows the continuous signal to be reconstructed from discrete sample data.
     Since this reconstruction is in closed form, it can still be manipulated using analytical techniques.
     The alternative process uses a type of machine learning model called a Gaussian Process, which uses discrete data points to create a continuous function that interpolates between these points.
-    This model is special because it generates outputs probabalistically, meaning that the output for a given input (point) is not a single point.
+    This model is special because it generates outputs probabilistically, meaning that the output for a given input (point) is not a single point.
     Instead, it is a Gaussian probability distribution defined by a mean and standard deviation, which are both a continuous closed form function of the input (time).
     Therefore, not only does this technique allow for experimentally collected data to be manipulated using analytical mathematical techniques, it also captures the noise in a new way - by modeling it with uncertainty (i.e., a probability distribution) instead of error bounds (as is used classically).
     The improvements in the robustness of manipulations of noisy data due to this new way of modelling uncertainty are investigated in the context of a technique called the Fourier transform as defined in Equation~\ref{eq:ft} where \( \omega \) is the angular frequency.
@@ -179,7 +179,7 @@
     It has a mathematical definition that takes function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
     Therefore, the gaussian process will be used to preprocess the discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
     The efficiency of this approach will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
-    This is classically used when working with sampled data, but has numerous drawbacks when compared to the continous Fourier transform.
+    This is classically used when working with sampled data, but has numerous drawbacks when compared to the continuous Fourier transform.
 
     \subsection{Drawbacks of the Fast Fourier Transform Algorithm}
     Although discovering a fast way to compute the discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
@@ -195,7 +195,7 @@
     \subsubsection{Implications in the Context of the Fourier Transform}
 
     Therefore, whether this new proposed method for computing Fourier transforms can do so with less pronounced spectral leakage issues and more noise resilience will be investigated.
-    The comparison of the two approaches is done in the context of modal analysis of a Multi-Degree of Freedom (MDOF) system, which is when the vibration of a structure is analysed in response to a force signal in order to find properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
+    The comparison of the two approaches is done in the context of modal analysis of a Multi-Degree of Freedom (MDOF) system, which is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). This is defined as the frequency domain response divided by the frequency domain input force to the structure, which is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
     An improved Fourier transform method in these respects would have significant implications in various fields of engineering.
     In this context of modal analysis, these properties could be identified more precisely, especially for non-linear systems.
     These are dynamic systems that behave in complex patterns due to their non-compliance with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves.``~\cite{StudyComSuperposition}.
@@ -269,8 +269,8 @@
     \subsection{The Kernel}
     Next, a python class was created to contain the kernel.
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs.
-    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semidefiniteness.
-    To begin with, a white noise kernel (equation~\ref{eq:white-noise-kernel}) was chosen for the force input plot because there was no trend to the force input data in the centre of the time series data (seconds after the inital impulse from the impact from the hammer).
+    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
+    To begin with, a white noise kernel (equation~\ref{eq:white-noise-kernel}) was chosen for the force input plot because there was no trend to the force input data in the centre of the time series data (seconds after the initial impulse from the impact from the hammer).
     This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated``~\cite{RoelantsGPKernels}
 
     \begin{equation}
@@ -297,7 +297,7 @@
     If the new NLML was lower than the previous, the hyperparameter was updated.
     However, it also has a mechanism to help the algorithm from getting stuck in local minima.
     This is analogous to a ball rolling down a hill to towards the global minimum, if it always goes directly downhill, it may get stuck in a small valley before the lowest point, so it never optimises to find the global minimum, and should be avoided.
-    The mechanism is as follows; if the new NLML was higher than the previous, the hyperparameter was maybe still updated at random, but with the probability of this occuring increasing as the new NLML became closer to the previous NLML.
+    The mechanism is as follows; if the new NLML was higher than the previous, the hyperparameter was maybe still updated at random, but with the probability of this occuring increasing as the new NLML became closer to the previous NLML\@.
 
     \subsection{Predict Function}
     Next, the predict function was constructed to predict the output to new inputs.
@@ -315,8 +315,32 @@
     Finally, the model modified to scale to large data, by converting it to a type of Sparse GP approximation known as FITC.
     This changed the $O()$ from $O(n^3)$ to $O(mn^2)$ for a set of m inducing points chosen to be a subset of the original training points, evenly spaced, where $n >> m$.
     This modification was made to the NLML and predict functions, which required a very specific implementation involving multiple mathematical tricks in order to keep the calculations numerically stable and efficient in terms of computation time and memory required
-    This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers (a format that computors use to store continuous variables as a decimal, (as opposed to integers type variables)).
+    This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers (a format that computes use to store continuous variables as a decimal, (as opposed to integers type variables)).
     After this was complete, the GP could be fit for functions containing more than 1000 data points with ease...
+
+    \section{Plan for Future Work}
+    After the Sparse GP, the next step will be to adjust the prediction function to be in a closed form so that the Fourier Transform can be taken.
+    This means that the function will be defined symbolically so that it can be described in general instead of at a given set of input values.
+    This can then be solved analytically/symbolically either by hand or using a Python package like SymPy, resulting in the Fourier Transform of the prediction function (i.e., the Fourier Transform of the discrete time series data) in closed form.
+
+    The robustness to noise of the Fourier Transform of this model then needs to be compared to that of the standard discrete Fast Fourier Transform.
+    To do this, the Frequency Response Function can be computed for both methods using the Fourier Transforms of the force input and responses.
+    As a starting point, the Mean Squared Error (MSE) can be computed between the both, to see how different they are.
+    The MSE is a method of measuring the quality of an estimator (lower is better) by measuring the average of the squares of the errors, as shown in Equation~\ref{eq:mse}
+
+    \begin{equation}
+        \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2\label{eq:mse}
+    \end{equation}
+
+
+    Then, some Gaussian noise can be added to the data, and the FRF can again be computed using both methods again.
+    To find how much each method is corrupted by noise, the (discrete) Mean Squared Error can be computed between the unmodified and noisy FRF for both Fourier Transform methods, and the values compared to find which method is more robust to noise.
+    Note that for our new closed form Fourier Transform method, a continuous method could be used to compare the FRF with and without noise.
+    An example of this is the L2 norm, which integrates the squared difference over a chosen domain, but this would have little significance because the same could not be calculated for the discrete FFT method for comparison.
+    This analysis can be repeated for different amounts of noise, as well as different signals such as a pure sine wave.
+
+
+
 
 
 
