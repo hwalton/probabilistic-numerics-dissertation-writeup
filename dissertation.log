@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  27 NOV 2023 17:17
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  27 NOV 2023 18:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -730,20 +730,20 @@ p)
 File: figures/input-response-predict/input-response-predict.png Graphic file (t
 ype bmp)
 <figures/input-response-predict/input-response-predict.png>
- [9] [10]
+ [9] [10] [11]
 File: figures/gantt_chart/gantt-chart_.png Graphic file (type bmp)
 <figures/gantt_chart/gantt-chart_.png>
- [11]
+
+[12]
 File: figures/chat-iut/chat-iut.png Graphic file (type bmp)
 <figures/chat-iut/chat-iut.png>
+ [13
 
-[12
 
-
-] [13] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+] [14] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2019/09/10 1.8c listings language file
 )
-[14] [15]
+[15] [16]
 Overfull \hbox (26.23015pt too wide) in paragraph at lines 539--543
 \TU/TimesNewRoman(0)/m/n/12 calculated in $\OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\
 OT1/cmr/m/n/12 000246$ \TU/TimesNewRoman(0)/m/n/12 and $\OT1/cmr/m/n/12 0\OML/c
@@ -759,7 +759,7 @@ Overfull \hbox (18.9604pt too wide) in paragraph at lines 551--551
 [][][][] [][]
  []
 
-[16] [17] (./dissertation.aux)
+[17] [18] (./dissertation.aux)
 Package logreq Info: Writing requests to 'dissertation.run.xml'.
 \openout1 = `dissertation.run.xml'.
 
@@ -773,4 +773,4 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  43i,20n,67p,832b,4603s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on dissertation.pdf (19 pages).
+Output written on dissertation.pdf (20 pages).

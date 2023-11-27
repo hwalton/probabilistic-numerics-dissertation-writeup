@@ -38,16 +38,16 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.4}Predict Function}{9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Sparse GP}{9}%
+\contentsline {subsection}{\numberline {3.5}Sparse GP}{10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for Future Work}{10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{10}%
+\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{11}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{12}%
+\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{13}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{12}%
+\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{13}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.2}Figures for the report}{16}%
+\contentsline {subsection}{\numberline {A.2}Figures for the report}{17}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {A.2.1}Cumulative Distribution Function}{16}%
+\contentsline {subsubsection}{\numberline {A.2.1}Cumulative Distribution Function}{17}%

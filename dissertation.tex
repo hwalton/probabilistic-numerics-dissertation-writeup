@@ -258,7 +258,7 @@
     For simplicity, only the data from hitting the first position was imported, using a function that converts the hammer (input) and turbine blade (response) accelerometer data, and the time of each sample into 3 numpy arrays.
     This was plotted as two functions of time, from which a small set of 100 samples was selected from the centre (to reduce computation time initially) was used as time series training data to be fit by the GP\@ as shown in Figure~\ref{fig:input-response-plot}.
 
-    \begin{figure}[htbp]
+    \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-plot/input-response-plot.png}
         \caption{The time series data which the GP was fit to.}
@@ -305,7 +305,7 @@
     This accurately predicted the mean and variance for locations between the training points, as shown in Figure~\ref{fig:input-response-predict}.
     The data is more noisy in the top Force Input than the Force Response plot, so the standard deviation is larger to take account for the noise.
 
-    \begin{figure}[htbp]
+    \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-predict/input-response-predict.png}
         \caption{The prediction function fit by the GP overlayed on the training data. Note that the standard Deviation increases for data with more noise.}
