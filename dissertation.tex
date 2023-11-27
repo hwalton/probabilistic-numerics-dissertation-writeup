@@ -6,6 +6,8 @@
 \usepackage{setspace}
 \setstretch{1.15}
 
+\usepackage{pdflscape}
+
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{placeins}
@@ -343,12 +345,14 @@
     \subsection{Time Plan and Schedule for Future Work}
     Figure~\ref{fig:gantt-chart}a Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project:
 
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=1.0\linewidth]{figures/gantt_chart/gantt-chart_.png}
-        \caption{A Gantt chart to show the time plan of the rest of the project}
-        \label{fig:gantt-chart}
-    \end{figure}
+    \begin{landscape}
+        \begin{figure}[p] % 'p' places the figure on a page of its own
+            \centering
+            \includegraphics[width=\linewidth]{figures/gantt_chart/gantt-chart_.png}
+            \caption{A Gantt chart to show the time plan of the rest of the project, using a format modified from~\cite{DataCampGanttChart2021}}
+            \label{fig:gantt-chart}
+        \end{figure}
+    \end{landscape}
 
 
 

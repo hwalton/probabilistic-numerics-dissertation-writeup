@@ -1,131 +1,43 @@
-# import matplotlib.pyplot as plt
-# import matplotlib.dates as mdates
-# from datetime import datetime, timedelta
-#
-# start_date = datetime(2023, 12, 18)
-# end_date = datetime(2024, 6, 3)
-#
-# semester_weeks = [
-#     ('XMAS BREAK', start_date, datetime(2024, 2, 4)),
-#     ('Week 1', datetime(2024, 2, 5), datetime(2024, 2, 11)),
-#     ('Week 2', datetime(2024, 2, 12), datetime(2024, 2, 18)),
-#     ('Week 3', datetime(2024, 2, 19), datetime(2024, 2, 18)),
-#     ('Week 4', datetime(2024, 2, 26), datetime(2024, 2, 18)),
-#     ('Week 5', datetime(2024, 3, 4), datetime(2024, 2, 18)),
-#     ('Week 6', datetime(2024, 3, 11), datetime(2024, 2, 18)),
-#     ('Week 7', datetime(2024, 3, 18), datetime(2024, 2, 18)),
-#     ('Week 8', datetime(2024, 2, 12), datetime(2024, 2, 18)),
-#     ('EASTER BREAK', datetime(2024, 3, 19), datetime(2024, 4, 14)),
-#     # ... continue after Easter break
-#     ('Week 10', datetime(2024, 5, 27), end_date)
-# ]
-#
-# # Define the tasks
-# tasks = [
-#     "Adjust the model to enable the closed form Fourier Transform to be found.",
-#     "Compare the noise resilience with the existing discrete Fast Fourier Transform.",
-#     "FRF computed for both methods.",
-#     "Compute MSE between the two",
-#     "Add Gaussian Noise and compare MSE of unmodified vs noise for both methods",
-#     "Repeat for new signal of pure sine wave",
-#     "Write up conclusions in report"
-# ]
-#
-# # Create figure and plot space
-# plt.figure(figsize=(15, 8))
-#
-# # Create a list for the y-axis labels
-# y_labels = []
-#
-# # Initialize the start date for the first task
-# current_start_date = None
-#
-# # Plot each task
-# for i, task in enumerate(tasks):
-#     # Find the start and end dates for each task
-#     for week_name, week_start, week_end in semester_weeks:
-#         if week_name in ['XMAS BREAK', 'EASTER BREAK']:
-#             continue
-#         if current_start_date is None or current_start_date < week_start:
-#             current_start_date = week_start
-#             break
-#
-#     # Add the task as a bar in the Gantt chart
-#     plt.barh(i, (week_end - week_start).days, left=(week_start - start_date).days, color='skyblue')
-#
-#     # Update the start date for the next task
-#     current_start_date = week_end + timedelta(days=1)
-#
-#     # Add the task name to y_labels
-#     y_labels.append(task)
-#
-# # Set the y-axis labels
-# plt.yticks(range(len(y_labels)), y_labels)
-#
-# # Format the x-axis to show dates
-# plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MONDAY))
-# plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
-# plt.gca().set_xlim(start_date, end_date)
-#
-# # Rotate date labels for better readability
-# plt.xticks(rotation=90)
-#
-# # Add gridlines
-# plt.grid(True)
-#
-# # Save the figure
-# plt.tight_layout()
-# plt.savefig('gantt_chart.png')
-#
-# # Show the plot
-# plt.show()
-
-
 import pandas as pd
+import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-from datetime import datetime
+import datetime as dt
 
-# Define the start and end dates for the chart
-start_date = datetime(2023, 12, 18)
-end_date = datetime(2024, 6, 3)
+df = pd.DataFrame({'task': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+                   'start': pd.to_datetime(['20 Oct 2022', '24 Oct 2022', '26 Oct 2022', '31 Oct 2022', '3 Nov 2022', '7 Nov 2022', '10 Nov 2022', '14 Nov 2022', '18 Nov 2022', '23 Nov 2022', '28 Nov 2022', '30 Nov 2022']),
+                   'end': pd.to_datetime(['31 Oct 2022', '28 Oct 2022', '31 Oct 2022', '8 Nov 2022', '9 Nov 2022', '18 Nov 2022', '17 Nov 2022', '22 Nov 2022', '23 Nov 2022', '1 Dec 2022', '5 Dec 2022', '5 Dec 2022']),
+                   'completion_frac': [1, 1, 1, 1, 1, 0.95, 0.7, 0.35, 0.1, 0, 0, 0]})
+print(df)
 
-# Define the semester weeks and breaks
-dates = [
-    ('XMAS BREAK', start_date, datetime(2024, 2, 4)),
-    ('Week 1', datetime(2024, 2, 5), datetime(2024, 2, 11)),
-    ('Week 2', datetime(2024, 2, 12), datetime(2024, 2, 18)),
-    # ... continue for all weeks
-    ('EASTER BREAK', datetime(2024, 3, 19), datetime(2024, 4, 14)),
-    # ... continue after Easter break
-    ('Week 10', datetime(2024, 5, 27), end_date)
-]
+df['days_to_start'] = (df['start'] - df['start'].min()).dt.days
 
-# Create a DataFrame
-df = pd.DataFrame(dates, columns=['Task', 'Start', 'Finish'])
+df['days_to_end'] = (df['end'] - df['start'].min()).dt.days
 
-# Create figure and plot space
-plt.figure(figsize=(10, 6))
+df['task_duration'] = df['days_to_end'] - df['days_to_start'] + 1  # to include also the end date
 
-# Plot each task
-for i, row in df.iterrows():
-    plt.barh(row['Task'], (row['Finish'] - row['Start']).days, left=(row['Start'] - start_date).days, color='skyblue')
+df['completion_days'] = df['completion_frac'] * df['task_duration']
 
-# Format the x-axis to show dates
-plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MONDAY))
-plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
-plt.gca().set_xlim(start_date, end_date)
 
-# Rotate date labels for better readability
-plt.xticks(rotation=90)
+# 1
+fig, ax = plt.subplots()
 
-# Add gridlines
-plt.grid(True)
+plt.barh(y=df['task'], width=df['task_duration'], left=df['days_to_start'] + 1)
+plt.title('Project Management Schedule of Project X', fontsize=15)
 
-# Save the figure
-plt.tight_layout()
-plt.savefig('gantt-chart_.png')
+# 2
+plt.gca().invert_yaxis()
 
-# Show the plot
+# 3
+xticks = np.arange(5, df['days_to_end'].max() + 2, 7)
+
+# 4
+xticklabels = pd.date_range(start=df['start'].min() + dt.timedelta(days=4), end=df['end'].max()).strftime("%d/%m")
+# 5
+ax.set_xticks(xticks)
+ax.set_xticklabels(xticklabels[::7])
+
+# 6
+ax.xaxis.grid(True, alpha=0.5)
+
 plt.show()
-

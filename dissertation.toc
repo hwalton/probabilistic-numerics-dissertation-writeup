@@ -44,10 +44,10 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {4.1}Time Plan and Schedule for Future Work}{10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{11}%
+\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{12}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{11}%
+\contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{12}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {A.2}Figures for the report}{15}%
+\contentsline {subsection}{\numberline {A.2}Figures for the report}{16}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {A.2.1}Cumulative Distribution Function}{15}%
+\contentsline {subsubsection}{\numberline {A.2.1}Cumulative Distribution Function}{16}%
