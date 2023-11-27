@@ -423,7 +423,7 @@
     The output is provided in Figure~\ref{fig:chat-iut}.:
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.8\linewidth]{figures/chat-iut/chat-iut.png}
+        \includegraphics[width=1\linewidth]{figures/chat-iut/chat-iut.png}
         \caption{ChatGPT output providing a function used to inverse an upper triangular matrix in a faster and more numerically stable way}
         \label{fig:chat-iut}
     \end{figure}
@@ -497,8 +497,8 @@
 
         end_time = timer.time()
         elapsed_time = end_time - start_time
-        print(f"The np.linalg.inv func ran in {elapsed_time} seconds")
 
+        print(f"The np.linalg.inv func ran in {elapsed_time} seconds")
         debug_print(f"result = {result}")
         debug_print(f"correct = {correct}")
         debug_print(f"difference = {result - correct}")
@@ -511,22 +511,20 @@
             [0, -9.4199, 4.0],
             [0, 0, 1.7969]
         ])
+
         start_time = timer.time()
-
         result2 = obj._inverse_upper_triangular(matrix2)
-
         end_time = timer.time()
+
         elapsed_time = end_time - start_time
         print(f"The _inverse_upper_triangular func ran in {elapsed_time} seconds")
 
         start_time = timer.time()
-
         correct2 = np.linalg.inv(matrix2)
-
         end_time = timer.time()
+
         elapsed_time = end_time - start_time
         print(f"The np.linalg.inv func ran in {elapsed_time} seconds")
-
         debug_print(f"result2 = {result2}")
         debug_print(f"correct2 = {correct2}")
         debug_print(f"difference2 = {result2 - correct2}")
