@@ -19,6 +19,27 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{DataCampGanttChart2021}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=5f469db1ec04b5fb8ad05902538a7b27}{%
+           family={DataCamp},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{fullhash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{bibnamehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{authorbibnamehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{authornamehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{authorfullhash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib}}
+      \field{note}{Accessed: 2023-11-27}
+      \field{title}{How to Make a Gantt Chart in Python with Matplotlib}
+      \field{year}{2021}
+    \endentry
     \entry{Byjus2023}{misc}{}
       \field{sortinit}{F}
       \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}

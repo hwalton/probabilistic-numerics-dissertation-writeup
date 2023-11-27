@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  27 NOV 2023 14:37
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  27 NOV 2023 16:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -761,7 +761,7 @@ Overfull \hbox (18.9604pt too wide) in paragraph at lines 554--554
 [][][][] [][]
  []
 
-[16] (./dissertation.aux)
+[16] [17] (./dissertation.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -770,12 +770,12 @@ Package logreq Info: Writing requests to 'dissertation.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 14916 strings out of 481804
- 306468 string characters out of 5937875
- 1169375 words of memory out of 5000000
- 31710 multiletter control sequences out of 15000+600000
+ 14918 strings out of 481804
+ 306577 string characters out of 5937875
+ 1169448 words of memory out of 5000000
+ 31712 multiletter control sequences out of 15000+600000
  535956 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,20n,67p,832b,4603s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on dissertation.pdf (18 pages).
+Output written on dissertation.pdf (19 pages).

@@ -42,7 +42,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for Future Work}{10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Time Plan and Schedule for Future Work}{10}%
+\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{12}%
 \defcounter {refsection}{0}\relax 
