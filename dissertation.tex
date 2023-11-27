@@ -11,8 +11,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{placeins}
-%\usepackage[backend=biber, style=authoryear]{biblatex}
-\usepackage[backend=biber, style=numeric]{biblatex}
+\usepackage[backend=biber, style=numeric, sorting=none]{biblatex}
 \addbibresource{references.bib}
 
 \usepackage{geometry}
@@ -253,7 +252,7 @@
     This was implemented using the programming language Python.
     This consisted of the following components:
     \subsection{The Data}
-    Previously collected turbine tap test data~\ref{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.
+    Previously collected turbine tap test data~\cite{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.
     The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
     For simplicity, only the data from hitting the first position was imported, using a function that converts the hammer (input) and turbine blade (response) accelerometer data, and the time of each sample into 3 numpy arrays.
@@ -343,14 +342,14 @@
     This analysis can be repeated for different amounts of noise, as well as different signals such as a pure sine wave, and finally a conclusion can be drawn regarding the utility of the new method presented in this paper.
 
     \subsection{Future Work Time Plan}
-    Figure~\ref{fig:gantt-chart}a Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project:
+    Figure~\ref{fig:gantt-chart_}a Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project:
 
     \begin{landscape}
         \begin{figure}[p] % 'p' places the figure on a page of its own
             \centering
             \includegraphics[width=\linewidth]{figures/gantt_chart/gantt-chart_.png}
-            \caption{A Gantt chart to show the time plan of the remaining work required to finish the project, using a format modified from~\cite{DataCampGanttChart2021}. For compactness, Tasks A - G are listed in the main body where this Figure is referenced.}
-            \label{fig:gantt-chart}
+            \caption{A Gantt chart showing work remaining, using a format modified from~\cite{DataCampGanttChart2021}.}
+            \label{fig:gantt-chart_}
         \end{figure}
     \end{landscape}
 

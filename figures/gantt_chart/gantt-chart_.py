@@ -3,19 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import datetime as dt
 
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 10})
 
 df = pd.DataFrame({
     'task': ['XMAS HOLIDAY AND EXAM PERIOD',
-             'Adjust the model to enable the closed\nform Fourier Transform to be found.',
-             'Compute FRF for both methods.',
-             'Compute MSE between\nthe two methods.',
-             'Add Gaussian Noise\nand compare the MSE.',
-             'Repeat for new signal\nof pure sine wave.',
+             '1) Adjust the model to enable the closed\nform Fourier Transform to be found.',
+             '2) Compute FRF for both methods.',
+             '3) Compute MSE between\nthe two methods.',
+             '4) Add Gaussian Noise\nand compare the MSE.',
+             '5) Repeat for new signal\nof pure sine wave.',
+             '6) Compare the robustness noise\nbased on statistical techniques.',
              'EASTER HOLIDAY',
-             'Write up conclusions\nin report.'],
-    'start': pd.to_datetime(['18 DEC 2023', '5 FEB 2024', '19 FEB 2024', '4 MAR 2024', '11 MAR 2024', '18 MAR 2024', '25 MAR 2024', '15 APR 2024'], format='%d %b %Y'),
-    'end': pd.to_datetime(['4 FEB 2024', '18 FEB 2024', '3 MAR 2024', '10 MAR 2024', '17 MAR 2024', '24 MAR 2024', '14 APR 2024', '1 MAY 2024'], format='%d %b %Y')
+             '7) Write up conclusions\nin report.'],
+    'start': pd.to_datetime(['18 DEC 2023', '5 FEB 2024', '19 FEB 2024', '26 FEB 2024', '4 MAR 2024', '11 MAR 2024', '18 MAR 2024', '25 MAR 2024', '15 APR 2024'], format='%d %b %Y'),
+    'end': pd.to_datetime(['4 FEB 2024', '18 FEB 2024', '25 FEB 2024', '3 MAR 2024', '10 MAR 2024', '17 MAR 2024', '24 MAR 2024', '14 APR 2024', '1 MAY 2024'], format='%d %b %Y')
 })
 
 df['days_to_start'] = (df['start'] - df['start'].min()).dt.days
@@ -23,6 +24,9 @@ df['days_to_end'] = (df['end'] - df['start'].min()).dt.days
 df['task_duration'] = df['days_to_end'] - df['days_to_start'] + 1
 
 fig, ax = plt.subplots(figsize=(10, 6))
+
+# for label in ax.get_yticklabels():
+#     label.set_horizontalalignment('center')
 
 for i in range(len(df)):
     color = 'red' if df.iloc[i]['task'] in ['XMAS HOLIDAY AND EXAM PERIOD', 'EASTER HOLIDAY'] else 'blue'
@@ -51,12 +55,13 @@ deadline = dt.datetime(2024, 5, 2)
 deadline_days = (deadline - df['start'].min()).days
 ax.axvline(x=deadline_days, color='red', linestyle='dotted', lw=2)
 
-ax.text(deadline_days + 1, 0.5, 'REPORT DUE 2 MAY 24', rotation=90, verticalalignment='center_baseline', horizontalalignment='left', color='red')
+ax.text(deadline_days + 1, 1.75, 'REPORT DUE 2 MAY 24', rotation=90, verticalalignment='center_baseline', horizontalalignment='left', color='red')
 
 ax.xaxis.grid(True, alpha=0.5)
 
 plt.tight_layout()
-plt.savefig('gantt-chart_.png')
+
+plt.savefig('gantt-chart_.png', bbox_inches='tight')
 plt.show()
 
 

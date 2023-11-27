@@ -1,17 +1,19 @@
 [0] Config.pm:304> INFO - This is Biber 2.14 (beta)
 [0] Config.pm:307> INFO - Logfile is 'dissertation.blg'
-[106] biber:322> INFO - === Mon Nov 27, 2023, 16:19:18
-[123] Biber.pm:415> INFO - Reading 'dissertation.bcf'
-[239] Biber.pm:943> INFO - Found 6 citekeys in bib section 0
-[277] Biber.pm:4256> INFO - Processing section 0
-[278] Utils.pm:75> INFO - Globbing data source 'references.bib'
-[278] Utils.pm:91> INFO - Globbed data source 'references.bib' to references.bib
-[306] Biber.pm:4455> INFO - Looking for bibtex format file 'references.bib' for section 0
-[309] bibtex.pm:1653> INFO - LaTeX decoding ...
-[323] bibtex.pm:1471> INFO - Found BibTeX data source 'references.bib'
-[400] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[400] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[401] Biber.pm:4084> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[401] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
-[420] bbl.pm:652> INFO - Writing 'dissertation.bbl' with encoding 'UTF-8'
-[422] bbl.pm:755> INFO - Output to dissertation.bbl
+[144] biber:322> INFO - === Mon Nov 27, 2023, 16:54:34
+[172] Biber.pm:415> INFO - Reading 'dissertation.bcf'
+[312] Biber.pm:943> INFO - Found 7 citekeys in bib section 0
+[344] Biber.pm:4256> INFO - Processing section 0
+[345] Utils.pm:75> INFO - Globbing data source 'references.bib'
+[345] Utils.pm:91> INFO - Globbed data source 'references.bib' to references.bib
+[363] Biber.pm:4455> INFO - Looking for bibtex format file 'references.bib' for section 0
+[365] bibtex.pm:1653> INFO - LaTeX decoding ...
+[385] bibtex.pm:1471> INFO - Found BibTeX data source 'references.bib'
+[424] Utils.pm:293> WARN - year field 'AUTUMN 2021-22' in entry 'MEC326' is not an integer - this will probably not sort properly.
+[455] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[455] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[455] Biber.pm:4084> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[455] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
+[467] bbl.pm:652> INFO - Writing 'dissertation.bbl' with encoding 'UTF-8'
+[470] bbl.pm:755> INFO - Output to dissertation.bbl
+[471] Biber.pm:128> INFO - WARNINGS: 1

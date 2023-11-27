@@ -18,31 +18,24 @@
 
 
 \refsection{0}
-  \datalist[entry]{nty/global//global/global}
-    \entry{DataCampGanttChart2021}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=5f469db1ec04b5fb8ad05902538a7b27}{%
-           family={DataCamp},
-           familyi={D\bibinitperiod}}}%
-      }
-      \strng{namehash}{5f469db1ec04b5fb8ad05902538a7b27}
-      \strng{fullhash}{5f469db1ec04b5fb8ad05902538a7b27}
-      \strng{bibnamehash}{5f469db1ec04b5fb8ad05902538a7b27}
-      \strng{authorbibnamehash}{5f469db1ec04b5fb8ad05902538a7b27}
-      \strng{authornamehash}{5f469db1ec04b5fb8ad05902538a7b27}
-      \strng{authorfullhash}{5f469db1ec04b5fb8ad05902538a7b27}
-      \field{sortinit}{D}
-      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
-      \field{labelnamesource}{author}
+  \datalist[entry]{none/global//global/global}
+    \entry{NumericalAnalysis2023}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
       \field{labeltitlesource}{title}
-      \field{howpublished}{\url{https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib}}
-      \field{note}{Accessed: 2023-11-27}
-      \field{title}{How to Make a Gantt Chart in Python with Matplotlib}
+      \field{note}{Accessed: 2023-11-23}
+      \field{title}{Numerical Integration: Rectangle Method}
       \field{year}{2021}
+      \verb{urlraw}
+      \verb https://engcourses-uofa.ca/books/numericalanalysis/numerical-integration/rectangle-method/
+      \endverb
+      \verb{url}
+      \verb https://engcourses-uofa.ca/books/numericalanalysis/numerical-integration/rectangle-method/
+      \endverb
     \endentry
     \entry{Byjus2023}{misc}{}
-      \field{sortinit}{F}
-      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
       \field{labeltitlesource}{title}
       \field{note}{Accessed: 2023-11-23}
       \field{title}{Fourier Transform: Definition, Types, Properties, Applications}
@@ -51,6 +44,20 @@
       \endverb
       \verb{url}
       \verb https://byjus.com/maths/fourier-transform/
+      \endverb
+    \endentry
+    \entry{MathStackExchange2023}{misc}{}
+      \field{sortinit}{3}
+      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{labeltitlesource}{title}
+      \field{note}{Accessed: 2023-11-23}
+      \field{title}{What are the limitations/shortcomings of Fourier Transform and Fourier Series?}
+      \field{year}{2015}
+      \verb{urlraw}
+      \verb https://math.stackexchange.com/questions/1267754/what-are-the-limitations-shortcomings-of-fourier-transform-and-fourier-series
+      \endverb
+      \verb{url}
+      \verb https://math.stackexchange.com/questions/1267754/what-are-the-limitations-shortcomings-of-fourier-transform-and-fourier-series
       \endverb
     \endentry
     \entry{StudyComSuperposition}{misc}{}
@@ -65,8 +72,8 @@
       \strng{authorbibnamehash}{96bcb6dcdbd76c28250842973759ea80}
       \strng{authornamehash}{96bcb6dcdbd76c28250842973759ea80}
       \strng{authorfullhash}{96bcb6dcdbd76c28250842973759ea80}
-      \field{sortinit}{G}
-      \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
+      \field{sortinit}{5}
+      \field{sortinithash}{5dd416adbafacc8226114bc0202d5fdd}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{note}{Accessed 25-11-2023}
@@ -79,19 +86,26 @@
       \verb https://study.com/learn/lesson/principle-superposition.html
       \endverb
     \endentry
-    \entry{NumericalAnalysis2023}{misc}{}
-      \field{sortinit}{N}
-      \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
+    \entry{MEC326}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=89147e350fb291ebba8849055fea92cd}{%
+           family={{University of Sheffield}},
+           familyi={U\bibinitperiod}}}%
+      }
+      \strng{namehash}{89147e350fb291ebba8849055fea92cd}
+      \strng{fullhash}{89147e350fb291ebba8849055fea92cd}
+      \strng{bibnamehash}{89147e350fb291ebba8849055fea92cd}
+      \strng{authorbibnamehash}{89147e350fb291ebba8849055fea92cd}
+      \strng{authornamehash}{89147e350fb291ebba8849055fea92cd}
+      \strng{authorfullhash}{89147e350fb291ebba8849055fea92cd}
+      \field{sortinit}{6}
+      \field{sortinithash}{7851c86048328b027313775d8fbd2131}
+      \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{note}{Accessed: 2023-11-23}
-      \field{title}{Numerical Integration: Rectangle Method}
-      \field{year}{2021}
-      \verb{urlraw}
-      \verb https://engcourses-uofa.ca/books/numericalanalysis/numerical-integration/rectangle-method/
-      \endverb
-      \verb{url}
-      \verb https://engcourses-uofa.ca/books/numericalanalysis/numerical-integration/rectangle-method/
-      \endverb
+      \field{howpublished}{University Module}
+      \field{note}{Module code: MEC 326}
+      \field{title}{Structural Vibration}
+      \field{year}{AUTUMN 2021-22}
     \endentry
     \entry{RoelantsGPKernels}{misc}{}
       \name{author}{1}{}{%
@@ -107,8 +121,8 @@
       \strng{authorbibnamehash}{de530cf2de4daa9c6e64bc4a84a1536a}
       \strng{authornamehash}{de530cf2de4daa9c6e64bc4a84a1536a}
       \strng{authorfullhash}{de530cf2de4daa9c6e64bc4a84a1536a}
-      \field{sortinit}{R}
-      \field{sortinithash}{b9c68a358aea118dfa887b6e902414a7}
+      \field{sortinit}{7}
+      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{note}{Accessed 25-11-2023}
@@ -121,19 +135,26 @@
       \verb https://peterroelants.github.io/posts/gaussian-process-kernels/
       \endverb
     \endentry
-    \entry{MathStackExchange2023}{misc}{}
-      \field{sortinit}{W}
-      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+    \entry{DataCampGanttChart2021}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=5f469db1ec04b5fb8ad05902538a7b27}{%
+           family={DataCamp},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{fullhash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{bibnamehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{authorbibnamehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{authornamehash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \strng{authorfullhash}{5f469db1ec04b5fb8ad05902538a7b27}
+      \field{sortinit}{8}
+      \field{sortinithash}{1b24cab5087933ef0826a7cd3b99e994}
+      \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{note}{Accessed: 2023-11-23}
-      \field{title}{What are the limitations/shortcomings of Fourier Transform and Fourier Series?}
-      \field{year}{2015}
-      \verb{urlraw}
-      \verb https://math.stackexchange.com/questions/1267754/what-are-the-limitations-shortcomings-of-fourier-transform-and-fourier-series
-      \endverb
-      \verb{url}
-      \verb https://math.stackexchange.com/questions/1267754/what-are-the-limitations-shortcomings-of-fourier-transform-and-fourier-series
-      \endverb
+      \field{howpublished}{\url{https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib}}
+      \field{note}{Accessed: 2023-11-27}
+      \field{title}{How to Make a Gantt Chart in Python with Matplotlib}
+      \field{year}{2021}
     \endentry
   \enddatalist
 \endrefsection
