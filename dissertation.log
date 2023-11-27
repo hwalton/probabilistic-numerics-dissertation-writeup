@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  26 NOV 2023 20:10
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  27 NOV 2023 14:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -736,13 +736,16 @@ File: figures/input-response-predict/input-response-predict.png Graphic file (t
 ype bmp)
 <figures/input-response-predict/input-response-predict.png>
  [9]
+File: figures/gantt_chart/gantt_chart_.png Graphic file (type bmp)
+<figures/gantt_chart/gantt_chart_.png>
+ [10]
 File: figures/chat-iut/chat-iut.png Graphic file (type bmp)
 <figures/chat-iut/chat-iut.png>
- [10] [11] [12]
+ [11] [12]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2019/09/10 1.8c listings language file
 ) [13] [14]
-Overfull \hbox (26.23015pt too wide) in paragraph at lines 525--529
+Overfull \hbox (26.23015pt too wide) in paragraph at lines 538--542
 \TU/TimesNewRoman(0)/m/n/12 calculated in $\OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\
 OT1/cmr/m/n/12 000246$ \TU/TimesNewRoman(0)/m/n/12 and $\OT1/cmr/m/n/12 0\OML/c
 mm/m/it/12 :\OT1/cmr/m/n/12 001368$ \TU/TimesNewRoman(0)/m/n/12 seconds using \
@@ -751,7 +754,7 @@ tt/m/n/12 np.linalg.inv
  []
 
 
-Overfull \hbox (18.9604pt too wide) in paragraph at lines 537--537
+Overfull \hbox (18.9604pt too wide) in paragraph at lines 550--550
 [][][][][][][][][][] [][] [][][][] [] [][] [] [][][][][] [] [][][][][][][][][][
 ][][][][][][][] [] [][][][][][][][][] [][] [][][][][][][][][][][] [] [][][][][]
 [][][][] [][]
@@ -766,10 +769,10 @@ Package logreq Info: Writing requests to 'dissertation.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 14908 strings out of 481804
- 306223 string characters out of 5937875
- 1169710 words of memory out of 5000000
- 31704 multiletter control sequences out of 15000+600000
+ 14917 strings out of 481804
+ 306478 string characters out of 5937875
+ 1169721 words of memory out of 5000000
+ 31711 multiletter control sequences out of 15000+600000
  535956 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,20n,67p,832b,4603s stack positions out of 5000i,500n,10000p,200000b,80000s

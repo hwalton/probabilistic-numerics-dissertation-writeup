@@ -124,7 +124,7 @@ plt.grid(True)
 
 # Save the figure
 plt.tight_layout()
-plt.savefig('gantt_chart_.png')
+plt.savefig('gantt-chart_.png')
 
 # Show the plot
 plt.show()

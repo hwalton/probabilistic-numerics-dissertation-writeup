@@ -42,7 +42,9 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for Future Work}{10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{10}%
+\contentsline {subsection}{\numberline {4.1}Time Plan and Schedule for Future Work}{10}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{11}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {A.1}\_inverse\_triangluar\_matrix\ method}{11}%
 \defcounter {refsection}{0}\relax 
