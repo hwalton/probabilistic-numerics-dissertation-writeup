@@ -335,9 +335,21 @@
 
     Then, some Gaussian noise can be added to the data, and the FRF can again be computed using both methods again.
     To find how much each method is corrupted by noise, the (discrete) Mean Squared Error can be computed between the unmodified and noisy FRF for both Fourier Transform methods, and the values compared to find which method is more robust to noise.
-    Note that for our new closed form Fourier Transform method, a continuous method could be used to compare the FRF with and without noise.
-    An example of this is the L2 norm, which integrates the squared difference over a chosen domain, but this would have little significance because the same could not be calculated for the discrete FFT method for comparison.
-    This analysis can be repeated for different amounts of noise, as well as different signals such as a pure sine wave.
+    Note that for our new closed form Fourier Transform method, it would be possible to use a continuous method to compare the FRF with and without noise.
+    An example of this is the L2 norm, which integrates the squared difference over a chosen domain, but this would have little utility because the same could not be calculated for the discrete FFT method for comparison.
+    This analysis can be repeated for different amounts of noise, as well as different signals such as a pure sine wave, and finally a conclusion can be drawn regarding the utility of the new method presented in this paper.
+
+    \subsection{Time Plan and Schedule for Future Work}
+    Below is a Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project:
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=\textwidth]{figures/gantt_chart/gantt_chart.png}
+        \caption{A Gantt chart to show the time plan of the rest of the project}
+        \label{fig:gantt_chart}
+    \end{figure}
+
+
 
 
 
