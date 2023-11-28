@@ -94,7 +94,7 @@
     However, there are many situations where this analytical approach is unsuitable.
     Classically, numerical methods will be used to approximate the true solution.
 
-    \subsubsection{Intractable Complexity}
+    \subsubsection{Intractable Complexity}\label{subsubsec:int-comp}
 
     The first reason for this is that the analytical approach may be too complex for anyone to solve.
     A good example of this is the Gaussian (normal) distribution (Equation~\ref{eq:norm}). %\cite{NIST2023}
@@ -103,7 +103,8 @@
         f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
     \end{equation}
 
-    This definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
+    This is a common continuous probability distribution characterized by a bell-shaped curve, and is defined its mean ($\mu$) and variance ($\sigma^2$). The mean determines the centre of the distribution and the variance measures the spread.
+    The definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
     This process can be visualised as finding the area underneath the curve between 2 input values (Figure~\ref{fig:ndi_}).
 
     \begin{figure}[htbp]
@@ -164,7 +165,7 @@
 
     However, this paper investigates an alternative modelling and analysis process that allows the continuous signal to be reconstructed from discrete sample data.
     Since this reconstruction is in closed form, it can still be manipulated using analytical techniques.
-    The alternative process uses a type of machine learning model called a Gaussian Process, which uses discrete data points to create a continuous function that interpolates between these points.
+    The alternative process uses a type of machine learning model called a Gaussian process, which uses discrete data points to create a continuous function that interpolates between these points.
     This model is special because it generates outputs probabilistically, meaning that the output for a given input (point) is not a single point.
     Instead, it is a Gaussian probability distribution defined by a mean and standard deviation, which are both a continuous closed form function of the input (time).
     Therefore, not only does this technique allow for experimentally collected data to be manipulated using analytical mathematical techniques, it also captures the noise in a new way - by modeling it with uncertainty (i.e., a probability distribution) instead of error bounds (as is used classically).
@@ -178,7 +179,7 @@
     This is an extremely powerful analytical technique that is used widely in engineering contexts.
     It is a transformation that takes a function in the time domain, and produces a function in the frequency domain.
     It has a mathematical definition that takes function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
-    Therefore, the gaussian process will be used to preprocess the discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
+    Therefore, the Gaussian process will be used to preprocess the discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
     The efficiency of this approach will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
     This is classically used when working with sampled data, but has numerous drawbacks when compared to the continuous Fourier transform.
 
@@ -216,6 +217,74 @@
     This is not the case with numerical methods because the discretion process is lossy.
 
     \subsection{The Gaussian Process Model}
+%    In this paper, the Gaussian process is used for 1D regression, meaning it maps one continuous input to one continuous output.
+%    \subsubsection{Bayes Theorem}
+%    A discrete event is an event that has a finite set of possible values (such as the value of a throw of dice).
+%    The Gaussian process is built upon a special form of Bayes Theorem that describes the covariance of a set of continuous random variables, meaning how the probability distribution function of one depends of discrete events when the probabilities depend on each other~\cite{stuart1994kendalls}, as shown in Equation~\ref{eq:bayes}.
+%
+%    \begin{equation}
+%        P(y|X) = \frac{P(X|y) \cdot P(y)}{P(X)}\label{eq:bayes}
+%    \end{equation}
+%
+%    where:
+%    \begin{itemize}
+%        \item $P(y|X)$ is the Posterior, which we are trying to find.
+%        It is the probability of y being
+
+    We are trying to map a continuous ``latent`` function $f(x)$ to our noisy discrete sampled data that takes a time as an input and outputs in a force.
+    To do this, we are using a Gaussian process, which ``is a collection of random variables, any finite number of which have a joint Gaussian distribution``~\cite{rasmussen2006gaussian}.
+    This is a distribution of a set of variables that include both our training data, and points of interest on our latent function.
+    It describes how the probability distribution of each variable depends on the values of the other variables.
+    Assuming a mean of the latent function of zero, and that noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon ~ \mathnormal{0, \sigma^2_y}$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+
+
+    \begin{equation}
+        \begin{pmatrix}
+            y \\
+            f^*
+        \end{pmatrix}
+        \sim \mathcal{N} \left(
+        \begin{pmatrix}
+            \mu_X \\
+            \mu_*
+        \end{pmatrix},
+        \begin{pmatrix}
+            K_{X,X} + \sigma^2_y I & K_{X,*} \\
+            K_{X,*}^T & K_{*,*}
+        \end{pmatrix}
+        \right)\label{eq:joint-distribution}
+    \end{equation}
+
+    where $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel``.
+    This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters that need to be optimised by minimising the Negative Log Marginal Likelihood~\cite{murphy2023probabilistic}, defined in Equation~\ref{eq:NLML}.
+
+    \begin{equation}
+        -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)
+    \end{equation}
+
+    This finds the values of hyperparameters that have the largest chance of observing the provided training data.
+    It measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting.
+    This is when the model fits the training data so well that it generalises poorly to new test data.
+
+    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
+
+
+    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior``, or prediction of the latent function given our set of sampled training points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:18.51}, where $\mu_{*|X}$ is given in Equation~\ref{eq:18.52} and $\Sigma_{*|X}$ is given in Equation~\ref{eq:18.53}.
+
+    \begin{equation}
+        p(f^* | D, X^*) = \mathcal{N}(f^* | \mu_{*|X}, \Sigma_{*|X})\label{eq:18.51}
+    \end{equation}
+
+    \begin{equation}
+        \mu_{*|X} = \mu_* + K_{X,*}^T (K_{X,X} + \sigma^2_y I)^{-1} (y - \mu_X)\label{eq:18.52}
+    \end{equation}
+
+    \begin{equation}
+        \Sigma_{*|X} = K_{*,*} - K_{X,*}^T (K_{X,X} + \sigma^2_y I)^{-1} K_{X,*}\label{eq:18.53}
+    \end{equation}
+
+
+    
     How it works...
 
     NLML
@@ -225,6 +294,8 @@
     Sparse GP
         FITC
 
+    Assumptions include...
+
 
     \section{Aims and Objectives}
     \subsection{Aim}
@@ -233,7 +304,7 @@
     \subsection{Objectives}
     The overarching aim can be broken down into four objectives:
         \begin{enumerate}
-            \item Get a working Gaussian Process model.
+            \item Get a working Gaussian process model.
             This involves:
                 \begin{itemize}
                     \item Choosing and creating a Kernel.
@@ -248,7 +319,7 @@
     \subsubsection{Scale to large data}
 
     \section{Work Completed to Date}
-    The first thing needed to be complete was the basic Gaussian Process before it could be extended into Sparse GP\@.
+    The first thing needed to be complete was the basic Gaussian process before it could be extended into Sparse GP\@.
     This was implemented using the programming language Python.
     This consisted of the following components:
     \subsection{The Data}
@@ -269,8 +340,6 @@
 
     \subsection{The Kernel}
     Next, a python class was created to contain the kernel.
-    This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs.
-    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     To begin with, a white noise kernel (equation~\ref{eq:white-noise-kernel}) was chosen for the force input plot because there was no trend to the force input data in the centre of the time series data (seconds after the initial impulse from the impact from the hammer).
     This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated``~\cite{RoelantsGPKernels}
 

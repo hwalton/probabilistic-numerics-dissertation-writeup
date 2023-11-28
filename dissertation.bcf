@@ -2187,9 +2187,14 @@
     <bcf:citekey order="3">MathStackExchange2023</bcf:citekey>
     <bcf:citekey order="4">MathStackExchange2023</bcf:citekey>
     <bcf:citekey order="5">StudyComSuperposition</bcf:citekey>
-    <bcf:citekey order="6">MEC326</bcf:citekey>
-    <bcf:citekey order="7">RoelantsGPKernels</bcf:citekey>
-    <bcf:citekey order="8">DataCampGanttChart2021</bcf:citekey>
+    <bcf:citekey order="6">rasmussen2006gaussian</bcf:citekey>
+    <bcf:citekey order="7">murphy2023probabilistic</bcf:citekey>
+    <bcf:citekey order="8">murphy2023probabilistic</bcf:citekey>
+    <bcf:citekey order="9">rasmussen2006gaussian</bcf:citekey>
+    <bcf:citekey order="10">murphy2023probabilistic</bcf:citekey>
+    <bcf:citekey order="11">MEC326</bcf:citekey>
+    <bcf:citekey order="12">RoelantsGPKernels</bcf:citekey>
+    <bcf:citekey order="13">DataCampGanttChart2021</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
