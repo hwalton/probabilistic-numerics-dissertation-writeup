@@ -135,41 +135,42 @@
         \label{fig:ndi-num2_}
     \end{figure}
     As the width of the rectangles approaches zero, the approximation increasingly converges to the exact value of the integral.
-    This can never happen in practice, however, because it would require infinite computational work.
-    However, we can get good
+    This can never happen in practice, however, because it would require infinite computational work, but we can we can get good approximations none-the-less.
     As you can see, there are two ways to draw the rectangles.
     In the first method, the top corner of the two that touches the curve is chosen such that the top edge is below the curve.
     This provides an underestimate, which we can use as a lower bound to the true value of the integral.
     Whereas in the second method, the top corner of the two that touches the curve is chosen such that the top edge is above the curve.
     This provides an overestimate, which we can use as an upper bound to the true value of the integral.
-    Classically, the quality of this numerical method is computed using the ``error bounds`` ie range between these upper and lower values.
+    Classically, the quality of this numerical methods are computed using the ``error bounds`` ie range between these upper and lower values.
 
     \subsubsection{Data Sampling}
     The second situation where the analytical approach is unsuitable is when working with real world data.
     Here, the real world continuous data streams of the variables you are measuring must be sampled at a number of individual (or ``discrete``) points in time.
     A simple example of this is how a video camera discretises the continuous events of the world into individual frames (or ``samples``) that can be replayed back-to-back to recreate an approximation of the events.
-    As the frame rate increases, the events are captured in more detail, but the amount of information required to store the approximation tends to infinity and the length of time between frames tends to zero.
-    This discrete data is unsuitable for analytical mathematical methods that rely on the data being continuous cannot be implemented.
+    As the frame rate increases, the events are represented more faithfully, but the amount of information required to store the approximation tends to infinity as the length of time between frames tends to zero, which is not possible in practice.
+    This discrete data is unsuitable for analytical mathematical methods that rely on the data being continuous, and so cannot be implemented.
     Again, there are numerical methods that are commonly used to approximate this instead.
+
     For example, differentiation is the process of finding the gradient of a continuous function at any location along the curve.
     For a discrete function, the gradient at any point is undefined because you cannot have a tangent of a point.
     However, it is possible to approximate the gradient of the underlying continuous function from which the data was sampled using a numerical method, such as the Forward Difference Method.
     This simply approximates the underlying continuous function as a straight line joining each point.
-    Therefore, the gradient at a point is calculated as the slope between that point and a point at a distance h ahead.
+    Therefore, the gradient at a point is calculated as the slope between that point and a point at a distance $h$ ahead.
 
-    Data from experimentally measured signals also contains noise from many sources.
-    For example, accelerometer data may be mixed with noise from random vibrations caused by the surroundings (people walking, movement of traffic nearby etc.), as well as simply the imprecision of the measuring device, which may be significant in proportion to the signal.
-    Again, the uncertainty caused by this noise is classically defined by error bounds (i.e., giving a measurement with a tolerance such as $3.5 \pm 0.7 ms^{-2}$)
+    Experimentally sampled data also contains noise from many sources that is added to the latent signal.
+    For example, accelerometer data may be mixed with noise from random vibrations caused by the surroundings (people walking, movement of traffic nearby etc.), as well as simply the imprecision of the measuring device which in some cases may be significant in proportion to the signal being measured.
+    Again, the uncertainty caused by this noise is classically defined by error bounds (i.e., giving a measurement with a tolerance such as $3.5 \pm 0.7 ms^{-2}$).
 
-    \subsection{An alternative to numerical methods}
+    \subsection{An Alternative to the Error Bounds of Numerical Methods}
 
-    However, this paper investigates an alternative modelling and analysis process that allows the continuous signal to be reconstructed from discrete sample data.
-    Since this reconstruction is in closed form, it can still be manipulated using analytical techniques.
-    The alternative process uses a type of machine learning model called a Gaussian process, which uses discrete data points to create a continuous function that interpolates between these points.
-    This model is special because it generates outputs probabilistically, meaning that the output for a given input (point) is not a single point.
-    Instead, it is a Gaussian probability distribution defined by a mean and standard deviation, which are both a continuous closed form function of the input (time).
-    Therefore, not only does this technique allow for experimentally collected data to be manipulated using analytical mathematical techniques, it also captures the noise in a new way - by modeling it with uncertainty (i.e., a probability distribution) instead of error bounds (as is used classically).
-    The improvements in the robustness of manipulations of noisy data due to this new way of modelling uncertainty are investigated in the context of a technique called the Fourier transform as defined in Equation~\ref{eq:ft} where \( \omega \) is the angular frequency.
+    This paper proposes a new method of performing mathematical transformations that uses an alternative error model to the classical error bounds model, and compares the robustness to noise between the two.
+    This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data.
+    Since this reconstruction is in closed form, it can then be manipulated using continuous analytical techniques.
+    It generates outputs probabilistically, which means that the output for a given input is not a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
+    This gives the new Gaussian Process method an inherent mechanism for accounting for the noise in input data, which may allow for improvements to the robustness to noise.
+
+    The investigation is in the context of modal analysis of a Multi-Degree of Freedom (MDOF) system, which is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). This is defined as the frequency domain response divided by the frequency domain input force to the structure, which is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
+    The computation of this FRF relies on a technique called the Fourier transform (Equation~\ref{eq:ft}).
 
     \begin{equation}
         F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
@@ -177,19 +178,17 @@
 
 
     This is an extremely powerful analytical technique that is used widely in engineering contexts.
-    It is a transformation that takes a function in the time domain, and produces a function in the frequency domain.
-    It has a mathematical definition that takes function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
-    Therefore, the Gaussian process will be used to preprocess the discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
-    The efficiency of this approach will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
-    This is classically used when working with sampled data, but has numerous drawbacks when compared to the continuous Fourier transform.
+    It has a mathematical definition that takes a function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
+    Therefore, the Gaussian Process is used to preprocess experimental discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
+
+    The efficiency of this approach in terms of robustness to noise will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
+    This numerical method is classically used when working with sampled data, but has numerous drawbacks when compared to the continuous Fourier transform.
 
     \subsection{Drawbacks of the Fast Fourier Transform Algorithm}
-    Although discovering a fast way to compute the discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
-    The first is that the FFT assumes the signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
+    Although discovering a fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
+    Most importantly, the FFT can be highly sensitive to noise in the data, which can create fluctuations in the frequency spectrum, masking the true underlying frequencies\cite{MathStackExchange2023}.
+    Additionally, the FFT assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
-
-    Secondly, the FFT can be highly sensitive to noise in the data, which can create fluctuations in the frequency spectrum, masking the true underlying frequencies\cite{MathStackExchange2023}.
-
 
 
     \subsection{Implications of the Findings}
@@ -197,7 +196,6 @@
     \subsubsection{Implications in the Context of the Fourier Transform}
 
     Therefore, whether this new proposed method for computing Fourier transforms can do so with less pronounced spectral leakage issues and more noise resilience will be investigated.
-    The comparison of the two approaches is done in the context of modal analysis of a Multi-Degree of Freedom (MDOF) system, which is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). This is defined as the frequency domain response divided by the frequency domain input force to the structure, which is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
     An improved Fourier transform method in these respects would have significant implications in various fields of engineering.
     In this context of modal analysis, these properties could be identified more precisely, especially for non-linear systems.
     These are dynamic systems that behave in complex patterns due to their non-compliance with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves.``~\cite{StudyComSuperposition}.
@@ -217,10 +215,10 @@
     This is not the case with numerical methods because the discretion process is lossy.
 
     \subsection{The Gaussian Process Model}
-%    In this paper, the Gaussian process is used for 1D regression, meaning it maps one continuous input to one continuous output.
+%    In this paper, the Gaussian Process is used for 1D regression, meaning it maps one continuous input to one continuous output.
 %    \subsubsection{Bayes Theorem}
 %    A discrete event is an event that has a finite set of possible values (such as the value of a throw of dice).
-%    The Gaussian process is built upon a special form of Bayes Theorem that describes the covariance of a set of continuous random variables, meaning how the probability distribution function of one depends of discrete events when the probabilities depend on each other~\cite{stuart1994kendalls}, as shown in Equation~\ref{eq:bayes}.
+%    The Gaussian Process is built upon a special form of Bayes Theorem that describes the covariance of a set of continuous random variables, meaning how the probability distribution function of one depends of discrete events when the probabilities depend on each other~\cite{stuart1994kendalls}, as shown in Equation~\ref{eq:bayes}.
 %
 %    \begin{equation}
 %        P(y|X) = \frac{P(X|y) \cdot P(y)}{P(X)}\label{eq:bayes}
@@ -232,7 +230,7 @@
 %        It is the probability of y being
 
     We are trying to map a continuous ``latent`` function $f(x)$ to our noisy discrete sampled data that takes a time as an input and outputs in a force.
-    To do this, we are using a Gaussian process, which ``is a collection of random variables, any finite number of which have a joint Gaussian distribution``~\cite{rasmussen2006gaussian}.
+    To do this, we are using a Gaussian Process, which ``is a collection of random variables, any finite number of which have a joint Gaussian distribution``~\cite{rasmussen2006gaussian}.
     This is a distribution of a set of variables that include both our training data, and points of interest on our latent function.
     It describes how the probability distribution of each variable depends on the values of the other variables.
     Assuming a mean of the latent function of zero, and that noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon ~ \mathnormal{0, \sigma^2_y}$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
@@ -259,7 +257,7 @@
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters that need to be optimised by minimising the Negative Log Marginal Likelihood~\cite{murphy2023probabilistic}, defined in Equation~\ref{eq:NLML}.
 
     \begin{equation}
-        -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)
+        -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
     \end{equation}
 
     This finds the values of hyperparameters that have the largest chance of observing the provided training data.
@@ -290,7 +288,7 @@
     \subsection{Objectives}
     The overarching aim can be broken down into four objectives:
         \begin{enumerate}
-            \item Get a working Gaussian process model.
+            \item Get a working Gaussian Process model.
             This involves:
                 \begin{itemize}
                     \item Choosing and creating a Kernel.
@@ -302,10 +300,8 @@
             \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.
         \end{enumerate}
 
-    \subsubsection{Scale to large data}
-
     \section{Work Completed to Date}
-    The first thing needed to be complete was the basic Gaussian process before it could be extended into Sparse GP\@.
+    The first thing needed to be complete was the basic Gaussian Process before it could be extended into Sparse GP\@.
     This was implemented using the programming language Python.
     This consisted of the following components:
     \subsection{The Data}
@@ -397,7 +393,8 @@
     This analysis can be repeated for different amounts of noise, as well as different signals such as a pure sine wave, and finally a conclusion can be drawn regarding the utility of the new method presented in this paper.
 
     \subsection{Future Work Time Plan}
-    Figure~\ref{fig:gantt-chart_}a Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project:
+    Figure~\ref{fig:gantt-chart_}a Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project.
+    This includes scheduled delays in the Christmas and Easter holidays to allow for exam revision and as a buffer to catch up if the project is falling behind schedule:
 
     \begin{landscape}
         \begin{figure}[p] % 'p' places the figure on a page of its own

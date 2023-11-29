@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  28 NOV 2023 19:52
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.25)  29 NOV 2023 12:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -722,32 +722,29 @@ File: figures/ndi-num2/ndi-num2_.png Graphic file (type bmp)
 <figures/ndi-num2/ndi-num2_.png>
  [3
 
-] [4] [5]
-
-LaTeX Warning: Reference `eq:NLML' on page 6 undefined on input line 259.
-
-[6] [7]
+] [4] [5] [6] [7]
 File: figures/input-response-plot/input-response-plot.png Graphic file (type bm
 p)
 <figures/input-response-plot/input-response-plot.png>
- [8] [9]
+ [8]
 File: figures/input-response-predict/input-response-predict.png Graphic file (t
 ype bmp)
 <figures/input-response-predict/input-response-predict.png>
- [10] [11] [12]
+ [9] [10] [11]
 File: figures/gantt_chart/gantt-chart_.png Graphic file (type bmp)
 <figures/gantt_chart/gantt-chart_.png>
- [13]
+
+[12]
 File: figures/chat-iut/chat-iut.png Graphic file (type bmp)
 <figures/chat-iut/chat-iut.png>
- [14
+ [13
 
 
-] [15]
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+] [14] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2019/09/10 1.8c listings language file
-) [16] [17]
-Overfull \hbox (26.23015pt too wide) in paragraph at lines 608--612
+)
+[15] [16]
+Overfull \hbox (26.23015pt too wide) in paragraph at lines 593--597
 \TU/TimesNewRoman(0)/m/n/12 calculated in $\OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\
 OT1/cmr/m/n/12 000246$ \TU/TimesNewRoman(0)/m/n/12 and $\OT1/cmr/m/n/12 0\OML/c
 mm/m/it/12 :\OT1/cmr/m/n/12 001368$ \TU/TimesNewRoman(0)/m/n/12 seconds using \
@@ -756,16 +753,13 @@ tt/m/n/12 np.linalg.inv
  []
 
 
-Overfull \hbox (18.9604pt too wide) in paragraph at lines 620--620
+Overfull \hbox (18.9604pt too wide) in paragraph at lines 605--605
 [][][][][][][][][][] [][] [][][][] [] [][] [] [][][][][] [] [][][][][][][][][][
 ][][][][][][][] [] [][][][][][][][][] [][] [][][][][][][][][][][] [] [][][][][]
 [][][][] [][]
  []
 
-[18] [19] (./dissertation.aux)
-
-LaTeX Warning: There were undefined references.
-
+[17] [18] (./dissertation.aux)
 Package logreq Info: Writing requests to 'dissertation.run.xml'.
 \openout1 = `dissertation.run.xml'.
 
@@ -773,10 +767,10 @@ Package logreq Info: Writing requests to 'dissertation.run.xml'.
 Here is how much of TeX's memory you used:
  14932 strings out of 481804
  307006 string characters out of 5937875
- 1169732 words of memory out of 5000000
+ 1169742 words of memory out of 5000000
  31726 multiletter control sequences out of 15000+600000
  535956 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,20n,67p,832b,4603s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on dissertation.pdf (21 pages).
+Output written on dissertation.pdf (20 pages).

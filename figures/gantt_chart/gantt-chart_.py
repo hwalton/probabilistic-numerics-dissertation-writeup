@@ -55,7 +55,7 @@ deadline = dt.datetime(2024, 5, 2)
 deadline_days = (deadline - df['start'].min()).days
 ax.axvline(x=deadline_days, color='red', linestyle='dotted', lw=2)
 
-ax.text(deadline_days + 1, 1.75, 'REPORT DUE 2 MAY 24', rotation=90, verticalalignment='center_baseline', horizontalalignment='left', color='red')
+ax.text(deadline_days + 1, 1.75, 'REPORT DUE 02 MAY 24', rotation=90, verticalalignment='center_baseline', horizontalalignment='left', color='red')
 
 ax.xaxis.grid(True, alpha=0.5)
 
