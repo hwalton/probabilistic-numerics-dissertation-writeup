@@ -83,7 +83,7 @@
     \section{Background and Understanding of the Problem}
 
 
-    Problems in engineering are usually described using a framework of continuous mathematical functions.
+    Problems in engineering are typically described initially using a framework of continuous mathematical functions.
     This means that their output has no jumps or gaps in values, and they can be evaluated using input values that are on a sliding scale of a continuous input domain.
     For example, time in the real world is on a continuous sliding scale, which means that any interval in time can always be subdivided into a smaller interval.
     Continuous functions in turn can often be manipulated analytically using mathematical transformations.
@@ -175,7 +175,7 @@
     A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution``~\cite{rasmussen2006gaussian}.
     This is a distribution of a set of variables that include both our training data and points of interest on our latent function.
     It describes how the probability distribution of each variable depends on the values of the other variables.
-    Assuming a mean of the latent function of zero, and a noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon ~ \mathnormal{0, \sigma^2_y}$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+    Assuming a mean of the latent function of zero, and a noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
         \begin{pmatrix}
@@ -226,7 +226,7 @@
     \subsection{The Application of the Gaussian Process in Analysis of Dynamic Systems}
 
     This investigation is in the context of analysis of a dynamic Multi-Degree of Freedom (MDOF) system.
-    This is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). If a structure vibrates in response to a force input force, the FRF is defined as the frequency domain response divided by the frequency domain input force.
+    This is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). If a structure vibrates in response to an input force, the FRF is defined as the frequency domain response divided by the frequency domain input force.
     This is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
     The computation of this FRF relies on a mathematical transformation called the Fourier transform (Equation~\ref{eq:ft}).
 

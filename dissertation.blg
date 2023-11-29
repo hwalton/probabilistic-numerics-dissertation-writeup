@@ -1,19 +1,19 @@
 [0] Config.pm:304> INFO - This is Biber 2.14 (beta)
 [0] Config.pm:307> INFO - Logfile is 'dissertation.blg'
-[166] biber:322> INFO - === Wed Nov 29, 2023, 14:54:43
-[209] Biber.pm:415> INFO - Reading 'dissertation.bcf'
-[460] Biber.pm:943> INFO - Found 9 citekeys in bib section 0
-[540] Biber.pm:4256> INFO - Processing section 0
-[541] Utils.pm:75> INFO - Globbing data source 'references.bib'
-[541] Utils.pm:91> INFO - Globbed data source 'references.bib' to references.bib
-[573] Biber.pm:4455> INFO - Looking for bibtex format file 'references.bib' for section 0
-[577] bibtex.pm:1653> INFO - LaTeX decoding ...
-[600] bibtex.pm:1471> INFO - Found BibTeX data source 'references.bib'
-[691] Utils.pm:293> WARN - year field 'AUTUMN 2021-22' in entry 'MEC326' is not an integer - this will probably not sort properly.
-[738] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[738] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[739] Biber.pm:4084> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[739] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
-[759] bbl.pm:652> INFO - Writing 'dissertation.bbl' with encoding 'UTF-8'
-[765] bbl.pm:755> INFO - Output to dissertation.bbl
-[766] Biber.pm:128> INFO - WARNINGS: 1
+[116] biber:322> INFO - === Wed Nov 29, 2023, 19:27:44
+[131] Biber.pm:415> INFO - Reading 'dissertation.bcf'
+[210] Biber.pm:943> INFO - Found 9 citekeys in bib section 0
+[227] Biber.pm:4256> INFO - Processing section 0
+[227] Utils.pm:75> INFO - Globbing data source 'references.bib'
+[228] Utils.pm:91> INFO - Globbed data source 'references.bib' to references.bib
+[239] Biber.pm:4455> INFO - Looking for bibtex format file 'references.bib' for section 0
+[241] bibtex.pm:1653> INFO - LaTeX decoding ...
+[254] bibtex.pm:1471> INFO - Found BibTeX data source 'references.bib'
+[297] Utils.pm:293> WARN - year field 'AUTUMN 2021-22' in entry 'MEC326' is not an integer - this will probably not sort properly.
+[322] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[322] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[322] Biber.pm:4084> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[322] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
+[333] bbl.pm:652> INFO - Writing 'dissertation.bbl' with encoding 'UTF-8'
+[337] bbl.pm:755> INFO - Output to dissertation.bbl
+[338] Biber.pm:128> INFO - WARNINGS: 1
