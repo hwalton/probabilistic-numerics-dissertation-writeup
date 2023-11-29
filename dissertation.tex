@@ -171,11 +171,11 @@
     This gives the new Gaussian Process method an inherent mechanism for accounting for uncertainty due to the noise in input data, which may allow for improvements to the robustness to this noise when the reconstructed function is then transformed.
 
     \subsection{The Gaussian Process Model}
-    We are using a Gaussian Process (GP) to map a continuous ``latent`` function $f(x)$ to our noisy discrete sampled data that takes a time as an input and outputs in a force.
-    To do this, we are using a Gaussian Process, which ``is a collection of random variables, any finite number of which have a joint Gaussian distribution``~\cite{rasmussen2006gaussian}.
-    This is a distribution of a set of variables that include both our training data, and points of interest on our latent function.
+    A Gaussian Process (GP) is being used to map a continuous ``latent`` function $f(x)$ to our noisy discrete sampled data that takes a time as an input and outputs in a force.
+    A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution``~\cite{rasmussen2006gaussian}.
+    This is a distribution of a set of variables that include both our training data and points of interest on our latent function.
     It describes how the probability distribution of each variable depends on the values of the other variables.
-    Assuming a mean of the latent function of zero, and that noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon ~ \mathnormal{0, \sigma^2_y}$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+    Assuming a mean of the latent function of zero, and a noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon ~ \mathnormal{0, \sigma^2_y}$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
         \begin{pmatrix}
@@ -195,20 +195,21 @@
     \end{equation}
 
     where $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel``.
-    This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters that need to be optimised by minimising the Negative Log Marginal Likelihood~\cite{murphy2023probabilistic}, defined in Equation~\ref{eq:NLML}.
+    This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
+    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
+    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}:
 
     \begin{equation}
         -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
     \end{equation}
 
-    This finds the values of hyperparameters that have the largest chance of observing the provided training data.
-    It measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting.
-    This is when the model fits the training data so well that it generalises poorly to new test data.
-
-    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
+    This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
+    By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
 
-    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior``, or prediction of the latent function given our set of sampled training points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:18.51}, where $\mu_{*|X}$ is given in Equation~\ref{eq:18.52} and $\Sigma_{*|X}$ is given in Equation~\ref{eq:18.53}.
+
+
+    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior``, or prediction of the latent function given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ is given in Equation~\ref{eq:18.52} and $\Sigma_{*|X}$ is given in Equation~\ref{eq:18.53}.
 
     \begin{equation}
         p(f^* | D, X^*) = \mathcal{N}(f^* | \mu_{*|X}, \Sigma_{*|X})\label{eq:18.51}
