@@ -95,9 +95,9 @@
 %        $D$ & Training data \\ X
 %        $F(\omega)$ & Fourier transform of $f(t)$ \\ X
 %        $f(x)$ & Latent function of the variable $x$ \\ x
-%        $f^*$ & An array of values of the Latent function evaluated at a set of test points \\ X
+%        $f^*$ & An array of values of the latent function evaluated at a set of test points \\ X
 %        $h$ & Incremental distance used in gradient calculation \\ X
-%        $I$ & Identity matrix \\
+%        $I$ & Identity matrix \\ X
 %        $K$ & Covariance matrix of the Kernel function, k \\
 %        $K_{ij}$ & Element of a covariance matrix \\
 %        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\
@@ -259,9 +259,11 @@
         \end{pmatrix}
         \right)\label{eq:joint-distribution}
     \end{equation}
-    \nomenclature[L]{$f^*$}{An array of values of the latent function evaluated at a set of test points, $X_*$}
 
-    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$ and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel''.
+    \nomenclature[L]{$f^*$}{An array of values of the latent function evaluated at a set of test points, $X_*$}
+    \nomenclature[L]{$I$}{Identity matrix}
+
+    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``kernel''.
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}
