@@ -111,7 +111,7 @@
 %        $p(x)$ & Probability density function of arbitrary variable, $x$ \\ X
 %        $p$ & Period hyperparameter in periodic kernel \\ X
 %        $y_n$ & Noisy observed output based on the latent function, $f(x)$ \\ X
-%        $y$ & An array of $y_n$ values from a set of training points \\
+%        $y$ & An array of $y_n$ values from a set of training points \\ X
 %        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\
 %    \end{longtable}
 %
@@ -261,16 +261,16 @@
     \end{equation}
 
     \nomenclature[L]{$y_n$}{Noisy observed output based on the latent function, $f(x)$}
-    \nomenclature[L]{$y$}{An array of $y_n$ values from a set of training points}
-    \nomenclature[L]{$f^*$}{An array of values of the latent function evaluated at a set of test points, $X_*$}
+    \nomenclature[L]{$y$}{A vector of $y_n$ values from a set of training points}
+    \nomenclature[L]{$f^*$}{A vector of values of the latent function evaluated at a set of test points, $X_*$}
     \nomenclature[L]{$I$}{Identity matrix}
     \nomenclature[L]{$K_{X,X}$}{Covariance matrix for training input data, $K(X,X)$}
     \nomenclature[L]{$K_{X,*}$}{Covariance matrix between training inputs and test inputs, $K(X,X_*)$}
     \nomenclature[L]{$K_{*,*}$}{Covariance matrix for test inputs, $K(X_*,X_*)$}
 
 
-    where $y$ is an array of $y_n$ values from a set of training points, $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the arrays $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in arrays A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
-    This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
+    where $y$ is a vector of $y_n$ values from a set of training points, $f^*$ is a vector of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
+    This is a special function that when input with two vectors, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
 
@@ -373,7 +373,7 @@
     Previously collected turbine tap test data~\cite{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.
     The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
-    For simplicity, only the data from hitting the first position was imported, using a function that converts the hammer (input) and turbine blade (response) accelerometer data, and the time of each sample into 3 numpy arrays.
+    For simplicity, only the data from hitting the first position was imported, using a function that converts the hammer (input) and turbine blade (response) accelerometer data, and the time of each sample into 3 NumPy arrays.
     This was plotted as two functions of time, from which a small set of 100 samples was selected from the centre (to reduce computation time initially) was used as time series training data to be fit by the GP\@ as shown in Figure~\ref{fig:input-response-plot}.
 
     \begin{figure}[ht]
@@ -398,8 +398,9 @@
         \end{cases}\label{eq:white-noise-kernel}
     \end{equation}
     \nomenclature[L]{$K_{ij}$}{Element of a covariance matrix, K, at index i, j}
+    \nomenclature[L]{$\mathbf{x}_i, \mathbf{x}_j$}{Input vectors}
 
-    where $K_{ij}$ is the element of the covariance matrix, $K$, at index $i, j$.
+    where $K_{ij}$ is the element of the covariance matrix, $K$, at index $i, j$ and $\mathbf{x}_i, \mathbf{x}_j$ are input vectors.
     For the force response plot, a periodic kernel was chosen as defined in Equation~\ref{eq:periodic-kernel}
 
     \begin{equation}
