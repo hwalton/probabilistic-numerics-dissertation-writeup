@@ -104,11 +104,12 @@
 %        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\ X
 %        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\ X
 %        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\ X
-%        $l$ & Length hyperparameter in periodic kernel \\
-%        $m$ & Number of inducing points in Sparse GP \\
+%        $l$ & Length hyperparameter in periodic kernel \\ X
+%        $m$ & Number of inducing points in Sparse GP \\ x
 %        $N$ & Number of data points \\
+%        $O$ & Big O notation \\
 %        $p(x)$ & Probability density function of arbitrary variable, $x$ \\
-%        $p$ & Period hyperparameter in periodic kernel \\
+%        $p$ & Period hyperparameter in periodic kernel \\ X
 %        $\text{MSE}$ & Mean Squared Error \\
 %        $y_n$ & Noisy observed output based on the latent function, $f(x)$ \\
 %        $y$ & An array of $y_n$ values from a set of training points \\
@@ -125,7 +126,7 @@
 %        $\mu_{*|X}$ & Conditional mean of the Gaussian Process, given the training data X \\
 %        $\pi$ & Mathematical constant, Pi \\
 %        $\sigma$ & Standard deviation \\
-%        $\sigma^2$ & Variance, a hyperparameter in the context of the periodic kernel \\
+%        $\sigma^2$ & Variance, a hyperparameter in the context of the periodic kernel \\ X
 %        $\sigma^2_y$ & Variance of observation noise \\
 %        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data X \\
 %        $\theta$ & Set of hyperparameters \\
@@ -435,11 +436,11 @@
     \end{figure}
 
     \subsection{Sparse GP}
-    Finally, the model modified to scale to large data, by converting it to a type of Sparse GP approximation known as FITC~\cite{q-candela}.
-    This changed the $O()$ from $O(n^3)$ to $O(mn^2)$ for a set of m inducing points chosen to be a subset of the original training points, evenly spaced, where $n \gg m$.
+    Finally, the model was modified to scale to large data, by converting it to a type of Sparse GP approximation known as FITC~\cite{q-candela}.
+    This reduced the complexity of the training phase from $O(n^3)$, where $n$ is the number of training points, to $O(mn^2)$, where m is a set of inducing points chosen to be a subset of the original training points, evenly spaced, where $n \gg m$. \nomenclature[L]{$m$}{Number of inducing points in Sparse GP} \nomenclature[L]{$n$}{Number of training points} \nomenclature[L]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
     This modification was made to the NLML and predict functions, which required a very specific implementation involving multiple mathematical tricks in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
     This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers, which is a format that computers use to store continuous variables as a decimal as opposed to integers type variables.
-    After this was complete, the hyperparameters could be optimised and the GP could be fit for functions containing more than 1000 data points in a significantly reduced computation time... %update with times
+    After this was complete, the hyperparameters could be optimised and the GP could be fit for functions containing more than 1000 data points in a significantly reduced computation time. %update with times
 
     \section{Plan for Future Work}
     After the implementation of the Sparse GP, the next step will be to adjust the prediction function for the force input and response plots to be in a closed form.
