@@ -243,31 +243,31 @@
 
     \begin{equation}
         \begin{pmatrix}
-            y \\
-            f^*
+            \mathbf{y} \\
+            \mathbf{f}^*
         \end{pmatrix}
         \sim \mathcal{N} \left(
         \begin{pmatrix}
-            \mu_X \\
-            \mu_*
+            \boldsymbol{\mu}_X \\
+            \boldsymbol{\mu}_*
         \end{pmatrix},
         \begin{pmatrix}
-            K_{X,X} + \sigma^2_y I & K_{X,*} \\
-            K_{X,*}^T & K_{*,*}
+            \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I} & \mathbf{K}_{X,*} \\
+            \mathbf{K}_{X,*}^T & \mathbf{K}_{*,*}
         \end{pmatrix}
         \right)\label{eq:joint-distribution}
     \end{equation}
 
-    \nomenclature[L]{$y_n$}{Noisy observed output based on the latent function, $f(x)$}
-    \nomenclature[L]{$y$}{A vector of $y_n$ values from a set of training points}
-    \nomenclature[L]{$f^*$}{A vector of values of the latent function evaluated at a set of test points, $X_*$}
-    \nomenclature[L]{$I$}{Identity matrix}
-    \nomenclature[L]{$K_{X,X}$}{Covariance matrix for training input data, $K(X,X)$}
-    \nomenclature[L]{$K_{X,*}$}{Covariance matrix between training inputs and test inputs, $K(X,X_*)$}
-    \nomenclature[L]{$K_{*,*}$}{Covariance matrix for test inputs, $K(X_*,X_*)$}
-    \nomenclature[G]{$\epsilon_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
-    \nomenclature[G]{$\mu_X$}{Mean of the Gaussian Process, given the training data $X$}
-    \nomenclature[G]{$\mu_*$}{Mean of the Gaussian Process, given the test data $X_*$}
+    \nomenclature[L]{$\mathbf{y}_n$}{Noisy observed output based on the latent function, $\mathbf{f}(\mathbf{x})$}
+    \nomenclature[L]{$\mathbf{y}$}{A vector of $\mathbf{y}_n$ values from a set of training points}
+    \nomenclature[L]{$\mathbf{f}^*$}{A vector of values of the latent function evaluated at a set of test points, $\mathbf{X}_*$}
+    \nomenclature[L]{$\mathbf{I}$}{Identity matrix}
+    \nomenclature[L]{$\mathbf{K}_{X,X}$}{Covariance matrix for training input data, $\mathbf{K}(\mathbf{X},\mathbf{X})$}
+    \nomenclature[L]{$\mathbf{K}_{X,*}$}{Covariance matrix between training inputs and test inputs, $\mathbf{K}(\mathbf{X},\mathbf{X}_*)$}
+    \nomenclature[L]{$\mathbf{K}_{*,*}$}{Covariance matrix for test inputs, $\mathbf{K}(\mathbf{X}_*,\mathbf{X}_*)$}
+    \nomenclature[G]{$\boldsymbol{\epsilon}_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
+    \nomenclature[G]{$\boldsymbol{\mu}_X$}{Mean of the Gaussian Process, given the training data $\mathbf{X}$}
+    \nomenclature[G]{$\boldsymbol{\mu}_*$}{Mean of the Gaussian Process, given the test data $\mathbf{X}_*$}
     \nomenclature[G]{$\sigma^2_y$}{Variance of observation noise}
 
 
