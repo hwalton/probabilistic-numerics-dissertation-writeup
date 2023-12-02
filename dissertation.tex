@@ -74,6 +74,11 @@
 
 \makenomenclature
 
+% Define nomenclature groupings
+\renewcommand{\nomgroup}[1]{%
+    \ifthenelse{\equal{#1}{G}}{\item[\textbf{Greek Symbols}]}{%
+        \ifthenelse{\equal{#1}{L}}{\item[\textbf{Latin Symbols}]}{}}}
+
 \begin{document}
     \pagenumbering{roman}
 
@@ -160,9 +165,9 @@
         p(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
     \end{equation}
 
-    \nomenclature{$p(x)$}{Probability density function of arbitrary variable, $x$}
-    \nomenclature{$\sigma$}{Standard deviation}
-    \nomenclature{$\mu$}{Mean value}
+    \nomenclature[L]{$p(x)$}{Probability density function of arbitrary variable, $x$}
+    \nomenclature[G]{$\sigma$}{Standard deviation}
+    \nomenclature[G]{$\mu$}{Mean value}
 
     where $\mu$ is the mean and $\sigma$ is the standard deviation.
     This is a common continuous probability distribution characterized by a bell-shaped curve, and is defined its mean ($\mu$) and variance ($\sigma^2$). The mean determines the centre of the distribution and the variance measures the spread.
@@ -431,7 +436,7 @@
         \label{eq:mse}
     \end{equation}
 
-    \nomenclature{$A_i, B_i$}{Values of arbitrary functions, A, B, at index i}
+    \nomenclature[L]{$A_i, B_i$}{Values of arbitrary functions, A, B, at index i}
 
     where $A_i, B_i$ are the values of the two functions at index $i$.
     Then, some Gaussian noise can be added to the data, and the FRF can again be computed using both methods again.
