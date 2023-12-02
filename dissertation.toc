@@ -28,7 +28,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2}Objectives}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Work Completed to Date}{7}%
+\contentsline {section}{\numberline {3}Work Completed to Date}{8}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.1}The Data}{8}%
 \defcounter {refsection}{0}\relax 
@@ -36,10 +36,10 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Predict Function}{9}%
+\contentsline {subsection}{\numberline {3.4}Predict Function}{10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.5}Sparse GP}{10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for Future Work}{11}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{11}%
+\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{12}%

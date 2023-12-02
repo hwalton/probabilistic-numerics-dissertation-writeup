@@ -92,9 +92,9 @@
 %    \noindent \textbf{Latin Symbols}
 %    \begin{longtable}{p{1.25cm} p{15cm}}
 %        $A_i, B_i$ & Value of arbitrary functions, A, B, at index i \\ X
-%        $D$ & Training data \\
-%        $F(\omega)$ & Fourier transform of $f(t)$ \\
-%        $f(x)$ & Latent function of the variable $x$ \\
+%        $D$ & Training data \\ X
+%        $F(\omega)$ & Fourier transform of $f(t)$ \\ X
+%        $f(x)$ & Latent function of the variable $x$ \\ x
 %        $f^*$ & An array of values of the Latent function evaluated at a set of test points \\
 %        $h$ & Incremental distance used in gradient calculation \\
 %        $I$ & Identity matrix \\
@@ -129,7 +129,7 @@
 %        $\sigma^2_y$ & Variance of observation noise \\
 %        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data X \\
 %        $\theta$ & Set of hyperparameters \\
-%        $\omega$ & Angular frequency \\
+%        $\omega$ & Angular frequency \\ X
 %        $K_{\sigma}$ & Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$ \\
 %    \end{longtable}
 
@@ -238,7 +238,7 @@
     This gives the new Gaussian Process method an inherent mechanism for accounting for uncertainty due to the noise in input data, which may allow for improvements to the robustness to this noise when the reconstructed function is then transformed.
 
     \subsection{The Gaussian Process Model}
-    A Gaussian Process (GP) is being used to map a continuous ``latent'' function $f(x)$ to our noisy discrete sampled data that takes a time as an input and outputs in a force.
+    A Gaussian Process (GP) is being used to map a continuous ``latent'' function $f(x)$ to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
     A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian}.
     This is a distribution of a set of variables that include both our training data and points of interest on our latent function.
     It describes how the probability distribution of each variable depends on the values of the other variables.
@@ -264,12 +264,15 @@
     where $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel''.
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
-    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}:
+    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}
 
     \begin{equation}
         -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
     \end{equation}
 
+    \nomenclature[L]{$D$}{Training data}
+
+    where $D$ is the training data.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
@@ -292,12 +295,16 @@
     This investigation is in the context of analysis of a dynamic Multi-Degree of Freedom (MDOF) system.
     This is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). If a structure vibrates in response to an input force, the FRF is defined as the frequency domain response divided by the frequency domain input force.
     This is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
-    The computation of this FRF relies on a mathematical transformation called the Fourier transform (Equation~\ref{eq:ft}).
+    The computation of this FRF relies on a mathematical transformation called the Fourier transform, $F(\omega)$ as defined in Equation~\ref{eq:ft})
 
     \begin{equation}
         F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
     \end{equation}
+    \nomenclature[L]{$F(\omega)$}{Fourier transform of $f(t)$}
+    \nomenclature[G]{$\omega$}{Angular frequency}
 
+
+    where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
     It takes a function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
     Therefore, the Gaussian Process is used to preprocess experimental discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
