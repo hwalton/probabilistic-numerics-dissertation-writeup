@@ -403,16 +403,16 @@
     This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated''~\cite{RoelantsGPKernels}, and is defined in Equation~\ref{eq:white-noise-kernel}
 
     \begin{equation}
-        K_{ij} =
+        \mathbf{K}_{ij} =
         \begin{cases}
             \sigma^2 & \text{if } \mathbf{x}_i = \mathbf{x}_j \\
             0 & \text{otherwise}
         \end{cases}\label{eq:white-noise-kernel}
     \end{equation}
-    \nomenclature[L]{$K_{ij}$}{Element of a covariance matrix, K, at index i, j}
+    \nomenclature[L]{$\mathbf{K}_{ij}$}{Element of a covariance matrix, K, at index i, j}
     \nomenclature[L]{$\mathbf{x}_i, \mathbf{x}_j$}{Input vectors}
 
-    where $K_{ij}$ is the element of the covariance matrix, $K$, at index $i, j$ and $\mathbf{x}_i, \mathbf{x}_j$ are input vectors.
+    where $\mathbf{K}_{ij}$ is the element of the covariance matrix, $\mathbf{K}$, at index $i, j$ and $\mathbf{x}_i, \mathbf{x}_j$ are input vectors.
     For the force response plot, a periodic kernel was chosen as defined in Equation~\ref{eq:periodic-kernel}
 
     \begin{equation}
