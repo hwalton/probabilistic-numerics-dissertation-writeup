@@ -126,7 +126,7 @@
 %        $\sigma^2$ & Variance, a hyperparameter in the context of the periodic kernel \\ X
 %        $\sigma^2_y$ & Variance of observation noise \\ X
 %        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data \\ X
-%        $\theta$ & Set of hyperparameters \\
+%        $\theta$ & Set of hyperparameters \\ X
 %        $\omega$ & Angular frequency \\ X
 %        $K_{\sigma}$ & Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$ \\
 %    \end{longtable}
@@ -275,19 +275,20 @@
     Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
     This is a special function that when input with two vectors, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
-    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
+    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
 
     \begin{equation}
         -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
     \end{equation}
 
     \nomenclature[L]{$D$}{Training data}
+    \nomenclature[G]{$\theta$}{Set of hyperparameters}
 
-    where $D$ is the training data.
+    where $D$ is the training data and $\theta$ is the set of hyperparameters.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
-    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ and $\Sigma_{*|X}$ are the conditional mean and covariance of the GP, given the training data, given in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
+    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function at a test point given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ and $\Sigma_{*|X}$ are the conditional mean and covariance of the GP, given the training data, given in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
 
     \begin{equation}
         p(f^* | D, X^*) = \mathcal{N}(f^* | \mu_{*|X}, \Sigma_{*|X})\label{eq:18.51}
