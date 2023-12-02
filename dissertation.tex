@@ -79,6 +79,10 @@
     \ifthenelse{\equal{#1}{G}}{\item[\textbf{Greek Symbols}]}{%
         \ifthenelse{\equal{#1}{L}}{\item[\textbf{Latin Symbols}]}{}}}
 
+\setlength{\nomlabelwidth}{2cm}
+%\renewcommand{\nomlabel}[1]{\textbf{#1}\hfil} % Bold the symbols and right-align
+%\setlength{\nomitemsep}{-\parsep} % Reduce the space between items
+
 \begin{document}
     \pagenumbering{roman}
 
@@ -86,53 +90,6 @@
     \includepdf[pages=1, frame, scale=1.09, pagecommand={}, offset=0 -35]{figures/titlepage.pdf}
 
     \printnomenclature
-
-%    \section*{Nomenclature}
-%
-%    \noindent \textbf{Latin Symbols}
-%    \begin{longtable}{p{1.25cm} p{15cm}}
-%        $A_i, B_i$ & Value of arbitrary functions, A, B, at index i \\ X
-%        $D$ & Training data \\ X
-%        $F(\omega)$ & Fourier transform of $f(t)$ \\ X
-%        $f(x)$ & Latent function of the variable $x$ \\ x
-%        $f^*$ & An array of values of the latent function evaluated at a set of test points \\ X
-%        $h$ & Incremental distance used in gradient calculation \\ X
-%        $I$ & Identity matrix \\ X
-%        $K$ & Covariance matrix of the kernel function, k \\ X
-%        $K_{ij}$ & Element of a covariance matrix \\ X
-%        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\ X
-%        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\ X
-%        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\ X
-%        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\ X
-%        $l$ & Length hyperparameter in periodic kernel \\ X
-%        $m$ & Number of inducing points in Sparse GP \\ x
-%        $n$ & Number of data points \\ X
-%        $O$ & Big O notation \\ X
-%        $p(x)$ & Probability density function of arbitrary variable, $x$ \\ X
-%        $p$ & Period hyperparameter in periodic kernel \\ X
-%        $y_n$ & Noisy observed output based on the latent function, $f(x)$ \\ X
-%        $y$ & An array of $y_n$ values from a set of training points \\ X
-%        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\ X
-%    \end{longtable}
-%
-%    \newpage
-%
-%    \noindent \textbf{Greek Symbols}
-%    \begin{longtable}{p{1.25cm} p{15cm}}
-%        $\epsilon_n$ & Noise in observation, normally distributed \\ X
-%        $\mu$ & Mean value \\ X
-%        $\mu_{*|X}$ & Conditional mean of the Gaussian Process, given the training data \\ X
-%        $\sigma$ & Standard deviation \\ X
-%        $\sigma^2$ & Variance, a hyperparameter in the context of the periodic kernel \\ X
-%        $\sigma^2_y$ & Variance of observation noise \\ X
-%        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data \\ X
-%        $\theta$ & Set of hyperparameters \\ X
-%        $\omega$ & Angular frequency \\ X
-%        $K_{\sigma}$ & Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$ \\ X
-%    \end{longtable}
-
-
-
 
     \newpage
     \tableofcontents
@@ -265,7 +222,7 @@
     \nomenclature[L]{$\mathbf{K}_{X,X}$}{Covariance matrix for training input data, $\mathbf{K}(\mathbf{X},\mathbf{X})$}
     \nomenclature[L]{$\mathbf{K}_{X,*}$}{Covariance matrix between training inputs and test inputs, $\mathbf{K}(\mathbf{X},\mathbf{X}_*)$}
     \nomenclature[L]{$\mathbf{K}_{*,*}$}{Covariance matrix for test inputs, $\mathbf{K}(\mathbf{X}_*,\mathbf{X}_*)$}
-    \nomenclature[G]{$\boldsymbol{\epsilon}_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
+    \nomenclature[G]{$\epsilon_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
     \nomenclature[G]{$\boldsymbol{\mu}_X$}{Mean of the Gaussian Process, given the training data $\mathbf{X}$}
     \nomenclature[G]{$\boldsymbol{\mu}_*$}{Mean of the Gaussian Process, given the test data $\mathbf{X}_*$}
     \nomenclature[G]{$\sigma^2_y$}{Variance of observation noise}
