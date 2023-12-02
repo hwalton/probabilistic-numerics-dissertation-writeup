@@ -274,21 +274,22 @@
     where $\mathbf{y}$ is a vector of $y_n$ values from a set of training points, $\boldsymbol{\mu}_X$ is the mean of the Gaussian Process, given the training data $\mathbf{X}$, $\boldsymbol{\mu}_*$ is the mean of the Gaussian Process, given the test data $\mathbf{X}_*$, $\mathbf{f}^*$ is a vector of values of the latent function evaluated at a set of test points $\mathbf{X}_*$, $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
     Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$\mathbf{K}_{\mathbf{A},\mathbf{B}}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors $\mathbf{A}$, $\mathbf{B}$}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
 
-    The kernel is a special function that when input with two vectors, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
+    The kernel is a special function that when input with two vectors, produces a covariance matrix that measures the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
 
     \begin{equation}
-        -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
+        -\log p(\mathbf{D}|\boldsymbol{\theta}) = \frac{1}{2} (\mathbf{y} - \boldsymbol{\mu}_X)^T \mathbf{K}_{\sigma}^{-1} (\mathbf{y} - \boldsymbol{\mu}_X) + \frac{1}{2} \log |\mathbf{K}_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
     \end{equation}
 
-    \nomenclature[L]{$D$}{Training data}
-    \nomenclature[G]{$\theta$}{Set of hyperparameters}
-    \nomenclature[L]{$K_{\sigma}$}{Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$}
+    \nomenclature[L]{$\mathbf{D}$}{Training data}
+    \nomenclature[G]{$\boldsymbol{\theta}$}{Set of hyperparameters}
+    \nomenclature[L]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
 
-    where $D$ is the training data, $\theta$ is the set of hyperparameters and $K_{\sigma} = K_{X,X} + \sigma^2_y I$ is the covariance matrix with the noise term.
+    where $\mathbf{D}$ is the training data, $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
+
 
     By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function at a test point given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ and $\Sigma_{*|X}$ are the conditional mean and covariance of the GP, given the training data, given in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
 
