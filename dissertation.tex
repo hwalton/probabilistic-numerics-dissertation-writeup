@@ -283,8 +283,9 @@
 
     \nomenclature[L]{$D$}{Training data}
     \nomenclature[G]{$\theta$}{Set of hyperparameters}
+    \nomenclature[L]{$K_{\sigma}$}{Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$}
 
-    where $D$ is the training data and $\theta$ is the set of hyperparameters.
+    where $D$ is the training data, $\theta$ is the set of hyperparameters and $K_{\sigma} = K_{X,X} + \sigma^2_y I$ is the covariance matrix with noise term.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
