@@ -258,8 +258,8 @@
         \right)\label{eq:joint-distribution}
     \end{equation}
 
-    \nomenclature[L]{$\mathbf{y}_n$}{Noisy observed output based on the latent function, $\mathbf{f}(\mathbf{x})$}
-    \nomenclature[L]{$\mathbf{y}$}{A vector of $\mathbf{y}_n$ values from a set of training points}
+    \nomenclature[L]{$y_n$}{Noisy observed output based on the latent function, $f(x)$}
+    \nomenclature[L]{$\mathbf{y}$}{A vector of $y_n$ values from a set of training points}
     \nomenclature[L]{$\mathbf{f}^*$}{A vector of values of the latent function evaluated at a set of test points, $\mathbf{X}_*$}
     \nomenclature[L]{$\mathbf{I}$}{Identity matrix}
     \nomenclature[L]{$\mathbf{K}_{X,X}$}{Covariance matrix for training input data, $\mathbf{K}(\mathbf{X},\mathbf{X})$}
@@ -271,8 +271,9 @@
     \nomenclature[G]{$\sigma^2_y$}{Variance of observation noise}
 
 
-    where $y$ is a vector of $y_n$ values from a set of training points, $\mu_X$ is the mean of the Gaussian Process, given the training data $X$, $\mu_*$ is the mean of the Gaussian Process, given the test data $X_*$, $f^*$ is a vector of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively.
-    Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
+    where $\mathbf{y}$ is a vector of $y_n$ values from a set of training points, $\boldsymbol{\mu}_X$ is the mean of the Gaussian Process, given the training data $\mathbf{X}$, $\boldsymbol{\mu}_*$ is the mean of the Gaussian Process, given the test data $\mathbf{X}_*$, $\mathbf{f}^*$ is a vector of values of the latent function evaluated at a set of test points $\mathbf{X}_*$, $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
+    Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$\mathbf{K}_{\mathbf{A},\mathbf{B}}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors $\mathbf{A}$, $\mathbf{B}$}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
+
     The kernel is a special function that when input with two vectors, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
