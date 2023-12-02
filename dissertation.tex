@@ -285,28 +285,29 @@
     \nomenclature[L]{$\mathbf{D}$}{Training data}
     \nomenclature[G]{$\boldsymbol{\theta}$}{Set of hyperparameters}
     \nomenclature[L]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
+    \nomenclature[L]{$N$}{Number of training points}
 
-    where $\mathbf{D}$ is the training data, $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
+    where $\mathbf{D}$ is the training data, $N$ is the number of training points, $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
 
-    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function at a test point given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ and $\Sigma_{*|X}$ are the conditional mean and covariance of the GP, given the training data, given in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
+    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function at a test point given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the conditional mean and covariance of the GP, given the training data, given in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
 
     \begin{equation}
-        p(f^* | D, X^*) = \mathcal{N}(f^* | \mu_{*|X}, \Sigma_{*|X})\label{eq:18.51}
+        p(\mathbf{f}^* \vert \mathbf{D}, \mathbf{X}^*) = \mathcal{N}(\mathbf{f}^* \vert \boldsymbol{\mu}_{*\vert \mathbf{X}}, \boldsymbol{\Sigma}_{*\vert \mathbf{X}})\label{eq:18.51}
     \end{equation}
 
     \begin{equation}
-        \mu_{*|X} = \mu_* + K_{X,*}^T (K_{X,X} + \sigma^2_y I)^{-1} (y - \mu_X)\label{eq:18.52}
+        \boldsymbol{\mu}_{*\vert \mathbf{X}} = \boldsymbol{\mu}_* + \mathbf{K}_{X,*}^T (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} (\mathbf{y} - \boldsymbol{\mu}_X)\label{eq:18.52}
     \end{equation}
 
     \begin{equation}
-        \Sigma_{*|X} = K_{*,*} - K_{X,*}^T (K_{X,X} + \sigma^2_y I)^{-1} K_{X,*}\label{eq:18.53}
+        \boldsymbol{\Sigma}_{*\vert \mathbf{X}} = \mathbf{K}_{*,*} - \mathbf{K}_{X,*}^T (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} \mathbf{K}_{X,*}\label{eq:18.53}
     \end{equation}
 
-    \nomenclature[G]{$\mu_{* \vert X}$}{Conditional mean of the Gaussian Process, given the training data}
-    \nomenclature[G]{$\Sigma_{* \vert X}$}{Conditional covariance of the Gaussian Process, given the training data}
+    \nomenclature[G]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data}
+    \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
 
 
     \subsection{The Application of the Gaussian Process in Analysis of Dynamic Systems}
@@ -451,7 +452,7 @@
 
     \subsection{Sparse GP}
     Finally, the model was modified to scale to large data, by converting it to a type of Sparse GP approximation known as FITC~\cite{q-candela}.
-    This reduced the complexity of the training phase from $O(n^3)$, where $n$ is the number of training points, to $O(mn^2)$, where m is a set of inducing points chosen to be a subset of the original training points, evenly spaced, where $n \gg m$. \nomenclature[L]{$m$}{Number of inducing points in Sparse GP} \nomenclature[L]{$n$}{Number of training points} \nomenclature[L]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
+    This reduced the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, where $N \gg M$. \nomenclature[L]{$M$}{Number of inducing points in Sparse GP} \nomenclature[L]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
     This modification was made to the NLML and predict functions, which required a very specific implementation involving multiple mathematical tricks in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
     This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers, which is a format that computers use to store continuous variables as a decimal as opposed to integers type variables.
     After this was complete, the hyperparameters could be optimised and the GP could be fit for functions containing more than 1000 data points in a significantly reduced computation time. %update with times
