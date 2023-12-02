@@ -106,12 +106,11 @@
 %        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\ X
 %        $l$ & Length hyperparameter in periodic kernel \\ X
 %        $m$ & Number of inducing points in Sparse GP \\ x
-%        $N$ & Number of data points \\
-%        $O$ & Big O notation \\
-%        $p(x)$ & Probability density function of arbitrary variable, $x$ \\
+%        $n$ & Number of data points \\ X
+%        $O$ & Big O notation \\ X
+%        $p(x)$ & Probability density function of arbitrary variable, $x$ \\ X
 %        $p$ & Period hyperparameter in periodic kernel \\ X
-%        $\text{MSE}$ & Mean Squared Error \\
-%        $y_n$ & Noisy observed output based on the latent function, $f(x)$ \\
+%        $y_n$ & Noisy observed output based on the latent function, $f(x)$ \\ X
 %        $y$ & An array of $y_n$ values from a set of training points \\
 %        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\
 %    \end{longtable}
@@ -261,16 +260,19 @@
         \right)\label{eq:joint-distribution}
     \end{equation}
 
+    \nomenclature[L]{$y_n$}{Noisy observed output based on the latent function, $f(x)$}
+    \nomenclature[L]{$y$}{An array of $y_n$ values from a set of training points}
     \nomenclature[L]{$f^*$}{An array of values of the latent function evaluated at a set of test points, $X_*$}
     \nomenclature[L]{$I$}{Identity matrix}
     \nomenclature[L]{$K_{X,X}$}{Covariance matrix for training input data, $K(X,X)$}
     \nomenclature[L]{$K_{X,*}$}{Covariance matrix between training inputs and test inputs, $K(X,X_*)$}
     \nomenclature[L]{$K_{*,*}$}{Covariance matrix for test inputs, $K(X_*,X_*)$}
 
-    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the arrays $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in arrays A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
+
+    where $y$ is an array of $y_n$ values from a set of training points, $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the arrays $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in arrays A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
-    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}
+    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
 
     \begin{equation}
         -\log p(D|\theta) = \frac{1}{2} (y - \mu_X)^T K_{\sigma}^{-1} (y - \mu_X) + \frac{1}{2} \log |K_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
