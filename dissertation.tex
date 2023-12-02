@@ -112,22 +112,20 @@
 %        $p$ & Period hyperparameter in periodic kernel \\ X
 %        $y_n$ & Noisy observed output based on the latent function, $f(x)$ \\ X
 %        $y$ & An array of $y_n$ values from a set of training points \\ X
-%        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\
+%        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\ X
 %    \end{longtable}
 %
 %    \newpage
 %
 %    \noindent \textbf{Greek Symbols}
 %    \begin{longtable}{p{1.25cm} p{15cm}}
-%        $\epsilon_n$ & Noise in observation, normally distributed \\
-%        $\mathcal{N}$ & Normal (Gaussian) distribution \\
-%        $\mu$ & Mean value \\
-%        $\mu_{*|X}$ & Conditional mean of the Gaussian Process, given the training data X \\
-%        $\pi$ & Mathematical constant, Pi \\
-%        $\sigma$ & Standard deviation \\
+%        $\epsilon_n$ & Noise in observation, normally distributed \\ X
+%        $\mu$ & Mean value \\ X
+%        $\mu_{*|X}$ & Conditional mean of the Gaussian Process, given the training data \\ X
+%        $\sigma$ & Standard deviation \\ X
 %        $\sigma^2$ & Variance, a hyperparameter in the context of the periodic kernel \\ X
-%        $\sigma^2_y$ & Variance of observation noise \\
-%        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data X \\
+%        $\sigma^2_y$ & Variance of observation noise \\ X
+%        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data \\ X
 %        $\theta$ & Set of hyperparameters \\
 %        $\omega$ & Angular frequency \\ X
 %        $K_{\sigma}$ & Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$ \\
@@ -267,9 +265,14 @@
     \nomenclature[L]{$K_{X,X}$}{Covariance matrix for training input data, $K(X,X)$}
     \nomenclature[L]{$K_{X,*}$}{Covariance matrix between training inputs and test inputs, $K(X,X_*)$}
     \nomenclature[L]{$K_{*,*}$}{Covariance matrix for test inputs, $K(X_*,X_*)$}
+    \nomenclature[G]{$\epsilon_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
+    \nomenclature[G]{$\mu_X$}{Mean of the Gaussian Process, given the training data $X$}
+    \nomenclature[G]{$\mu_*$}{Mean of the Gaussian Process, given the test data $X_*$}
+    \nomenclature[G]{$\sigma^2_y$}{Variance of observation noise}
 
 
-    where $y$ is a vector of $y_n$ values from a set of training points, $f^*$ is a vector of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
+    where $y$ is a vector of $y_n$ values from a set of training points, $\mu_X$ is the mean of the Gaussian Process, given the training data $X$, $\mu_*$ is the mean of the Gaussian Process, given the test data $X_*$, $f^*$ is a vector of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively.
+    Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
     This is a special function that when input with two vectors, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
@@ -284,7 +287,7 @@
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
-    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ is given in Equation~\ref{eq:18.52} and $\Sigma_{*|X}$ is given in Equation~\ref{eq:18.53}.
+    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ and $\Sigma_{*|X}$ are the conditional mean and covariance of the GP, given the training data, given in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
 
     \begin{equation}
         p(f^* | D, X^*) = \mathcal{N}(f^* | \mu_{*|X}, \Sigma_{*|X})\label{eq:18.51}
@@ -297,6 +300,10 @@
     \begin{equation}
         \Sigma_{*|X} = K_{*,*} - K_{X,*}^T (K_{X,X} + \sigma^2_y I)^{-1} K_{X,*}\label{eq:18.53}
     \end{equation}
+
+    \nomenclature[G]{$\mu_{* \vert X}$}{Conditional mean of the Gaussian Process, given the training data}
+    \nomenclature[G]{$\Sigma_{* \vert X}$}{Conditional covariance of the Gaussian Process, given the training data}
+
 
     \subsection{The Application of the Gaussian Process in Analysis of Dynamic Systems}
 
