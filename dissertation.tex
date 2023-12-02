@@ -273,7 +273,7 @@
 
     where $y$ is a vector of $y_n$ values from a set of training points, $\mu_X$ is the mean of the Gaussian Process, given the training data $X$, $\mu_*$ is the mean of the Gaussian Process, given the test data $X_*$, $f^*$ is a vector of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively.
     Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
-    This is a special function that when input with two vectors, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
+    The kernel is a special function that when input with two vectors, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
 
