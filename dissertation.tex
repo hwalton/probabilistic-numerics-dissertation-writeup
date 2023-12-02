@@ -100,10 +100,10 @@
 %        $I$ & Identity matrix \\ X
 %        $K$ & Covariance matrix of the kernel function, k \\ X
 %        $K_{ij}$ & Element of a covariance matrix \\ X
-%        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\
-%        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\
-%        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\
-%        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\
+%        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\ X
+%        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\ X
+%        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\ X
+%        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\ X
 %        $l$ & Length hyperparameter in periodic kernel \\
 %        $m$ & Number of inducing points in Sparse GP \\
 %        $N$ & Number of data points \\
@@ -262,8 +262,11 @@
 
     \nomenclature[L]{$f^*$}{An array of values of the latent function evaluated at a set of test points, $X_*$}
     \nomenclature[L]{$I$}{Identity matrix}
+    \nomenclature[L]{$K_{X,X}$}{Covariance matrix for training input data, $K(X,X)$}
+    \nomenclature[L]{$K_{X,*}$}{Covariance matrix between training inputs and test inputs, $K(X,X_*)$}
+    \nomenclature[L]{$K_{*,*}$}{Covariance matrix for test inputs, $K(X_*,X_*)$}
 
-    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the arrays $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in arrays A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$} \nomenclature[L]{$K_{X,X}$}{Covariance matrix for training input data, $K(X,X)$} \nomenclature[L]{$K_{X,*}$}{Covariance matrix between training inputs and test inputs, $K(X,X_*)$} \nomenclature[L]{$K_{*,*}$}{Covariance matrix for test inputs, $K(X_*,X_*)$}
+    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix, $K(A,B)$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the arrays $(X,X)$, $(X,X_*)$ and $(X_*,X_*)$ respectively. \nomenclature[L]{$K_{A,B}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in arrays A, B}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $a$, and $b$}
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}
@@ -394,13 +397,19 @@
     \nomenclature[L]{$K_{ij}$}{Element of a covariance matrix, K, at index i, j}
 
     where $K_{ij}$ is the element of the covariance matrix, $K$, at index $i, j$.
-    For the force response plot, a periodic kernel was chosen (Equation~\ref{eq:periodic-kernel}), which is ideal for such periodic data since it gives pairs of points a high similarity score if the difference between them is near an integer multiple of the `period' hyperparameter.
-    The `length' hyperparameter determines how quickly this similarity drops off as the difference between the pair of points changes.
-    Practically, this controls how smooth or wiggly the function is, i.e., how fast the function can change direction.
+    For the force response plot, a periodic kernel was chosen as defined in Equation~\ref{eq:periodic-kernel}
 
     \begin{equation}
-        k(x, x') = \sigma^2 \exp\left(- \frac{2 \sin^2\left(\frac{\pi}{p} |x - x'|\right)}{l^2}\right)\label{eq:periodic-kernel}
+        k(a, b) = \sigma^2 \exp\left(- \frac{2 \sin^2\left(\frac{\pi}{p} |a - b|\right)}{l^2}\right)\label{eq:periodic-kernel}
     \end{equation}
+    \nomenclature[G]{$\sigma^2$}{Variance, or a hyperparameter in the context of the periodic kernel}
+    \nomenclature[L]{$p$}{Period hyperparameter in the periodic kernel}
+    \nomenclature[L]{$l$}{Length hyperparameter in the periodic kernel}
+
+    where $\sigma^2$ is the variance, and $p$ and $l$ are the period and length hyperparameters respectively.
+    This kernel is ideal for such periodic data since it gives pairs of points a high similarity score if the difference between them is near an integer multiple of the `period' hyperparameter.
+    The `length' hyperparameter determines how quickly this similarity drops off as the difference between the pair of points changes.
+    Practically, this controls how smooth or wiggly the function is, i.e., how fast the function can change direction.
 
     \subsection{Hyperparameter Optimisation}
     Next, this kernel class was added as an attribute to a class for the GP model itself.
