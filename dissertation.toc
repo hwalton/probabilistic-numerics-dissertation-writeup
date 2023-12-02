@@ -12,7 +12,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.3}The Gaussian Process Model}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.4}The Application of the Gaussian Process in Analysis of Dynamic Systems}{5}%
+\contentsline {subsection}{\numberline {1.4}The Application of the Gaussian Process in Analysis of Dynamic Systems}{6}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.5}Drawbacks of the Fast Fourier Transform Algorithm}{6}%
 \defcounter {refsection}{0}\relax 
@@ -34,12 +34,12 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.2}The Kernel}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{9}%
+\contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.4}Predict Function}{10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.5}Sparse GP}{10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Plan for Future Work}{10}%
+\contentsline {section}{\numberline {4}Plan for Future Work}{11}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{12}%
