@@ -77,17 +77,19 @@
 
     \section*{Nomenclature}
     \begin{tabular}{ll}
-        $f(x)$ & Function of variable $x$ \\
+        $p(x)$ & Probability density function of arbitrary variable, $x$ \\
         $\sigma$ & Standard deviation \\
+        $\sigma^2$ & Variance hyperparameter in the context of a kernel \\
         $\mu$ & Mean value \\
-        $\pi$ & Mathematical constant Pi \\
+        $\pi$ & Mathematical constant, Pi \\
         $h$ & Incremental distance used in gradient calculation \\
+        $f(x)$ & Latent function of the variable $x$ \\
         $f^*$ & An array of values of the Latent function evaluated at a set of test points \\
-        $y_n$ & Noisy observed output \\
+        $y_n$ & Noisy observed output based on the latent function, $f(x)$\\
         $y$ & An array of $y_n$ values from a set of training points \\
         $\epsilon_n$ & Noise in observation, normally distributed \\
         $\mathcal{N}$ & Normal (Gaussian) distribution \\
-        $K$ & Covariance matrix of the Kernel function k \\
+        $K$ & Covariance matrix of the Kernel function, k \\
         $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\
         $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\
         $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\
@@ -105,13 +107,13 @@
         $K_{ij}$ & Element of a covariance matrix \\
         $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\
         $\sigma$ & Standard deviation \\
-        $k(x, x')$ & Kernel function of arbitrary points $x$ and $x'$ \\
+        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\
         $p$ & Period hyperparameter in periodic kernel \\
         $l$ & Length hyperparameter in periodic kernel \\
         $m$ & Number of inducing points in Sparse GP \\
         $\text{MSE}$ & Mean Squared Error \\
-        $Y_i$ & Observed value \\
-        $\hat{Y}_i$ & Predicted value \\
+        $A_i$ & Value of arbitrary function, A, at index i  \\
+        $B_i$ & Value of arbitrary function, B, at index i \\
     \end{tabular}
 
 
@@ -141,7 +143,7 @@
     A good example of this is the Gaussian (normal) distribution (Equation~\ref{eq:norm}). %\cite{NIST2023}
 
     \begin{equation}
-        f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
+        p(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
     \end{equation}
 
     This is a common continuous probability distribution characterized by a bell-shaped curve, and is defined its mean ($\mu$) and variance ($\sigma^2$). The mean determines the centre of the distribution and the variance measures the spread.
@@ -406,7 +408,7 @@
     The MSE is a method of measuring the quality of an estimator (lower is better) by measuring the average of the squares of the errors, as shown in Equation~\ref{eq:mse}
 
     \begin{equation}
-        \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2
+        \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (A_i - B_i)^2
         \label{eq:mse}
     \end{equation}
 
