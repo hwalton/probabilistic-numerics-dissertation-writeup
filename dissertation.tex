@@ -95,8 +95,8 @@
 %        $D$ & Training data \\ X
 %        $F(\omega)$ & Fourier transform of $f(t)$ \\ X
 %        $f(x)$ & Latent function of the variable $x$ \\ x
-%        $f^*$ & An array of values of the Latent function evaluated at a set of test points \\
-%        $h$ & Incremental distance used in gradient calculation \\
+%        $f^*$ & An array of values of the Latent function evaluated at a set of test points \\ X
+%        $h$ & Incremental distance used in gradient calculation \\ X
 %        $I$ & Identity matrix \\
 %        $K$ & Covariance matrix of the Kernel function, k \\
 %        $K_{ij}$ & Element of a covariance matrix \\
@@ -223,8 +223,7 @@
     For a discrete function, the gradient at any point is undefined because you cannot have a tangent of a point.
     However, it is possible to approximate the gradient of the underlying continuous function from which the data was sampled using a numerical method, such as the Forward Difference Method.
     This simply approximates the underlying continuous function as a straight line joining each adjacent pairs of points.
-    Therefore, the gradient at a point is calculated as the slope between that point and a point at a distance $h$ ahead.
-
+    Therefore, the gradient at a point is calculated as the slope between that point and a point at a distance, $h$, ahead.\nomenclature[L]{$h$}{Incremental distance used in gradient calculations}
     Experimentally sampled data also contains noise from many sources that is added to the latent signal.
     For example, accelerometer data may be mixed with noise from random vibrations caused by the surroundings (people walking, movement of traffic nearby etc.), as well as simply the imprecision of the measuring device which in some cases may be significant in proportion to the signal being measured.
     Again, the uncertainty caused by this noise is classically defined by error bounds (i.e., giving a measurement with a tolerance such as $3.5 \pm 0.7 ms^{-2}$).
@@ -238,11 +237,11 @@
     This gives the new Gaussian Process method an inherent mechanism for accounting for uncertainty due to the noise in input data, which may allow for improvements to the robustness to this noise when the reconstructed function is then transformed.
 
     \subsection{The Gaussian Process Model}
-    A Gaussian Process (GP) is being used to map a continuous ``latent'' function $f(x)$ to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
+    A Gaussian Process (GP) is being used to map a continuous ``latent'' function, $f(x)$, to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
     A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian}.
     This is a distribution of a set of variables that include both our training data and points of interest on our latent function.
     It describes how the probability distribution of each variable depends on the values of the other variables.
-    Assuming a mean of the latent function of zero, and a noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+    Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
         \begin{pmatrix}
@@ -260,8 +259,9 @@
         \end{pmatrix}
         \right)\label{eq:joint-distribution}
     \end{equation}
+    \nomenclature[L]{$f^*$}{An array of values of the latent function evaluated at a set of test points, $X_*$}
 
-    where $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel''.
+    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$ and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel''.
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}
