@@ -77,9 +77,43 @@
 
     \section*{Nomenclature}
     \begin{tabular}{ll}
-        $\rho$ & density \\
-        % Add more entries here
+        $f(x)$ & Function of variable $x$ \\
+        $\sigma$ & Standard deviation \\
+        $\mu$ & Mean value \\
+        $\pi$ & Mathematical constant Pi \\
+        $h$ & Incremental distance used in gradient calculation \\
+        $f^*$ & An array of values of the Latent function evaluated at a set of test points \\
+        $y_n$ & Noisy observed output \\
+        $y$ & An array of $y_n$ values from a set of training points \\
+        $\epsilon_n$ & Noise in observation, normally distributed \\
+        $\mathcal{N}$ & Normal (Gaussian) distribution \\
+        $K$ & Covariance matrix of the Kernel function k \\
+        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\
+        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\
+        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\
+        $I$ & Identity matrix \\
+        $\sigma^2_y$ & Variance of observation noise \\
+        $\theta$ & Set of hyperparameters \\
+        $D$ & Training data \\
+        $N$ & Number of data points \\
+        $K_{\sigma}$ & Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$ \\
+        $\mu_{*|X}$ & Conditional mean of the Gaussian Process, given the training data X \\
+        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data X \\
+        $\omega$ & Angular frequency \\
+        $F(\omega)$ & Fourier transform of $f(t)$ \\
+        $i$ & Imaginary unit \\
+        $K_{ij}$ & Element of a covariance matrix \\
+        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\
+        $\sigma$ & Standard deviation \\
+        $k(x, x')$ & Kernel function of arbitrary points $x$ and $x'$ \\
+        $p$ & Period hyperparameter in periodic kernel \\
+        $l$ & Length hyperparameter in periodic kernel \\
+        $m$ & Number of inducing points in Sparse GP \\
+        $\text{MSE}$ & Mean Squared Error \\
+        $Y_i$ & Observed value \\
+        $\hat{Y}_i$ & Predicted value \\
     \end{tabular}
+
 
     \newpage
     \tableofcontents
@@ -147,14 +181,14 @@
     This provides an underestimate, which we can use as a lower bound to the true value of the integral.
     Whereas in the second method, the top corner of the two that touches the curve is chosen such that the top edge is above the curve.
     This provides an overestimate, which we can use as an upper bound to the true value of the integral.
-    Classically, the quality of this numerical methods are computed using the ``error bounds`` ie range between these upper and lower values.
+    Classically, the quality of this numerical methods are computed using the ``error bounds'' ie range between these upper and lower values.
     As the width of the rectangles approaches zero, the approximation increasingly converges to the exact value of the integral.
     This can never happen in practice, however, because it would require infinite computational work, but we can get precise approximations with small error bounds none-the-less.
 
     \subsubsection{Data Sampling}
     The second situation where the analytical approach is unsuitable is when working with real world data.
-    Here, the real world continuous data streams of the variables you are measuring must be sampled at a number of individual (or ``discrete``) points in time.
-    A simple example of this is how a video camera discretises the continuous events of the world into individual frames (or ``samples``) that can be replayed back-to-back to recreate an approximation of the events.
+    Here, the real world continuous data streams of the variables you are measuring must be sampled at a number of individual (or ``discrete'') points in time.
+    A simple example of this is how a video camera discretises the continuous events of the world into individual frames (or ``samples'') that can be replayed back-to-back to recreate an approximation of the events.
     As the frame rate increases, the events are represented more faithfully, but the amount of information required to store the approximation tends to infinity as the length of time between frames tends to zero, which is not possible in practice.
     This discrete data is unsuitable for performing transformations analytically because they rely on the data being continuous.
     Again, there are numerical methods that are commonly used to approximate this instead.
@@ -178,8 +212,8 @@
     This gives the new Gaussian Process method an inherent mechanism for accounting for uncertainty due to the noise in input data, which may allow for improvements to the robustness to this noise when the reconstructed function is then transformed.
 
     \subsection{The Gaussian Process Model}
-    A Gaussian Process (GP) is being used to map a continuous ``latent`` function $f(x)$ to our noisy discrete sampled data that takes a time as an input and outputs in a force.
-    A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution``~\cite{rasmussen2006gaussian}.
+    A Gaussian Process (GP) is being used to map a continuous ``latent'' function $f(x)$ to our noisy discrete sampled data that takes a time as an input and outputs in a force.
+    A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian}.
     This is a distribution of a set of variables that include both our training data and points of interest on our latent function.
     It describes how the probability distribution of each variable depends on the values of the other variables.
     Assuming a mean of the latent function of zero, and a noisy observed force $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
@@ -201,7 +235,7 @@
         \right)\label{eq:joint-distribution}
     \end{equation}
 
-    where $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel``.
+    where $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``Kernel''.
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}:
@@ -213,7 +247,7 @@
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
-    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior``, or prediction of the latent function given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ is given in Equation~\ref{eq:18.52} and $\Sigma_{*|X}$ is given in Equation~\ref{eq:18.53}.
+    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function given our set of sampled training points~\cite{murphy2023probabilistic} is shown in Equation~\ref{eq:18.51}, where $\mu_{*|X}$ is given in Equation~\ref{eq:18.52} and $\Sigma_{*|X}$ is given in Equation~\ref{eq:18.53}.
 
     \begin{equation}
         p(f^* | D, X^*) = \mathcal{N}(f^* | \mu_{*|X}, \Sigma_{*|X})\label{eq:18.51}
@@ -255,7 +289,7 @@
 
     A Fourier Transform method that is more robust to noise than the FFT would have significant implications in various fields of engineering.
     In this context of modal analysis, the modal properties could be identified more precisely especially for non-linear systems, which are dynamic systems that behave in complex patterns due to their non-compliance with the principle of superposition.
-    This principle states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves.``~\cite{StudyComSuperposition}.
+    This principle states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
     Therefore, non-linear systems often exhibit complex dynamic behaviours and different modes with closely spaced resonant frequencies that can be obscured by noise.
     Better modelling and identification of non-linear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to non-linear behaviour are typical of the formation or growth cracks or other defects.
     This in turn would allow engineers to make and maintain structures more safely being more likely to detect structural damage before catastrophic failure occurs.
@@ -313,7 +347,7 @@
     \subsection{The Kernel}
     Next, a python class was created to contain the kernel.
     To begin with, a white noise kernel (equation~\ref{eq:white-noise-kernel}) was chosen for the force input plot because there was no trend to the force input data in the centre of the time series data (seconds after the initial impulse from the impact from the hammer).
-    This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated``~\cite{RoelantsGPKernels}
+    This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated''~\cite{RoelantsGPKernels}
 
     \begin{equation}
         K_{ij} =
@@ -323,8 +357,8 @@
         \end{cases}\label{eq:white-noise-kernel}
     \end{equation}
 
-    For the force response plot, a periodic kernel was chosen (Equation~\ref{eq:periodic-kernel}), which is ideal for such periodic data since it gives pairs of points a high similarity score if the difference between them is near an integer multiple of the `period` hyperparameter.
-    The `length` hyperparameter determines how quickly this similarity drops off as the difference between the pair of points changes.
+    For the force response plot, a periodic kernel was chosen (Equation~\ref{eq:periodic-kernel}), which is ideal for such periodic data since it gives pairs of points a high similarity score if the difference between them is near an integer multiple of the `period' hyperparameter.
+    The `length' hyperparameter determines how quickly this similarity drops off as the difference between the pair of points changes.
     Practically, this controls how smooth or wiggly the function is, i.e., how fast the function can change direction.
 
     \begin{equation}
