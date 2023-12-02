@@ -2194,7 +2194,8 @@
     <bcf:citekey order="10">StudyComSuperposition</bcf:citekey>
     <bcf:citekey order="11">MEC326</bcf:citekey>
     <bcf:citekey order="12">RoelantsGPKernels</bcf:citekey>
-    <bcf:citekey order="13">DataCampGanttChart2021</bcf:citekey>
+    <bcf:citekey order="13">q-candela</bcf:citekey>
+    <bcf:citekey order="14">DataCampGanttChart2021</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
