@@ -8,6 +8,8 @@
 
 \usepackage{pdflscape}
 
+\usepackage{longtable}
+
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{placeins}
@@ -54,6 +56,7 @@
 \renewcommand{\theequation}{\thesection.\arabic{equation}}
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 
+\usepackage{nomencl}
 \usepackage{chngcntr}
 \usepackage{amssymb}
 \counterwithin{figure}{section}
@@ -69,52 +72,63 @@
 \hyphenpenalty=700
 \exhyphenpenalty=700
 
+\makenomenclature
+
 \begin{document}
     \pagenumbering{roman}
 
     \thispagestyle{empty}
     \includepdf[pages=1, frame, scale=1.09, pagecommand={}, offset=0 -35]{figures/titlepage.pdf}
 
-    \section*{Nomenclature}
-    \begin{tabular}{ll}
-        $p(x)$ & Probability density function of arbitrary variable, $x$ \\
-        $\sigma$ & Standard deviation \\
-        $\sigma^2$ & Variance hyperparameter in the context of a kernel \\
-        $\mu$ & Mean value \\
-        $\pi$ & Mathematical constant, Pi \\
-        $h$ & Incremental distance used in gradient calculation \\
-        $f(x)$ & Latent function of the variable $x$ \\
-        $f^*$ & An array of values of the Latent function evaluated at a set of test points \\
-        $y_n$ & Noisy observed output based on the latent function, $f(x)$\\
-        $y$ & An array of $y_n$ values from a set of training points \\
-        $\epsilon_n$ & Noise in observation, normally distributed \\
-        $\mathcal{N}$ & Normal (Gaussian) distribution \\
-        $K$ & Covariance matrix of the Kernel function, k \\
-        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\
-        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\
-        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\
-        $I$ & Identity matrix \\
-        $\sigma^2_y$ & Variance of observation noise \\
-        $\theta$ & Set of hyperparameters \\
-        $D$ & Training data \\
-        $N$ & Number of data points \\
-        $K_{\sigma}$ & Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$ \\
-        $\mu_{*|X}$ & Conditional mean of the Gaussian Process, given the training data X \\
-        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data X \\
-        $\omega$ & Angular frequency \\
-        $F(\omega)$ & Fourier transform of $f(t)$ \\
-        $i$ & Imaginary unit \\
-        $K_{ij}$ & Element of a covariance matrix \\
-        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\
-        $\sigma$ & Standard deviation \\
-        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\
-        $p$ & Period hyperparameter in periodic kernel \\
-        $l$ & Length hyperparameter in periodic kernel \\
-        $m$ & Number of inducing points in Sparse GP \\
-        $\text{MSE}$ & Mean Squared Error \\
-        $A_i$ & Value of arbitrary function, A, at index i  \\
-        $B_i$ & Value of arbitrary function, B, at index i \\
-    \end{tabular}
+    \printnomenclature
+
+%    \section*{Nomenclature}
+%
+%    \noindent \textbf{Latin Symbols}
+%    \begin{longtable}{p{1.25cm} p{15cm}}
+%        $A_i, B_i$ & Value of arbitrary functions, A, B, at index i \\ X
+%        $D$ & Training data \\
+%        $F(\omega)$ & Fourier transform of $f(t)$ \\
+%        $f(x)$ & Latent function of the variable $x$ \\
+%        $f^*$ & An array of values of the Latent function evaluated at a set of test points \\
+%        $h$ & Incremental distance used in gradient calculation \\
+%        $I$ & Identity matrix \\
+%        $K$ & Covariance matrix of the Kernel function, k \\
+%        $K_{ij}$ & Element of a covariance matrix \\
+%        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\
+%        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\
+%        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\
+%        $k(x, x')$ & Kernel function of arbitrary points, $x$, and $x'$ \\
+%        $l$ & Length hyperparameter in periodic kernel \\
+%        $m$ & Number of inducing points in Sparse GP \\
+%        $N$ & Number of data points \\
+%        $p(x)$ & Probability density function of arbitrary variable, $x$ \\
+%        $p$ & Period hyperparameter in periodic kernel \\
+%        $\text{MSE}$ & Mean Squared Error \\
+%        $y_n$ & Noisy observed output based on the latent function, $f(x)$ \\
+%        $y$ & An array of $y_n$ values from a set of training points \\
+%        $\mathbf{x}_i, \mathbf{x}_j$ & Input vectors \\
+%    \end{longtable}
+%
+%    \newpage
+%
+%    \noindent \textbf{Greek Symbols}
+%    \begin{longtable}{p{1.25cm} p{15cm}}
+%        $\epsilon_n$ & Noise in observation, normally distributed \\
+%        $\mathcal{N}$ & Normal (Gaussian) distribution \\
+%        $\mu$ & Mean value \\
+%        $\mu_{*|X}$ & Conditional mean of the Gaussian Process, given the training data X \\
+%        $\pi$ & Mathematical constant, Pi \\
+%        $\sigma$ & Standard deviation \\
+%        $\sigma^2$ & Variance, a hyperparameter in the context of the periodic kernel \\
+%        $\sigma^2_y$ & Variance of observation noise \\
+%        $\Sigma_{*|X}$ & Conditional covariance of the Gaussian Process, given the training data X \\
+%        $\theta$ & Set of hyperparameters \\
+%        $\omega$ & Angular frequency \\
+%        $K_{\sigma}$ & Covariance matrix with noise term, $K_{X,X} + \sigma^2_y I$ \\
+%    \end{longtable}
+
+
 
 
     \newpage
@@ -140,12 +154,17 @@
     \subsubsection{Intractable Complexity}\label{subsubsec:int-comp}
 
     The first reason for this is that the analytical approach may be too complex for anyone to solve.
-    A good example of this is the Gaussian (normal) distribution (Equation~\ref{eq:norm}). %\cite{NIST2023}
+    A good example of this is the Gaussian (normal) distribution, which has a probability density function, $p(x)$ defined in Equation~\ref{eq:norm}
 
     \begin{equation}
         p(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
     \end{equation}
 
+    \nomenclature{$p(x)$}{Probability density function of arbitrary variable, $x$}
+    \nomenclature{$\sigma$}{Standard deviation}
+    \nomenclature{$\mu$}{Mean value}
+
+    where $\mu$ is the mean and $\sigma$ is the standard deviation.
     This is a common continuous probability distribution characterized by a bell-shaped curve, and is defined its mean ($\mu$) and variance ($\sigma^2$). The mean determines the centre of the distribution and the variance measures the spread.
     The definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
     This process can be visualised as finding the area underneath the curve between 2 input values (Figure~\ref{fig:ndi_}).
@@ -412,7 +431,9 @@
         \label{eq:mse}
     \end{equation}
 
+    \nomenclature{$A_i, B_i$}{Values of arbitrary functions, A, B, at index i}
 
+    where $A_i, B_i$ are the values of the two functions at index $i$.
     Then, some Gaussian noise can be added to the data, and the FRF can again be computed using both methods again.
     To find how much each method is corrupted by noise, the (discrete) Mean Squared Error can be computed between the unmodified and noisy FRF for both methods, and the values compared.
     To find how much each method is corrupted by noise, the (discrete) Mean Squared Error can be computed between the unmodified and noisy FRF for both methods, and the values compared.

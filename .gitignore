@@ -4,3 +4,12 @@ venv
 dissertation.pdf
 *_.png
 git.sh
+
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.ilg
+*.log
+*.nlo
+*.nls
