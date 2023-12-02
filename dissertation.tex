@@ -98,8 +98,8 @@
 %        $f^*$ & An array of values of the latent function evaluated at a set of test points \\ X
 %        $h$ & Incremental distance used in gradient calculation \\ X
 %        $I$ & Identity matrix \\ X
-%        $K$ & Covariance matrix of the Kernel function, k \\
-%        $K_{ij}$ & Element of a covariance matrix \\
+%        $K$ & Covariance matrix of the kernel function, k \\ X
+%        $K_{ij}$ & Element of a covariance matrix \\ X
 %        $K_{X,X}$ & Covariance matrix for training input data, $K(X,X)$ \\
 %        $K_{X,*}$ & Covariance matrix between training inputs and test inputs, $K(X,X_*)$ \\
 %        $K_{*,*}$ & Covariance matrix for test inputs, $K(X_*,X_*)$ \\
@@ -263,7 +263,7 @@
     \nomenclature[L]{$f^*$}{An array of values of the latent function evaluated at a set of test points, $X_*$}
     \nomenclature[L]{$I$}{Identity matrix}
 
-    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix called a ``kernel''.
+    where $f^*$ is an array of values of the latent function evaluated at a set of test points $X_*$, $I$ is the identity matrix and $K_{X,X}$, $K_{X,*}$ \& $K_{*,*}$ are a type of covariance matrix based on the ``kernel'' function, $k$.\nomenclature[L]{$K$}{Covariance matrix of the kernel function, $k$}\nomenclature[L]{$k$}{Kernel function of arbitrary points, $x$, and $x'$}
     This is a special function that when input with two arrays, produces a covariance matrix that measure the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood, as defined~\cite{murphy2023probabilistic}: in Equation~\ref{eq:NLML}
@@ -381,8 +381,8 @@
 
     \subsection{The Kernel}
     Next, a python class was created to contain the kernel.
-    To begin with, a white noise kernel (equation~\ref{eq:white-noise-kernel}) was chosen for the force input plot because there was no trend to the force input data in the centre of the time series data (seconds after the initial impulse from the impact from the hammer).
-    This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated''~\cite{RoelantsGPKernels}
+    To begin with, a white noise kernel was chosen for the force input plot because there was no trend to the force input data in the centre of the time series data (seconds after the initial impulse from the impact from the hammer).
+    This kernel ensures that ``all covariances between samples are zero because the noise is uncorrelated''~\cite{RoelantsGPKernels}, and is defined in Equation~\ref{eq:white-noise-kernel}
 
     \begin{equation}
         K_{ij} =
@@ -391,7 +391,9 @@
             0 & \text{otherwise}
         \end{cases}\label{eq:white-noise-kernel}
     \end{equation}
+    \nomenclature[L]{$K_{ij}$}{Element of a covariance matrix, K, at index i, j}
 
+    where $K_{ij}$ is the element of the covariance matrix, $K$, at index $i, j$.
     For the force response plot, a periodic kernel was chosen (Equation~\ref{eq:periodic-kernel}), which is ideal for such periodic data since it gives pairs of points a high similarity score if the difference between them is near an integer multiple of the `period' hyperparameter.
     The `length' hyperparameter determines how quickly this similarity drops off as the difference between the pair of points changes.
     Practically, this controls how smooth or wiggly the function is, i.e., how fast the function can change direction.
