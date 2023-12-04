@@ -125,6 +125,7 @@
     Dynamic systems are typically described using system parameters such as the resonant frequencies, mode-shapes and damping ratios.
     Resonant frequencies are the forcing frequencies that produce a peak in excitation, mode shapes are the patterns of vibration at each resonant frequency, and damping ratios are a measure of how fast oscillations in a system decay relative to the optimal ``critical damping''.
 
+
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
     This means that if you double the input force over time, the response over time is exactly the same, except that the displacement at any point in time will be double.
@@ -152,6 +153,32 @@
     Since this reconstruction is in closed form, it can still be transformed using continuous analytical techniques instead of resorting to numerical methods.
     It generates outputs probabilistically, which means that the output of reconstructed continuous function at a given point is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
     This gives the new Gaussian Process method an inherent mechanism for accounting for uncertainty due to the noise in input data, which may allow for improvements to the robustness to this noise when the reconstructed function is then transformed.
+
+    \subsection{The Application of the Gaussian Process in Analysis of Dynamic Systems}
+
+    This investigation is in the context of analysis of a dynamic Multi-Degree of Freedom (MDOF) system.
+    This is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). If a structure vibrates in response to an input force, the FRF is defined as the frequency domain response divided by the frequency domain input force.
+    This is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
+    The computation of this FRF relies on a mathematical transformation called the Fourier transform, $F(\omega)$ as defined in Equation~\ref{eq:ft})
+
+    \begin{equation}
+        F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
+    \end{equation}
+    \nomenclature[L]{$F(\omega)$}{Fourier transform of $f(t)$}
+    \nomenclature[G]{$\omega$}{Angular frequency}
+
+
+    where $\omega$ is the angular frequency.
+    This is an extremely powerful analytical technique that is used widely in engineering.
+    It takes a function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
+    Therefore, the Gaussian Process is used to preprocess experimental discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
+
+    \subsection{Drawbacks of the Fast Fourier Transform Algorithm}
+    The efficiency of the Gaussian Process approach in terms of robustness to noise will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
+    Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
+    Most importantly, the FFT can be highly sensitive to noise in the data, which can create fluctuations in the frequency spectrum, masking the true underlying frequencies\cite{MathStackExchange2023}.
+    Additionally, the FFT assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
+    This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
 
     \subsection{The Gaussian Process Model}
     A Gaussian Process (GP) is being used to map a continuous ``latent'' function, $f(x)$, to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
@@ -229,31 +256,6 @@
     \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
 
 
-    \subsection{The Application of the Gaussian Process in Analysis of Dynamic Systems}
-
-    This investigation is in the context of analysis of a dynamic Multi-Degree of Freedom (MDOF) system.
-    This is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). If a structure vibrates in response to an input force, the FRF is defined as the frequency domain response divided by the frequency domain input force.
-    This is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
-    The computation of this FRF relies on a mathematical transformation called the Fourier transform, $F(\omega)$ as defined in Equation~\ref{eq:ft})
-
-    \begin{equation}
-        F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
-    \end{equation}
-    \nomenclature[L]{$F(\omega)$}{Fourier transform of $f(t)$}
-    \nomenclature[G]{$\omega$}{Angular frequency}
-
-
-    where $\omega$ is the angular frequency.
-    This is an extremely powerful analytical technique that is used widely in engineering.
-    It takes a function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
-    Therefore, the Gaussian Process is used to preprocess experimental discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
-
-    \subsection{Drawbacks of the Fast Fourier Transform Algorithm}
-    The efficiency of the Gaussian Process approach in terms of robustness to noise will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
-    Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
-    Most importantly, the FFT can be highly sensitive to noise in the data, which can create fluctuations in the frequency spectrum, masking the true underlying frequencies\cite{MathStackExchange2023}.
-    Additionally, the FFT assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
-    This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
 
     \subsection{Implications of the Findings}
 
