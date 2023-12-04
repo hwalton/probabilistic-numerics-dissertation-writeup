@@ -124,6 +124,7 @@
 
     Dynamic systems are typically described using system parameters such as the resonant frequencies, mode-shapes and damping ratios.
     Resonant frequencies are the forcing frequencies that produce a peak in excitation, mode shapes are the patterns of vibration at each resonant frequency, and damping ratios are a measure of how fast oscillations in a system decay relative to the optimal ``critical damping''.
+    Analysis of this sort is known as modal analysis.
 
 
     Often a distinction is made between linear and nonlinear systems.
@@ -134,10 +135,9 @@
     Therefore, forward modelling - when you start with known system parameters and use them to predict the system's behaviour - is currently too complex for systems that are non-linear.
 
     Unfortunately, in real life, linear and nonlinear are not binary categories but a continuum, meaning everything is non-linear, it's just a question of degree.
-    What's worse is that typically not even these system parameters are known, so for highly non-linear systems all that can be done is to take an existing system and identify the system parameters.
-    This is known as inverse modelling.
+    What's worse is that typically not even these system parameters are known, so for highly non-linear systems all that can be done is to take an existing system and identify the system parameters with a technique known as inverse modelling.
 
-    \subsection{Identifying Dynamic Systems with Probabilistic Numerics}
+    \subsection{Classically Quantifying Uncertainty with Error Bounds}
     Identifying system parameters in this manor results in values that are not exact, but have an uncertainty associated with them.
     The first cause of this uncertainty is due to noise that is always present to some degree in the sampled data due to the measuring devices - typically accelerometers - that are used to capture the input and response to the system.
     Furthermore, even if the true input and response could be sampled exactly, the non-identifiability problem states that since there are multiple sets of system parameters that could give the same set of observed outputs, it's impossible to uniquely determine them.
@@ -146,42 +146,53 @@
     Classically, this uncertainty is represented using error bounds.
     For example, the resonant frequency of a system could be $350 \pm 20 Hz$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
 
-    Typically,
 
-    However, this paper proposes a new method of performing mathematical transformations that uses an alternative uncertainty model and compares the robustness to noise between the two.
-    This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data.
-    Since this reconstruction is in closed form, it can still be transformed using continuous analytical techniques instead of resorting to numerical methods.
-    It generates outputs probabilistically, which means that the output of reconstructed continuous function at a given point is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
-    This gives the new Gaussian Process method an inherent mechanism for accounting for uncertainty due to the noise in input data, which may allow for improvements to the robustness to this noise when the reconstructed function is then transformed.
+    \subsection{The Fourier Transform and the Frequency Response Function (FRF)}
 
-    \subsection{The Application of the Gaussian Process in Analysis of Dynamic Systems}
-
-    This investigation is in the context of analysis of a dynamic Multi-Degree of Freedom (MDOF) system.
-    This is when the vibration of a structure is analysed by finding what is known as the Frequency Response Function (FRF). If a structure vibrates in response to an input force, the FRF is defined as the frequency domain response divided by the frequency domain input force.
-    This is used when finding properties of the system known as damping ratios, resonant frequencies, and mode shapes (the shapes that the structure vibrates at each resonant frequency).
-    The computation of this FRF relies on a mathematical transformation called the Fourier transform, $F(\omega)$ as defined in Equation~\ref{eq:ft})
+    In dynamic system analysis, any collected time series data is almost always converted into the frequency domain.
+    This is because the physical meaning of the system parameters have a clear visual interpretation in this domain. %elaborate + figure
+    Specifically, the Frequency Response Function (FRF) is typically found, which is defined as the frequency domain response divided by the frequency domain input force.
+    The transformation of these functions from the time domain to the frequency domain relies on a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
 
     \begin{equation}
         F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
     \end{equation}
-    \nomenclature[L]{$F(\omega)$}{Fourier transform of $f(t)$}
+    \nomenclature[L]{$F(\omega)$}{Fourier Transform of $f(t)$}
     \nomenclature[G]{$\omega$}{Angular frequency}
 
 
     where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
-    It takes a function that has a continuous time domain, and transforms it into a function that has a continuous frequency domain.
-    Therefore, the Gaussian Process is used to preprocess experimental discrete sample data into a continuous closed from, from which the Fourier transform can be applied.
+    However, it can only be applied in its base form to a function that is continuous in the domain $-\inf$ to $\inf$, meaning that it has a value defined at every point in time.
+    Although in the real world time passes continuously forever, the Fourier Transform of data sampled from the real world cannot be found by directly using the continuous Fourier Transform.
+    This is because this data is recorded over a finite window, and because it is typically discrete meaning that it is recorded at specific points in time instead of any point a continuous domain.
+    Classically, a numerical method called the Discrete Fourier Transform algorithm called the Fast Fourier Transform is used in this case.
 
-    \subsection{Drawbacks of the Fast Fourier Transform Algorithm}
-    The efficiency of the Gaussian Process approach in terms of robustness to noise will be evaluated in comparison to the discrete version of this transformation known as the Fast Fourier Transform (FFT) algorithm.
+    A numerical method % finish: more generally...
+
+    \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
-    Most importantly, the FFT can be highly sensitive to noise in the data, which can create fluctuations in the frequency spectrum, masking the true underlying frequencies\cite{MathStackExchange2023}.
-    Additionally, the FFT assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
+    Firstly, the FFT assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
+    But most importantly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise cancan create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties\cite{MathStackExchange2023}.
+
+    Classically, the uncertainty of parameters calculated downstream of this FFT could be quantified with error bounds by a sensitivity analysis.
+    Here, the uncertainty of the input data would be estimated, perhaps from the resolution of the measuring equipment, or by observation of the time domain sample data.
+    Then, the upper and lower bounds of the system parameters could be estimated using the upper and lower bounds of the input data.
+    However, this is not straightforward and typically requires additional techniques and considerations beyond the core algorithm.
+    Furthermore, this process would not improve the poor robustness to noise of this FFT, only serve to quantify it.
+
+    \subsection{Identifying Dynamic Systems with Probabilistic Numerics}
+    However, this paper proposes a new method of performing the Fourier Transform and other linear transformations.
+    This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data over a finite time interval.
+    Moreover, it is defined in the continuous domain $-\inf$ to $\inf$ which means that the noise resilience of an FRF computed using this method may be improved because this can be transformed by the continuous Fourier Transform instead of resorting to the discrete FFT which is highly sensitive to noise.
+
+    The outputs of the reconstructed function that this GP generate are probabilistic which means that the output is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
+    The GP model can be designed to include a noise term that explicitly models the observational noise.
+    This gives the GP a way to distinguish between the signal and noise components, which may allow for Fourier Transform to be performed with better robustness to noise.
 
     \subsection{The Gaussian Process Model}
-    A Gaussian Process (GP) is being used to map a continuous ``latent'' function, $f(x)$, to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
+    The Gaussian Process (GP) is being used to map a continuous ``latent'' function, $f(x)$, to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
     A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian}.
     This is a distribution of a set of variables that include both our training data and points of interest on our latent function.
     It describes how the probability distribution of each variable depends on the values of the other variables.
@@ -255,29 +266,29 @@
     \nomenclature[G]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data}
     \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
 
+    This GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
+    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of a GP is yet another GP\@.
+    Therefore, modelling uncertainty with probabilistic numerics allows this uncertainty information to be transferred from the time domain to the frequency domain.
+
 
 
     \subsection{Implications of the Findings}
 
     \subsubsection{Implications in the Context of the Fourier Transform}
 
-    A Fourier Transform method that is more robust to noise than the FFT would have significant implications in various fields of engineering.
-    In this context of modal analysis, the modal properties could be identified more precisely especially for nonlinear systems, which are dynamic systems that behave in complex patterns due to their non-compliance with the principle of superposition.
-    This principle states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}. %%repeated!!
-    Therefore, nonlinear systems often exhibit complex dynamic behaviours and different modes with closely spaced resonant frequencies that can be obscured by noise.
-    Better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to nonlinear behaviour are typical of the formation or growth cracks or other defects.
+    A Fourier Transform method that can be applied to discrete data and that is more robust to noise than the FFT would have significant implications in various fields of engineering.
+
+    In the context of modal analysis, the modal properties could be identified more precisely especially for nonlinear systems, whose complex dynamic behaviours can be obscured by noise.
+    For example, noises may cause two closely spaced resonant frequencies to be mistaken for a single resonant frequency.
+    Furthermore, better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to nonlinear behaviour are typical of the formation or growth cracks or other defects.
     This in turn would allow engineers to make and maintain structures more safely being more likely to detect structural damage before catastrophic failure occurs.
 
-    A Fourier Transform that is more robust to noise would improve other areas of engineering, not just in the context of modal analysis.
-    For example, in signal processing this would enhance data transmission by reducing errors.
-    Similarly, in acoustic engineering, this would improve sound quality, noise reduction algorithms and acoustic analysis.
-
-    Furthermore, these applications of the Fourier Transform would also be improved by reductions in the smoothing out of sharp resonance peaks due to spectral leakage.
-    Therefore, in addition to our main aim of improving the noise resilience of the Fourier transform, a stretch objective will be to investigate whether the Gaussian Process method reduces this phenomenon.
+    A Fourier Transform that is more robust to noise would improve other areas of engineering where it is used extensively such as signal processing, image processing and acoustic engineering.
+    In these contexts, the Fourier Transform is used to simplify a computationally expensive operation called convolution into a simple pointwise multiplication in the frequency domain and so would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
 
     \subsubsection{Implications of Improved Noise Resilience More Generally in Engineering}
 
-    An alternative method of modelling error that is more robust to noise would have great implications more generally in engineering because it could be implemented in other contexts where numerical methods would classically be chosen to perform mathematical transformations of functions.
+    An alternative method of modelling error that is more robust to noise would have great implications more generally in engineering because it could be implemented in other contexts where numerical methods would classically be chosen to perform transformations of functions.
 
     \section{Aims and Objectives}
     \subsection{Aim}
@@ -371,19 +382,16 @@
         \label{fig:input-response-predict}
     \end{figure}
 
-    \subsection{Sparse GP}
-    Finally, the model was modified to scale to large data, by converting it to a type of Sparse GP approximation known as FITC~\cite{q-candela}.
-    This reduced the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, where $N \gg M$. \nomenclature[L]{$M$}{Number of inducing points in Sparse GP} \nomenclature[L]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
-    This modification was made to the NLML and predict functions, which required a very specific implementation involving multiple mathematical tricks in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
-    This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers, which is a format that computers use to store continuous variables as a decimal as opposed to integers type variables.
-    After this was complete, the hyperparameters could be optimised and the GP could be fit for functions containing more than 1000 data points in a significantly reduced computation time. %update with times
-
     \section{Plan for Future Work}
-    After the implementation of the Sparse GP, the next step will be to adjust the prediction function for the force input and response plots to be in a closed form.
-    This means that the functions will be defined symbolically so that it can be described in general instead of just at a given set of input values, which will allow the closed form Fourier Transform to be taken.
-    This can then be solved analytically/symbolically either by hand or using a Python package like SymPy.
+    Firstly, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) will be complete to allow the model to scale to large data~\cite{q-candela}.
+    This will reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L]{$M$}{Number of inducing points in Sparse GP} \nomenclature[L]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
+    This modification will be made to both the NLML and predict functions, which required a very specific implementation involving multiple mathematical tricks in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
+    This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers, which is a format that computers use to store continuous variables as a decimal as opposed to integers type variables.
+    After this is complete, the hyperparameters can be optimised and the GP can be fit for functions containing more than 1000 data points in a significantly reduced computation time.
 
-    The robustness to noise of the Fourier Transform of this model then needs to be compared to that of the standard discrete Fast Fourier Transform (Objective~\ref{noise-resiliance}).
+    After the implementation of the Sparse GP, the next step will be to extend the input space of the joint Gaussian distribution to the frequency domain by incorporating the Fourier transform.
+
+    The robustness to noise of this extended model then needs to be compared to that of the standard discrete Fast Fourier Transform (Objective~\ref{noise-resiliance}).
     To do this, the Frequency Response Function can be computed for both methods by dividing the Fourier Transforms of the force response by that of the force input.
     As a starting point, the Mean Squared Error (MSE) can be computed between the both, to see how different they are.
     The MSE is a method of measuring the quality of an estimator (lower is better) by measuring the average of the squares of the errors, as shown in Equation~\ref{eq:mse}
