@@ -99,94 +99,55 @@
 
     \section{Background and Understanding of the Problem}
 
+    \subsection{Dynamic Systems}
+    It is often valuable to study the field of dynamics, which analyses how systems behave under dynamic loads which vary over time.
+    For example:
+    \begin{enumerate}
+        \item A motorcycle suspension system, which is a system of springs, dampers and linkages that connects the motorcycle to its wheels.
+        It allows some relative motion between the two in order to absorb impacts while travelling over bumps.
+        It may be valuable to study this dynamic system in order to maximise the handling, braking and comfort of the motorcycle.
 
+        \item An offshore wind turbine rotates, each blade repeatedly swings past the tower.
+        The trapped air between the blade and the tower imparts a periodic force upon both.
+        Similarly, there is a constant periodic force on the tower as the waves repeatedly crash against it.
+        High cycle fatigue is when cracks from micro-defects in a structure grow over time due to cyclic loading.
+        If a periodic force is applied at a specific frequency known as a resonant frequency, excessive excitation may occur, leading to a reduced lifecycle from excessive fatigue, or in extreme cases, outright mechanical failure.
+        Therefore, to make structures safe and reduce maintenance costs, it is important to be able to identify the inherent dynamic properties of a system such as this resonant frequency, so that the frequencies at which they occur can be designed away from the expected frequencies of the periodic forces.
 
-    Problems in engineering are typically described initially using a framework of continuous mathematical functions.
-    This means that their output has no jumps or gaps in values, and they can be evaluated using input values that are on a sliding scale of a continuous input domain.
-    For example, time in the real world is on a continuous sliding scale, which means that any interval in time can always be subdivided into a smaller interval.
-    Continuous functions in turn can often be manipulated analytically using mathematical transformations.
-    For example, if the velocity of a particle is given as a continuous function of time, a continuous acceleration function can be derived from the velocity analytically through a mathematical process called differentiation.
+        \item An aircraft wing bends in response to aerodynamic forces.
+        However, the forces themselves change as the wing twists and bends.
+        The interdependence of these two effects creates complicated interactions that are difficult to model accurately.
+        However, it is important to do so because if at high airspeed, energy from the wing forcing is added to the system faster than it can be dissipated, a positive feedback loop can occur leading to a phenomenon called aerodynamic flutter where the oscillations can become destructive.
+    \end{enumerate}
 
-    \subsection{The Limits of the analytical approach}
+    \subsection{Identifying Dynamic Systems}
 
-    However, there are many situations where this analytical approach is unsuitable.
-    Classically, numerical methods will be used to approximate the true solution to the transformation.
+    Dynamic systems are typically described using system parameters such as the resonant frequencies, mode-shapes and damping ratios.
+    Resonant frequencies are the forcing frequencies that produce a peak in excitation, mode shapes are the patterns of vibration at each resonant frequency, and damping ratios are a measure of how fast oscillations in a system decay relative to the optimal ``critical damping''.
 
-    \subsubsection{Intractable Complexity}\label{subsubsec:int-comp}
+    Often a distinction is made between linear and nonlinear systems.
+    Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
+    This means that if you double the input force over time, the response over time is exactly the same, except that the displacement at any point in time will be double.
+    This is not the case for nonlinear systems where the non-compliance with the principle of superposition cause the system parameters to distort as the magnitude of the input force is increased.
+    Furthermore, the existence of bifurcations, where the system exhibits any of multiple stable responses, or limit cycles, at a given frequency can make the system highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
+    Therefore, forward modelling - when you start with known system parameters and use them to predict the system's behaviour - is currently too complex for systems that are non-linear.
 
-    The first reason for this is that the analytical approach may be too complex for anyone to solve.
-    A good example of this is the Gaussian (normal) distribution, which has a probability density function, $p(x)$ defined in Equation~\ref{eq:norm}
+    Unfortunately, in real life, linear and nonlinear are not binary categories but a continuum, meaning everything is non-linear, it's just a question of degree.
+    What's worse is that typically not even these system parameters are known, so for highly non-linear systems all that can be done is to take an existing system and identify the system parameters.
+    This is known as inverse modelling.
 
-    \begin{equation}
-        p(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\label{eq:norm}
-    \end{equation}
+    \subsection{Identifying Dynamic Systems with Probabilistic Numerics}
+    Identifying system parameters in this manor results in values that are not exact, but have an uncertainty associated with them.
+    The first cause of this uncertainty is due to noise that is always present to some degree in the sampled data due to the measuring devices - typically accelerometers - that are used to capture the input and response to the system.
+    Furthermore, even if the true input and response could be sampled exactly, the non-identifiability problem states that since there are multiple sets of system parameters that could give the same set of observed outputs, it's impossible to uniquely determine them.
+    Similarly, certain algorithms used in  matrix pseudoinverse have multiple alternatives, none of which can be declared as definitively the correct choice.
+    This lack of uniqueness is represented in calculated values of the system parameters by having an uncertainty around their value.
+    Classically, this uncertainty is represented using error bounds.
+    For example, the resonant frequency of a system could be $350 \pm 20 Hz$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
 
-    \nomenclature[L]{$p(x)$}{Probability density function of arbitrary variable, $x$}
-    \nomenclature[G]{$\sigma$}{Standard deviation}
-    \nomenclature[G]{$\mu$}{Mean value}
+    Typically,
 
-    where $\mu$ is the mean and $\sigma$ is the standard deviation.
-    This is a common continuous probability distribution characterized by a bell-shaped curve, and is defined its mean ($\mu$) and variance ($\sigma^2$). The mean determines the centre of the distribution and the variance measures the spread.
-    The definite integral of this is often needed in order to find cumulative probabilities (i.e., the chances of a continuous random variable being in a range defined by two values).
-    This process can be visualised as finding the area underneath the curve between 2 input values (Figure~\ref{fig:ndi_}).
-
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.8\linewidth]{figures/ndi/ndi_}
-        \caption{A definite integral between -2 and 1 of the standard Gaussian (normal) distribution. This is used to find cululative probabilities.}
-        \label{fig:ndi_}
-    \end{figure}
-
-    In this case, a numerical method is typically used instead such as the Rectangle Method, which uses the Riemann integral definition.
-    This states that an integral can be approximated by summing the area of many adjacent rectangles between the function and the axis~\cite{NumericalAnalysis2023}, as shown in Figure~\ref{fig:ndi-num_} and Figure~\ref{fig:ndi-num2_}.
-
-    \FloatBarrier
-
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.8\linewidth]{figures/ndi-num/ndi-num_}
-        \caption{\ndiFigCaption{lower}}
-        \label{fig:ndi-num_}
-    \end{figure}
-
-    \FloatBarrier
-
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.8\linewidth]{figures/ndi-num2/ndi-num2_}
-        \caption{\ndiFigCaption{upper}}
-        \label{fig:ndi-num2_}
-    \end{figure}
-
-    As you can see, there are two ways to draw the rectangles.
-    In the first method, the top corner of the two that touches the curve is chosen such that the top edge is below the curve.
-    This provides an underestimate, which we can use as a lower bound to the true value of the integral.
-    Whereas in the second method, the top corner of the two that touches the curve is chosen such that the top edge is above the curve.
-    This provides an overestimate, which we can use as an upper bound to the true value of the integral.
-    Classically, the quality of this numerical methods are computed using the ``error bounds'' ie range between these upper and lower values.
-    As the width of the rectangles approaches zero, the approximation increasingly converges to the exact value of the integral.
-    This can never happen in practice, however, because it would require infinite computational work, but we can get precise approximations with small error bounds none-the-less.
-
-    \subsubsection{Data Sampling}
-    The second situation where the analytical approach is unsuitable is when working with real world data.
-    Here, the real world continuous data streams of the variables you are measuring must be sampled at a number of individual (or ``discrete'') points in time.
-    A simple example of this is how a video camera discretises the continuous events of the world into individual frames (or ``samples'') that can be replayed back-to-back to recreate an approximation of the events.
-    As the frame rate increases, the events are represented more faithfully, but the amount of information required to store the approximation tends to infinity as the length of time between frames tends to zero, which is not possible in practice.
-    This discrete data is unsuitable for performing transformations analytically because they rely on the data being continuous.
-    Again, there are numerical methods that are commonly used to approximate this instead.
-
-    For example, differentiation is the process of finding the gradient of a continuous function at any location along the curve.
-    For a discrete function, the gradient at any point is undefined because you cannot have a tangent of a point.
-    However, it is possible to approximate the gradient of the underlying continuous function from which the data was sampled using a numerical method, such as the Forward Difference Method.
-    This simply approximates the underlying continuous function as a straight line joining each adjacent pairs of points.
-    Therefore, the gradient at a point is calculated as the slope between that point and a point at a distance, $h$, ahead.\nomenclature[L]{$h$}{Incremental distance used in gradient calculations}
-    Experimentally sampled data also contains noise from many sources that is added to the latent signal.
-    For example, accelerometer data may be mixed with noise from random vibrations caused by the surroundings (people walking, movement of traffic nearby etc.), as well as simply the imprecision of the measuring device which in some cases may be significant in proportion to the signal being measured.
-    Again, the uncertainty caused by this noise is classically defined by error bounds (i.e., giving a measurement with a tolerance such as $3.5 \pm 0.7 ms^{-2}$).
-
-    \subsection{An Alternative to the Error Bounds of Numerical Methods}
-
-    This paper proposes a new method of performing mathematical transformations that uses an alternative uncertainty model to the classical error bounds model, and compares the robustness to noise between the two.
+    However, this paper proposes a new method of performing mathematical transformations that uses an alternative uncertainty model and compares the robustness to noise between the two.
     This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data.
     Since this reconstruction is in closed form, it can still be transformed using continuous analytical techniques instead of resorting to numerical methods.
     It generates outputs probabilistically, which means that the output of reconstructed continuous function at a given point is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
@@ -299,10 +260,10 @@
     \subsubsection{Implications in the Context of the Fourier Transform}
 
     A Fourier Transform method that is more robust to noise than the FFT would have significant implications in various fields of engineering.
-    In this context of modal analysis, the modal properties could be identified more precisely especially for non-linear systems, which are dynamic systems that behave in complex patterns due to their non-compliance with the principle of superposition.
-    This principle states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
-    Therefore, non-linear systems often exhibit complex dynamic behaviours and different modes with closely spaced resonant frequencies that can be obscured by noise.
-    Better modelling and identification of non-linear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to non-linear behaviour are typical of the formation or growth cracks or other defects.
+    In this context of modal analysis, the modal properties could be identified more precisely especially for nonlinear systems, which are dynamic systems that behave in complex patterns due to their non-compliance with the principle of superposition.
+    This principle states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}. %%repeated!!
+    Therefore, nonlinear systems often exhibit complex dynamic behaviours and different modes with closely spaced resonant frequencies that can be obscured by noise.
+    Better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to nonlinear behaviour are typical of the formation or growth cracks or other defects.
     This in turn would allow engineers to make and maintain structures more safely being more likely to detect structural damage before catastrophic failure occurs.
 
     A Fourier Transform that is more robust to noise would improve other areas of engineering, not just in the context of modal analysis.
