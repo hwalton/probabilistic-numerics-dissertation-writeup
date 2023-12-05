@@ -163,18 +163,19 @@
 
     where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
-    However, it can only be applied in its base form to a function that is continuous in the domain $-\inf$ to $\inf$, meaning that it has a value defined at every point in time.
+    However, it can only be applied in its base form to a function that is continuous in the domain $-\infty \text{ to } \infty$, meaning that it has a value defined at every point in time.
     Although in the real world time passes continuously forever, the Fourier Transform of data sampled from the real world cannot be found by directly using the continuous Fourier Transform.
     This is because this data is recorded over a finite window, and because it is typically discrete meaning that it is recorded at specific points in time instead of any point a continuous domain.
     Classically, a numerical method called the Discrete Fourier Transform algorithm called the Fast Fourier Transform is used in this case.
 
-    A numerical method % finish: more generally...
+    A numerical method is a discrete approximation of a transformation that cannot be solved using its exact mathematical definition because this would be either impossible or impractical.
+    Typically, these are used when working with discrete data such as data sampled from real life.
 
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
     Firstly, the FFT assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
-    But most importantly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise cancan create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties\cite{MathStackExchange2023}.
+    But most importantly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties\cite{MathStackExchange2023}.
 
     Classically, the uncertainty of parameters calculated downstream of this FFT could be quantified with error bounds by a sensitivity analysis.
     Here, the uncertainty of the input data would be estimated, perhaps from the resolution of the measuring equipment, or by observation of the time domain sample data.
@@ -185,7 +186,7 @@
     \subsection{Identifying Dynamic Systems with Probabilistic Numerics}
     However, this paper proposes a new method of performing the Fourier Transform and other linear transformations.
     This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data over a finite time interval.
-    Moreover, it is defined in the continuous domain $-\inf$ to $\inf$ which means that the noise resilience of an FRF computed using this method may be improved because this can be transformed by the continuous Fourier Transform instead of resorting to the discrete FFT which is highly sensitive to noise.
+    Moreover, it is defined in the continuous domain $-\infty \text{ to } \infty$ which means that the noise resilience of an FRF computed using this method may be improved because this can be transformed by the continuous Fourier Transform instead of resorting to the discrete FFT which is highly sensitive to noise.
 
     The outputs of the reconstructed function that this GP generate are probabilistic which means that the output is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
     The GP model can be designed to include a noise term that explicitly models the observational noise.
@@ -267,7 +268,7 @@
     \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
 
     This GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
-    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of a GP is yet another GP\@.
+    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP\@.
     Therefore, modelling uncertainty with probabilistic numerics allows this uncertainty information to be transferred from the time domain to the frequency domain.
 
 
@@ -286,9 +287,9 @@
     A Fourier Transform that is more robust to noise would improve other areas of engineering where it is used extensively such as signal processing, image processing and acoustic engineering.
     In these contexts, the Fourier Transform is used to simplify a computationally expensive operation called convolution into a simple pointwise multiplication in the frequency domain and so would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
 
-    \subsubsection{Implications of Improved Noise Resilience More Generally in Engineering}
 
-    An alternative method of modelling error that is more robust to noise would have great implications more generally in engineering because it could be implemented in other contexts where numerical methods would classically be chosen to perform transformations of functions.
+    More generally in engineering, this alternative method could be employed where numerical methods would classically need to be implemented to transform discrete data.
+    Here, the same advantages of noise resilience provided by quantifying uncertainty with probabilistic numerics would apply.
 
     \section{Aims and Objectives}
     \subsection{Aim}
@@ -311,7 +312,7 @@
         \end{enumerate}
 
     \section{Work Completed to Date}
-    The first thing needed to be complete was the basic Gaussian Process before it could be extended into Sparse GP\@.
+    The first thing needed to be complete was the basic Gaussian Proces.
     This was implemented using the programming language Python and consisted of the following components:
     \subsection{The Data}
     Previously collected turbine tap test data~\cite{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.

@@ -20,8 +20,6 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{\numberline {1.8.1}Implications in the Context of the Fourier Transform}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.8.2}Implications of Improved Noise Resilience More Generally in Engineering}{6}%
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2}Aims and Objectives}{6}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.1}Aim}{6}%
@@ -38,8 +36,6 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.4}Predict Function}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Sparse GP}{9}%
+\contentsline {section}{\numberline {4}Plan for Future Work}{9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Plan for Future Work}{10}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{11}%
+\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{10}%
