@@ -161,7 +161,7 @@
     \nomenclature[G]{$\omega$}{Angular frequency}
 
 
-    where $\omega$ is the angular frequency.
+    \noindent where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
     However, it can only be applied in its base form to a function that is continuous in the domain $-\infty \text{ to } \infty$, meaning that it has a value defined at every point in time.
     Although in the real world time passes continuously forever, the Fourier Transform of data sampled from the real world cannot be found by directly using the continuous Fourier Transform.
@@ -229,7 +229,7 @@
     \nomenclature[G]{$\sigma^2_y$}{Variance of observation noise}
 
 
-    where $\mathbf{y}$ is a vector of $y_n$ values from a set of training points, $\boldsymbol{\mu}_X$ is the mean of the Gaussian Process, given the training data $\mathbf{X}$, $\boldsymbol{\mu}_*$ is the mean of the Gaussian Process, given the test data $\mathbf{X}_*$, $\mathbf{f}^*$ is a vector of values of the latent function evaluated at a set of test points $\mathbf{X}_*$, $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
+    \noindent where $\mathbf{y}$ is a vector of $y_n$ values from a set of training points, $\boldsymbol{\mu}_X$ is the mean of the Gaussian Process, given the training data $\mathbf{X}$, $\boldsymbol{\mu}_*$ is the mean of the Gaussian Process, given the test data $\mathbf{X}_*$, $\mathbf{f}^*$ is a vector of values of the latent function evaluated at a set of test points $\mathbf{X}_*$, $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
     Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$\mathbf{K}_{\mathbf{A},\mathbf{B}}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors $\mathbf{A}$, $\mathbf{B}$}\nomenclature[L]{$k(a,b)$}{Kernel function of arbitrary points, $a$, and $b$}
 
     The kernel is a special function that when input with two vectors, produces a covariance matrix that measures the similarity between each pair of inputs based on a set of hyperparameters.
@@ -245,7 +245,7 @@
     \nomenclature[L]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
     \nomenclature[L]{$N$}{Number of training points}
 
-    where $\mathbf{D}$ is the training data, $N$ is the number of training points, $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
+    \noindent where $\mathbf{D}$ is the training data, $N$ is the number of training points, $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
@@ -318,14 +318,13 @@
     Previously collected turbine tap test data~\cite{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.
     The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
-    For simplicity, only the response data the first position was imported, using a function that converts the turbine blade accelerometer data, and the time of each sample into their own NumPy arrays.
-    A small set of 100 samples was selected from the centre (to reduce computation time initially).
-    This time series data, as shown in Figure~\ref{fig:input-response-plot}, was used as training data to be fit by the GP.
+    For simplicity, only the response data the first position was imported, and a small set of 100 samples was selected from the centre (to reduce computation time initially).
+    This time series data, as shown in the ``Force Response'' plot in Figure~\ref{fig:input-response-plot}, was used as training data to be fit by the GP\@.
 
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-plot/input-response-plot.png}
-        \caption{The time series data which the GP was fit to.}
+        \caption{The time series data, and the mean and standard deviation of the GPs prediction of it. Note that the prediction functions of mean and standard deviation that are output by the Gaussian Process are infact continuous, but must be evaluated at a discrete set of points in order to be plotted}
         \label{fig:input-response-plot}
     \end{figure}
 
@@ -337,14 +336,14 @@
     In addition, it only has two hyperparameters, this low number speeds up their optimisation process compared to alternative kernels.
 
     \begin{equation}
-        \mathbf{K}_{ij} = \sigma^2 \exp\left(-\frac{||\mathbf{x}_i - \mathbf{x}_j||^2}{2l^2}\right) \label{eq:se-kernel}
+        \mathbf{K}_{ij} = \sigma^2 \exp\left(-\frac{(\mathbf{x}_i - \mathbf{x}_j)^2}{2l^2}\right) \label{eq:se-kernel}
     \end{equation}
     \nomenclature[L]{$\mathbf{K}_{ij}$}{Element of the covariance matrix, $\mathbf{K}$, at index $i, j$}
     \nomenclature[L]{$\mathbf{x}_i, \mathbf{x}_j$}{Input vectors}
     \nomenclature[L]{$\sigma^2$}{Variance, a hyperparamer in the context of the kernel}
     \nomenclature[L]{$l$}{Length scale parameter of the SE kernel}
 
-    where $\mathbf{K}_{ij}$ is the element of the covariance matrix, $\mathbf{K}$, at index $i, j$, $\mathbf{x}_i, \mathbf{x}_j$ are input vectors, $\sigma^2$ is the variance hyperparameter, and $l$ is the length scale parameter of the SE kernel.
+    \noindent where $\mathbf{K}_{ij}$ is the element of the covariance matrix, $\mathbf{K}$, at index $i, j$, $\mathbf{x}_i, \mathbf{x}_j$ are input vectors, $\sigma^2$ is the variance hyperparameter, and $l$ is the length scale parameter of the SE kernel.
 
     The `variance' hyperparameter is a scale factor that determines the average distance of the function away from its mean, whereas the `length' hyperparameter determines how smooth or wiggly the function is, i.e., how fast the function can change direction.
 
@@ -361,14 +360,15 @@
     If the new NLML was higher than the previous, the hyperparameter was maybe still updated, with a larger probability the closer the NLML was closer to the previous NLML, (i.e., the better the prediction was).
 
     \subsection{Predict Function}
-    Next, the predict function was constructed, which accurately calculated the mean and variance of the output of the latent function when given new test inputs in the continuous input space, as shown in Figure~\ref{fig:input-response-predict}.
-    Note that the data is more noisy in the top Force Input than the Force Response plot, so the standard deviation is larger to take account for this noise.
+    Next, the predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot}.
+    Furthermore, when Gaussian noise was added to the input data, the standard deviation prediction becomes larger to take account for this noise as shown in Figure~\ref{fig:input-response-noise}.
+
 
     \begin{figure}[ht]
         \centering
-        \includegraphics[width=1.0\linewidth]{figures/input-response-predict/input-response-predict.png}
+        \includegraphics[width=1.0\linewidth]{figures/input-response-noise/input-response-noise.png}
         \caption{The prediction function fit by the GP overlayed on the training data. Note that the standard Deviation increases for data with more noise.}
-        \label{fig:input-response-predict}
+        \label{fig:input-response-noise}
     \end{figure}
 
     \section{Plan for Future Work}
@@ -390,7 +390,7 @@
 
     \nomenclature[L]{$A_i$, $B_i$}{Values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i}
 
-    where $A_i$, $B_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i:
+    \noindent where $A_i$, $B_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i:
 
     First the Fourier Transform can be computed using each method.
     Then, some Gaussian noise can be added to the data and the FRF can be computed again using both methods.
@@ -407,7 +407,7 @@
     Finally, a conclusion can be drawn regarding the utility of the new Gaussian Process (GP) method of computing the Fourier Transform presented in this paper when compared to the classical Fast Fourier Transform (FFT) with respect to robustness to noise and prevention of artifacts due to spectral leakage.
     Since the addition of noise is an inherently random, this should be repeated several times and statistical techniques should be employed to show whether any differences in MSE are statistically significant.
     One such technique is hypothesis testing, which provides a framework to state whether there is sufficient evidence to reject the ``null'' hypothesis.
-    This means that the default stance is taken of assuming that the new GP method is no better than classical methods, unless there is sufficient evidence to prove otherwise beyond a reasonable doubt.
+    This means that the default stance the new GP method is no better than classical methods is assumed unless there is sufficient evidence to prove otherwise beyond a reasonable doubt.
 
     \subsection{Future Work Time Plan}
     A Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project is included in Figure~\ref{fig:gantt-chart_}:
