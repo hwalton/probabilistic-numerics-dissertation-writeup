@@ -36,6 +36,6 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.4}Predict Function}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Plan for Future Work}{9}%
+\contentsline {section}{\numberline {4}Plan for Future Work}{8}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{10}%

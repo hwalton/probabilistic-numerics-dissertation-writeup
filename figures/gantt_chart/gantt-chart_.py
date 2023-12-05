@@ -7,16 +7,17 @@ plt.rcParams.update({'font.size': 10})
 
 df = pd.DataFrame({
     'task': ['XMAS HOLIDAY AND EXAM PERIOD',
-             '1) Adjust the model to enable the closed\nform Fourier Transform to be found.',
-             '2) Compute FRF for both methods.',
-             '3) Compute MSE between\nthe two methods.',
-             '4) Add Gaussian Noise\nand compare the MSE.',
-             '5) Repeat for new signal\nof pure sine wave.',
-             '6) Compare the robustness noise\nbased on statistical techniques.',
+             '1) Implement the Sparse GP with\nthe FITC approximation.',
+             '2) Adjust the model to enable the closed\nform Fourier Transform to be found.',
+             '3) Compute FRF for both methods.',
+             '4) Compute MSE between\nthe two methods.',
+             '5) Add Gaussian Noise\nand compare the MSE.',
+             '6) Repeat for new signal\nof pure sine wave.',
+             '7) Compare the robustness noise\nbased on statistical techniques.',
              'EASTER HOLIDAY',
-             '7) Write up conclusions\nin report.'],
-    'start': pd.to_datetime(['18 DEC 2023', '5 FEB 2024', '19 FEB 2024', '26 FEB 2024', '4 MAR 2024', '11 MAR 2024', '18 MAR 2024', '25 MAR 2024', '15 APR 2024'], format='%d %b %Y'),
-    'end': pd.to_datetime(['4 FEB 2024', '18 FEB 2024', '25 FEB 2024', '3 MAR 2024', '10 MAR 2024', '17 MAR 2024', '24 MAR 2024', '14 APR 2024', '1 MAY 2024'], format='%d %b %Y')
+             '8) Write up conclusions\nin report.'],
+    'start': pd.to_datetime(['18 DEC 2023', '5 FEB 2024', '12 FEB 2024', '19 FEB 2024', '26 FEB 2024', '4 MAR 2024', '11 MAR 2024', '18 MAR 2024', '25 MAR 2024', '15 APR 2024'], format='%d %b %Y'),
+    'end': pd.to_datetime(['4 FEB 2024', '11 FEB 2024', '18 FEB 2024', '25 FEB 2024', '3 MAR 2024', '10 MAR 2024', '17 MAR 2024', '24 MAR 2024', '14 APR 2024', '1 MAY 2024'], format='%d %b %Y')
 })
 
 df['days_to_start'] = (df['start'] - df['start'].min()).dt.days
