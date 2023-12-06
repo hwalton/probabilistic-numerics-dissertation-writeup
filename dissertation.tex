@@ -353,11 +353,12 @@
     This GP model also contained an algorithm to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood.
     It did this by multiplying each hyperparameter in turn by the exponent of a normally distributed continuous random variable.
     Imagine that only if the new NLML was lower than the previous, the hyperparameter was updated.
-    If this was the case, the algorithm could get stuck in what is known as local minima, and never find the global minimum.
-    This would be analogous to a ball always rolling directly downhill to find the global minimum.
-    If it got stuck in a small valley half-way down the larger hill, it would never find the lowest point.
-    Therefore, a mechanism was added to avoid this:
-    If the new NLML was higher than the previous, the hyperparameter was maybe still updated, with a larger probability the closer the NLML was closer to the previous NLML, (i.e., the better the prediction was).
+    If this was the case, the algorithm could get stuck in what is known as a local minimum, and never find the global minimum.
+    This would be analogous to a ball that ``tried'' to find the bottom of a valley by always rolled directly downhill.
+    If it got stuck in a small ditch half-way down the larger hill, it would never find the lowest point.
+    Therefore, a mechanism was added to the algorithm to avoid this:
+    If the new NLML was higher (i.e., worse) than the previous, the hyperparameter was maybe still updated, with a larger probability the closer the NLML was to the previous NLML.
+    This enabled the algorithm to better find the global maximum because it was less likely to of get stuck in a local minima.
 
     \subsection{Predict Function}
     Next, the predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot}.
@@ -367,7 +368,7 @@
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-noise/input-response-noise.png}
-        \caption{The prediction function fit by the GP overlayed on the training data. Note that the standard Deviation increases for data with more noise.}
+        \caption{The prediction function fit by the GP overlayed on the training data. Note that the standard deviation of the prediction increases for data with more noise.}
         \label{fig:input-response-noise}
     \end{figure}
 
