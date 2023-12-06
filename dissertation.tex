@@ -104,7 +104,8 @@
     This dynamic behaviour is typically in response to a dynamic force that changes over time, such as aerodynamic forces or impacts from waves or bumps in the road.
     Studying dynamics is valuable because it has the potential to help prevent excessive vibration or oscillation of machinery, which is known to reduce the service life and in extreme cases can lead to catastrophic failure.
     Therefore, if it was possible to describe and more accurately predict the behaviour of systems and structures in response to the dynamic forces that are present in these systems, they could be designed to be perform better, be safer, and to have lower maintenance costs.
-    Here are some examples of dynamic systems to illustrate why studying them is valuable:
+    However, the field of dynamics is far from being mastered, and there are still a large number of problems that cannot yet be solved.
+    To begin, here are some examples of dynamic systems to illustrate why studying them is valuable:
     \begin{enumerate}
         \item A motorcycle suspension system is a combination of springs, dampers and linkages that connect the motorcycle chassis to its wheels.
         Its primary purpose is to keep the tyres in contact with the ground and without proper suspension, the tyres would lose traction when encountering bumps, especially when braking, accelerating or cornering [1].
@@ -124,7 +125,7 @@
         If a periodic force is applied to a system with a specific frequency known as a resonant frequency, the amplitude of the oscillation may be large even for a small amplitude force, leading to a reduced lifespan from an excessive rate of high cycle fatigue.
         The same can happen in this case with a random force that has an \textit{average} frequency similar to the resonant frequency.
         Furthermore, the stresses could become so large that they exceed the ultimate tensile strength of the material, causing a sudden mechanical failure and the collapse of the turbine.
-        Therefore, to make structures safer and reduce maintenance costs, it would be valuable to be able to identify the inherent dynamic properties of a system such as this resonant frequency from system parameters such as the stiffness of the tower so that the frequencies at which they occur can be designed away from the expected frequencies of the periodic forces.
+        Therefore, to make structures safer and reduce maintenance costs, it would be valuable to be able to model their behaviour in terms of dynamic properties such as this resonant frequency from system parameters such as the stiffness of the tower so that the frequencies at which they occur can be designed away from the expected frequencies of the periodic forces.
 
         \item An aircraft wing bends in response to aerodynamic forces.
         However, in this case the forces themselves change as the wing twists and bends.
@@ -134,36 +135,38 @@
 
     \subsection{Identifying Dynamic Systems}
 
-    Dynamic systems are typically described using system parameters such as the resonant frequencies, mode-shapes and damping ratios.
-    Resonant frequencies are the forcing frequencies that produce a peak in excitation, mode shapes are the patterns of vibration at each resonant frequency, and damping ratios are a measure of how fast oscillations in a system decay relative to the optimal ``critical damping''.
-    Analysis of this sort is known as modal analysis.
-
+    Dynamic systems have system parameters, which are fundamental characteristics of the system such as the aforementioned mass, stiffness and damping.
+    ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties are predicted from the system parameters using physical laws.
+    These properties include the resonant frequencies, which are the forcing frequencies that produce a peak in amplitude of excitation, and mode shapes are the patterns of vibration at each resonant frequency, typically in the context of multi-degree-of-freedom (MDOF) systems.
+    These MDOF systems are modelled as more than one point masses, and typically connected to each other and the environment by springs and dampers.
 
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
     This means that if you double the input force over time, the response over time is exactly the same, except that the displacement at any point in time will be double.
     This is not the case for nonlinear systems (such as the aircraft wing in the example above) where non-compliance with the principle of superposition causes the system parameters to distort as the magnitude of the input force is increased.
     This causes the response to become highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
-    Nonlinearity can even cause bifurcations, where the system can exhibit one of multiple stable responses, or limit cycles, at a given frequency.
+    Nonlinearity can even lead to bifurcations, which is where the system can exhibit one of multiple stable responses, or limit cycles, at a given frequency.
     Therefore, forward modelling is currently too difficult for systems that are non-linear.
 
-    Unfortunately, in real life, linear and nonlinear are not binary categories but a continuum, meaning everything is non-linear, it's just a question of degree.
-    What's worse is that typically not even these system parameters are known, so medium to highly non-linear systems all that can be done is to take real life data measurements from an existing system and identify the system parameters with a technique known as inverse modelling.
+    Unfortunately, in real life, everything is non-linear, and therefore forward modelling cannot currently be used to solve system properties exactly using the system parameters as an input.
+    Only in rare cases are systems close enough linear that they can be approximated as such.
+    What's worse is that even if a model did exist to solve the system, it would be of no use because typically not even the system parameters are known to be able to input them into the model.
+    This inherent complexity is the key reason why the field of dynamics has not been mastered, and it means that currently for medium to highly non-linear systems - which is almost all systems - all that can be done is to take real life data measurements from an existing system and identify the system properties and parameters that best fit the observed data.
+    Identifying dynamic systems is known as inverse modelling, but even this process is fraught with issues.
 
     \subsection{Classically Quantifying Uncertainty with Error Bounds}
-    Identifying system parameters in this manor results in values that are not exact, but have an uncertainty associated with them.
+    Identifying system parameters using this inverse modelling approach results in values that are not exact, but have an uncertainty associated with them that comes from multiple sources.
     The first cause of this uncertainty is due to noise that is always present to some degree in the sampled data due to the measuring devices - typically accelerometers - that are used to capture the input and response to the system.
     Furthermore, even if the true input and response could be sampled exactly, the non-identifiability problem states that since there are multiple sets of system parameters that could give the same set of observed outputs, it's impossible to uniquely determine them.
-    Similarly, certain algorithms make use of a mathematical object called a matrix pseudoinverse which have multiple alternatives, the correct choice of which is arguable and not definitive.
-    This lack of uniqueness is represented in calculated values of the system parameters by having an uncertainty around their value.
-    Classically, this uncertainty is represented using error bounds.
-    For example, the resonant frequency of a system could be $350 \pm 20 Hz$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
+    Similarly, many algorithms make use of mathematical objects (such as matrix pseudoinverses) which have multiple alternatives, the correct choice of which is arguable and not definitive.
+    This lack of uniqueness is represented in outputted system parameters by having an uncertainty around their value and classically, this uncertainty is represented using error bounds.
+    For example, the damping ratio of a mode could be calculated in this way to be $0.1 \pm 0.02$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
 
 
     \subsection{The Fourier Transform and the Frequency Response Function (FRF)}
 
-    In dynamic system analysis, any collected time series data is almost always converted into the frequency domain.
-    This is because the physical meaning of the system parameters have a clear visual interpretation in this domain. %elaborate + figure
+    In inverse modelling of dynamic system analysis, any collected time series data is almost always converted into the frequency domain.
+    This is because the physical meaning of the system properties have a clear visual interpretation in this domain. %elaborate + figure
     Specifically, the Frequency Response Function (FRF) is typically found, which is defined as the frequency domain response divided by the frequency domain input force.
     The transformation of these functions from the time domain to the frequency domain relies on a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
 
@@ -203,7 +206,25 @@
 
     The outputs of the reconstructed function that this GP generate are probabilistic which means that the output is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
     The GP model can be designed to include a noise term that explicitly models the observational noise.
-    This gives the GP a way to distinguish between the signal and noise components, which may allow for Fourier Transform to be performed with better robustness to noise.
+    This gives the GP a way to distinguish between the signal and noise components, which may allow for Fourier Transform to be performed with better robustness to noise through its use of probabilistic numerics.
+
+    \subsection{Implications of the Findings}
+
+    \subsubsection{Implications in the Context of the Fourier Transform}
+
+    A Fourier Transform method that can be applied to discrete data and that is more robust to noise than the FFT would have significant implications in various fields of engineering.
+
+    In the context of modal analysis, the modal properties could be identified more precisely especially for nonlinear systems, whose complex dynamic behaviours can be obscured by noise.
+    For example, noises may cause two closely spaced resonant frequencies to be mistaken for a single resonant frequency.
+    Furthermore, better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to nonlinear behaviour are typical of the formation or growth cracks or other defects.
+    This in turn would allow engineers to make and maintain structures more safely being more likely to detect structural damage before catastrophic failure occurs.
+
+    A Fourier Transform that is more robust to noise would improve other areas of engineering where it is used extensively such as signal processing, image processing and acoustic engineering.
+    In these contexts, the Fourier Transform is used to simplify a computationally expensive operation called convolution into a simple pointwise multiplication in the frequency domain and so would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
+
+
+    More generally in engineering, this alternative method could be employed where numerical methods would classically need to be implemented to transform discrete data.
+    Here, the same advantages of noise resilience provided by quantifying uncertainty with probabilistic numerics would apply.
 
     \subsection{The Gaussian Process Model}
     The Gaussian Process (GP) is being used to map a continuous ``latent'' function, $f(x)$, to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
@@ -284,25 +305,6 @@
     Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP\@.
     Therefore, modelling uncertainty with probabilistic numerics allows this uncertainty information to be transferred from the time domain to the frequency domain.
 
-
-
-    \subsection{Implications of the Findings}
-
-    \subsubsection{Implications in the Context of the Fourier Transform}
-
-    A Fourier Transform method that can be applied to discrete data and that is more robust to noise than the FFT would have significant implications in various fields of engineering.
-
-    In the context of modal analysis, the modal properties could be identified more precisely especially for nonlinear systems, whose complex dynamic behaviours can be obscured by noise.
-    For example, noises may cause two closely spaced resonant frequencies to be mistaken for a single resonant frequency.
-    Furthermore, better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to nonlinear behaviour are typical of the formation or growth cracks or other defects.
-    This in turn would allow engineers to make and maintain structures more safely being more likely to detect structural damage before catastrophic failure occurs.
-
-    A Fourier Transform that is more robust to noise would improve other areas of engineering where it is used extensively such as signal processing, image processing and acoustic engineering.
-    In these contexts, the Fourier Transform is used to simplify a computationally expensive operation called convolution into a simple pointwise multiplication in the frequency domain and so would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
-
-
-    More generally in engineering, this alternative method could be employed where numerical methods would classically need to be implemented to transform discrete data.
-    Here, the same advantages of noise resilience provided by quantifying uncertainty with probabilistic numerics would apply.
 
     \section{Aims and Objectives}
     \subsection{Aim}
