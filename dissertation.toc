@@ -4,38 +4,38 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.1}Dynamic Systems}{1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.2}Identifying Dynamic Systems}{1}%
+\contentsline {subsection}{\numberline {1.2}Identifying Dynamic Systems}{2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.3}Classically Quantifying Uncertainty with Error Bounds}{2}%
+\contentsline {subsection}{\numberline {1.3}Classically Quantifying Uncertainty with Error Bounds}{3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.4}The Fourier Transform and the Frequency Response Function (FRF)}{2}%
+\contentsline {subsection}{\numberline {1.4}The Fourier Transform and the Frequency Response Function (FRF)}{3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.5}The Fast Fourier Transform Algorithm}{3}%
+\contentsline {subsection}{\numberline {1.5}The Fast Fourier Transform Algorithm}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.6}Identifying Dynamic Systems with Probabilistic Numerics}{3}%
+\contentsline {subsection}{\numberline {1.6}Identifying Dynamic Systems with Probabilistic Numerics}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.7}The Gaussian Process Model}{4}%
+\contentsline {subsection}{\numberline {1.7}The Gaussian Process Model}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.8}Implications of the Findings}{5}%
+\contentsline {subsection}{\numberline {1.8}Implications of the Findings}{6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.8.1}Implications in the Context of the Fourier Transform}{5}%
+\contentsline {subsubsection}{\numberline {1.8.1}Implications in the Context of the Fourier Transform}{6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Aims and Objectives}{6}%
+\contentsline {section}{\numberline {2}Aims and Objectives}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Aim}{6}%
+\contentsline {subsection}{\numberline {2.1}Aim}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}Objectives}{6}%
+\contentsline {subsection}{\numberline {2.2}Objectives}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Work Completed to Date}{6}%
+\contentsline {section}{\numberline {3}Work Completed to Date}{7}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.1}The Data}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2}The Kernel}{7}%
+\contentsline {subsection}{\numberline {3.2}The Kernel}{8}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Predict Function}{8}%
+\contentsline {subsection}{\numberline {3.4}Predict Function}{9}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for Future Work}{9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{10}%
+\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{11}%
