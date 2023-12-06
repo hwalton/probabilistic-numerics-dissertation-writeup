@@ -118,16 +118,18 @@
         The ideal balance between comfort and handling can be tailored to the specific use of the bike by setting the stiffness of the spring low enough that the system has time to absorb the impact softly, but high enough that the bike's responses to steering inputs are fast and reactive.
         Therefore, studying dynamic systems such as this one would be valuable because if it was possible to reliably predict how it will behave for different system parameters such as mass, stiffness and damping, it would be possible to design the system with the best system parameters within the given constraints in order to optimise the performance of the motorcycle for its purpose.
 
-        \item An offshore wind turbine experiences a relentless periodic force on the base tower as the waves repeatedly crash against it.
-        High cycle fatigue a phenomenon that causes cracks to grow over time from micro-defects in a structure due to such cyclic loading and the rate at which this occurs increases as the amplitude of the stresses in the structure, which in turn increase with the amplitude of oscillation in response to this cyclic loading.
-        If a periodic force is applied at a specific frequency known as a resonant frequency, the amplitude of the oscillation may be large even for a small amplitude force, leading to a reduced lifespan from an excessive rate of high cycle fatigue.
-        Furthermore, the stresses could become so large that they exceed the strength of the material, causing a sudden mechanical failure and the collapse of the turbine.
-        Therefore, to make structures safer and reduce maintenance costs, it is important to be able to identify the inherent dynamic properties of a system such as this resonant frequency, so that the frequencies at which they occur can be designed away from the expected frequencies of the periodic forces.
+        \item An offshore wind turbine experiences a relentless random forcing the waves that repeatedly crash against the base of its tower.
+        High cycle fatigue a phenomenon that causes cracks to grow over time from micro-defects in a structure due to cyclic loading below the elastic limit of the material.
+        The rate at which this occurs increases with the amplitude of the stresses in the structure, which in turn increase with the amplitude of oscillation in response to this cyclic loading.
+        If a periodic force is applied to a system with a specific frequency known as a resonant frequency, the amplitude of the oscillation may be large even for a small amplitude force, leading to a reduced lifespan from an excessive rate of high cycle fatigue.
+        The same can happen in this case with a random force that has an \textit{average} frequency similar to the resonant frequency.
+        Furthermore, the stresses could become so large that they exceed the ultimate tensile strength of the material, causing a sudden mechanical failure and the collapse of the turbine.
+        Therefore, to make structures safer and reduce maintenance costs, it would be valuable to be able to identify the inherent dynamic properties of a system such as this resonant frequency from system parameters such as the stiffness of the tower so that the frequencies at which they occur can be designed away from the expected frequencies of the periodic forces.
 
         \item An aircraft wing bends in response to aerodynamic forces.
-        However, the forces themselves change as the wing twists and bends.
+        However, in this case the forces themselves change as the wing twists and bends.
         The interdependence of these two effects creates complicated ``nonlinear'' interactions that are difficult to model accurately.
-        However, it is important to do so because if at high airspeed, energy from the wing forcing is added to the system faster than it can be dissipated, a positive feedback loop can occur leading to a phenomenon called aerodynamic flutter where the oscillations become larger and larger until they become destructive.
+        However, it is important to do so because if at high airspeed, energy from the wing forcing is added to the system faster than it can be dissipated, the positive feedback loop can lead to a phenomenon called aerodynamic flutter where the oscillations become larger and larger until they cause catastrophic failure.
     \end{enumerate}
 
     \subsection{Identifying Dynamic Systems}
@@ -140,18 +142,19 @@
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
     This means that if you double the input force over time, the response over time is exactly the same, except that the displacement at any point in time will be double.
-    This is not the case for nonlinear systems where the non-compliance with the principle of superposition cause the system parameters to distort as the magnitude of the input force is increased.
-    Furthermore, the existence of bifurcations, where the system exhibits any of multiple stable responses, or limit cycles, at a given frequency can make the system highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
-    Therefore, forward modelling - when you start with known system parameters and use them to predict the system's behaviour - is currently too complex for systems that are non-linear.
+    This is not the case for nonlinear systems (such as the aircraft wing in the example above) where non-compliance with the principle of superposition causes the system parameters to distort as the magnitude of the input force is increased.
+    This causes the response to become highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
+    Nonlinearity can even cause bifurcations, where the system can exhibit one of multiple stable responses, or limit cycles, at a given frequency.
+    Therefore, forward modelling is currently too difficult for systems that are non-linear.
 
     Unfortunately, in real life, linear and nonlinear are not binary categories but a continuum, meaning everything is non-linear, it's just a question of degree.
-    What's worse is that typically not even these system parameters are known, so for highly non-linear systems all that can be done is to take an existing system and identify the system parameters with a technique known as inverse modelling.
+    What's worse is that typically not even these system parameters are known, so medium to highly non-linear systems all that can be done is to take real life data measurements from an existing system and identify the system parameters with a technique known as inverse modelling.
 
     \subsection{Classically Quantifying Uncertainty with Error Bounds}
     Identifying system parameters in this manor results in values that are not exact, but have an uncertainty associated with them.
     The first cause of this uncertainty is due to noise that is always present to some degree in the sampled data due to the measuring devices - typically accelerometers - that are used to capture the input and response to the system.
     Furthermore, even if the true input and response could be sampled exactly, the non-identifiability problem states that since there are multiple sets of system parameters that could give the same set of observed outputs, it's impossible to uniquely determine them.
-    Similarly, certain algorithms used in  matrix pseudoinverse have multiple alternatives, none of which can be declared as definitively the correct choice.
+    Similarly, certain algorithms make use of a mathematical object called a matrix pseudoinverse which have multiple alternatives, the correct choice of which is arguable and not definitive.
     This lack of uniqueness is represented in calculated values of the system parameters by having an uncertainty around their value.
     Classically, this uncertainty is represented using error bounds.
     For example, the resonant frequency of a system could be $350 \pm 20 Hz$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
