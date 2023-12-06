@@ -12,13 +12,13 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.5}The Fast Fourier Transform Algorithm}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.6}Identifying Dynamic Systems with Probabilistic Numerics}{4}%
+\contentsline {subsection}{\numberline {1.6}Identifying Dynamic Systems with Probabilistic Numerics}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.7}The Gaussian Process Model}{5}%
+\contentsline {subsection}{\numberline {1.7}Implications of the Findings}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.8}Implications of the Findings}{6}%
+\contentsline {subsubsection}{\numberline {1.7.1}Implications in the Context of the Fourier Transform}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.8.1}Implications in the Context of the Fourier Transform}{6}%
+\contentsline {subsection}{\numberline {1.8}The Gaussian Process Model}{6}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2}Aims and Objectives}{7}%
 \defcounter {refsection}{0}\relax 
@@ -26,13 +26,13 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2}Objectives}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Work Completed to Date}{7}%
+\contentsline {section}{\numberline {3}Work Completed to Date}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}The Data}{7}%
+\contentsline {subsection}{\numberline {3.1}The Data}{8}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.2}The Kernel}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{8}%
+\contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{9}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.4}Predict Function}{9}%
 \defcounter {refsection}{0}\relax 

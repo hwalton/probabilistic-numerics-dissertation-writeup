@@ -100,10 +100,10 @@
     \section{Background and Understanding of the Problem}
 
     \subsection{Dynamic Systems}
-    In the field of engineering, dynamics is focused on analyzing how systems, including structures and fluids, change and move.
-    This dynamic behaviour is typically in response to a dynamic force that changes over time, such as aerodynamic forces or impacts from waves or bumps in the road.
-    Studying dynamics is valuable because it has the potential to help prevent excessive vibration or oscillation of machinery, which is known to reduce the service life and in extreme cases can lead to catastrophic failure.
-    Therefore, if it was possible to describe and more accurately predict the behaviour of systems and structures in response to the dynamic forces that are present in these systems, they could be designed to be perform better, be safer, and to have lower maintenance costs.
+    In the field of engineering, dynamics is focused on analyzing how systems, including structures and fluids, change and move over time in response to a dynamic force that also changes over time.
+    Examples of such forces include aerodynamic forces, and impacts from waves or bumps in the road.
+    Studying dynamics is valuable because it has the potential to help prevent excessive vibration or oscillation of machinery which is known to reduce the service life and in extreme cases can lead to catastrophic failure.
+    Therefore, if it was possible to more accurately describe and predict the behaviour of systems and structures in response to the dynamic forces that are present in these systems, they could be designed to be perform better, be safer, and to have lower maintenance costs.
     However, the field of dynamics is far from being mastered, and there are still a large number of problems that cannot yet be solved.
     To begin, here are some examples of dynamic systems to illustrate why studying them is valuable:
     \begin{enumerate}
@@ -155,11 +155,12 @@
     Identifying dynamic systems is known as inverse modelling, but even this process is fraught with issues.
 
     \subsection{Classically Quantifying Uncertainty with Error Bounds}
-    Identifying system parameters using this inverse modelling approach results in values that are not exact, but have an uncertainty associated with them that comes from multiple sources.
-    The first cause of this uncertainty is due to noise that is always present to some degree in the sampled data due to the measuring devices - typically accelerometers - that are used to capture the input and response to the system.
+    Identifying system properties and parameters using this inverse modelling approach results in values that are not exact, but have an uncertainty associated with them that comes from multiple sources.
+    The first cause of this uncertainty is due to noise that is always present to some degree in the sampled input data due to the measuring devices - typically accelerometers - that are used to capture the force input into and corresponding response from the system.
     Furthermore, even if the true input and response could be sampled exactly, the non-identifiability problem states that since there are multiple sets of system parameters that could give the same set of observed outputs, it's impossible to uniquely determine them.
     Similarly, many algorithms make use of mathematical objects (such as matrix pseudoinverses) which have multiple alternatives, the correct choice of which is arguable and not definitive.
-    This lack of uniqueness is represented in outputted system parameters by having an uncertainty around their value and classically, this uncertainty is represented using error bounds.
+    This noise and lack of uniqueness is reflected in the uncertainty of the outputted system properties and parameters.
+    Classically, this uncertainty is represented using error bounds.
     For example, the damping ratio of a mode could be calculated in this way to be $0.1 \pm 0.02$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
 
 
@@ -168,7 +169,7 @@
     In inverse modelling of dynamic system analysis, any collected time series data is almost always converted into the frequency domain.
     This is because the physical meaning of the system properties have a clear visual interpretation in this domain. %elaborate + figure
     Specifically, the Frequency Response Function (FRF) is typically found, which is defined as the frequency domain response divided by the frequency domain input force.
-    The transformation of these functions from the time domain to the frequency domain relies on a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
+    The decomposition of the force input and response functions from the time domain to the frequency domain relies on a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
 
     \begin{equation}
         F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
@@ -179,9 +180,10 @@
 
     \noindent where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
-    However, it can only be applied in its base form to a function that is continuous in the domain $-\infty \text{ to } \infty$, meaning that it has a value defined at every point in time.
-    Although in the real world time passes continuously forever, the Fourier Transform of data sampled from the real world cannot be found by directly using the continuous Fourier Transform.
-    This is because this data is recorded over a finite window, and because it is typically discrete meaning that it is recorded at specific points in time instead of any point a continuous domain.
+    The outputted function is complex, which means it has two components that provide both the amplitude and phase information.
+    However, it for it to be applied in its base form to a function, the function must be defined for every point in time in the domain $-\infty \text{ to } \infty$.
+    Although in the real world time passes continuously forever, the Fourier Transform of data sampled from the real world cannot be found by using the continuous Fourier Transform directly.
+    This is because sampled data is always recorded over a finite window of time and because it is typically discrete meaning that it is recorded at specific points in time seperated by a time interval instead of at every point in the continuous domain.
     Classically, a numerical method called the Discrete Fourier Transform algorithm called the Fast Fourier Transform is used in this case.
 
     A numerical method is a discrete approximation of a transformation that cannot be solved using its exact mathematical definition because this would be either impossible or impractical.
@@ -214,17 +216,17 @@
 
     A Fourier Transform method that can be applied to discrete data and that is more robust to noise than the FFT would have significant implications in various fields of engineering.
 
-    In the context of modal analysis, the modal properties could be identified more precisely especially for nonlinear systems, whose complex dynamic behaviours can be obscured by noise.
+    In the context of dynamic systems, the system properties and parameters could be identified more precisely especially for nonlinear systems, whose complex dynamic behaviours can be obscured by noise.
     For example, noises may cause two closely spaced resonant frequencies to be mistaken for a single resonant frequency.
-    Furthermore, better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because new or changes to nonlinear behaviour are typical of the formation or growth cracks or other defects.
+    Furthermore, better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because an increase in nonlinear behaviour is typical of the formation or growth cracks or other defects.
     This in turn would allow engineers to make and maintain structures more safely being more likely to detect structural damage before catastrophic failure occurs.
 
-    A Fourier Transform that is more robust to noise would improve other areas of engineering where it is used extensively such as signal processing, image processing and acoustic engineering.
+    A Fourier Transform that is more robust to noise would improve other areas of engineering where it is used extensively such as control theory and signal processing, image processing, and acoustic engineering.
     In these contexts, the Fourier Transform is used to simplify a computationally expensive operation called convolution into a simple pointwise multiplication in the frequency domain and so would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
 
 
-    More generally in engineering, this alternative method could be employed where numerical methods would classically need to be implemented to transform discrete data.
-    Here, the same advantages of noise resilience provided by quantifying uncertainty with probabilistic numerics would apply.
+    More generally in engineering, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed where other numerical methods would classically need to be implemented to linearly transform discrete data because the GP can convert the discrete data back into a continuous function from which the linear transformation can be applied.
+    Here, and advantages to the robustness to noise would apply also.
 
     \subsection{The Gaussian Process Model}
     The Gaussian Process (GP) is being used to map a continuous ``latent'' function, $f(x)$, to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
