@@ -12,13 +12,11 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.5}The Fast Fourier Transform Algorithm}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.6}Identifying Dynamic Systems with Probabilistic Numerics}{5}%
+\contentsline {subsection}{\numberline {1.6}Probabilistic Numerics and the Gaussian Process}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.7}Implications of the Findings}{5}%
+\contentsline {subsection}{\numberline {1.7}Implications of the Findings}{6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.7.1}Implications in the Context of the Fourier Transform}{5}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.8}The Gaussian Process Model}{6}%
+\contentsline {subsubsection}{\numberline {1.7.1}Implications in the Context of the Fourier Transform}{6}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2}Aims and Objectives}{7}%
 \defcounter {refsection}{0}\relax 
@@ -36,6 +34,6 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.4}Predict Function}{9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Plan for Future Work}{10}%
+\contentsline {section}{\numberline {4}Plan for Future Work}{9}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{11}%

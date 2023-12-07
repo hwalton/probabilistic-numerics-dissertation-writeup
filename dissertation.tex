@@ -191,15 +191,14 @@
 
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
-    Firstly, the FFT assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.
+    Firstly, the Fast Fourier Transform (FFT) assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.\nomenclature[L]{FFT}{Fast Fourier Transform}
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
     But most importantly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties\cite{MathStackExchange2023}.
 
-    Classically, the uncertainty of parameters calculated downstream of this FFT could be quantified with error bounds by a sensitivity analysis.
-    Here, the uncertainty of the input data would be estimated, perhaps from the resolution of the measuring equipment, or by observation of the time domain sample data.
-    Then, the upper and lower bounds of the system parameters could be estimated using the upper and lower bounds of the input data.
+    In classical numerical methods such as this FFT, the uncertainty of parameters derived from computations is often quantified using error bounds determined via sensitivity analysis.
+    Here, the uncertainty of the input data is estimated, perhaps using the resolution of the measuring equipment, or observed variability in the time-domain sample data.
+    Based on these estimates, one can then calculate the upper and lower bounds the output parameters reflecting the range within which the true values are likely to lie.
     However, this is not straightforward and typically requires additional techniques and considerations beyond the core algorithm.
-    Furthermore, this process would not improve the poor robustness to noise of this FFT, only serve to quantify it.
 
     \subsection{Probabilistic Numerics and the Gaussian Process}
     This paper proposes a new method of performing the Fourier Transform and other linear transformations using a ``Gaussian Process'' (GP) that may be more robust to noise than the FFT through its use of probabilistic numerics, which is a new paradigm that seeks to expand on traditional numerical methods by incorporating probabilistic reasoning into the process of computation.
