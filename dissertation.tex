@@ -203,7 +203,7 @@
 
     \subsection{Identifying Dynamic Systems with Probabilistic Numerics}
     This paper proposes a new method of performing the Fourier Transform and other linear transformations.
-    This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data over a finite time interval.
+    This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data over a finite time interval.\nomenclature[L]{GP}{Gaussian Process}
     Moreover, it is defined in the continuous domain $-\infty \text{ to } \infty$ which means that the noise resilience of an FRF computed using this method may be improved because this can be transformed by the continuous Fourier Transform instead of resorting to the discrete FFT which is highly sensitive to noise.
 
     The outputs of the reconstructed function that this GP generate are probabilistic which means that the output is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
@@ -229,12 +229,10 @@
     Here, and advantages to the robustness to noise would apply also.
 
     \subsection{The Gaussian Process Model}
-    The Gaussian Process (GP) a type of machine learning algorithm that models a continuous ``latent'' function, $f(x)$.
+    The Gaussian Process (GP) a type of machine learning algorithm that fits a continuous ``latent'' function, $f(x)$ to noisy, discrete sampled data using probabilistic numerics.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
     This represents the underlying relationship between an input, $x$, and an output, $f(x)$.
-    In essence, a Gaussian Process is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the values of the other variables.
-    These variables are outputs ($f(x)$) of the latent function, each at a specific input point and include both the known training data (noisy observed samples at points in time) and unknown values of the output at other input points.
-    This approach allows the incorporation of both these variables, allowing a prediction of the latent function at new points in time by using information from the observed data.
-    Since the prediction of the output is given as probability distribution, this provides an inherent mechanism for quantifying the uncertainty in the output of the latent function as it varies with time.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
+    In essence, a Gaussian Process is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
+    These variables are outputs of the latent function ($f(x)$) at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
     Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, this joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
@@ -273,7 +271,7 @@
 
     The kernel is a special function that when input with two vectors, produces a covariance matrix that measures the similarity between each pair of inputs based on a set of hyperparameters.
     The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
-    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}
+    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}\nomenclature[L]{NLML}{Negative Log Marginal Likelihood}
 
     \begin{equation}
         -\log p(\mathbf{D}|\boldsymbol{\theta}) = \frac{1}{2} (\mathbf{y} - \boldsymbol{\mu}_X)^T \mathbf{K}_{\sigma}^{-1} (\mathbf{y} - \boldsymbol{\mu}_X) + \frac{1}{2} \log |\mathbf{K}_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
@@ -288,8 +286,8 @@
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
 
-
-    By a process called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, the ``posterior'', or prediction of the latent function when evaluated at a test point given our set of sampled training points~\cite{murphy2023probabilistic} can be found, as shown in Equation~\ref{eq:18.51}, where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the conditional mean and covariance of the GP, given the training data, given in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
+    In order to predict the latent function at one or multiple points, the ``posterior'' probability distribution of the latent function at these points is found by updating the initial prior assumptions its shape with the training data.
+    This process is called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, as shown in Equation~\ref{eq:18.51}, where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the conditional mean and covariance of the GP, given the training data, as shown in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
 
     \begin{equation}
         p(\mathbf{f}^* \vert \mathbf{D}, \mathbf{X}^*) = \mathcal{N}(\mathbf{f}^* \vert \boldsymbol{\mu}_{*\vert \mathbf{X}}, \boldsymbol{\Sigma}_{*\vert \mathbf{X}})\label{eq:18.51}
@@ -306,9 +304,11 @@
     \nomenclature[G]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data}
     \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
 
+    Since the prediction of the output is given as probability distribution, this provides an inherent mechanism for quantifying its uncertainty.
+
     This GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
     Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP\@.
-    Therefore, modelling uncertainty with probabilistic numerics allows this uncertainty information to be transferred from the time domain to the frequency domain.
+    Therefore, modelling uncertainty with probabilistic numerics allows this information to be transferred naturally from the time domain to the frequency domain.
 
 
     \section{Aims and Objectives}
@@ -339,12 +339,12 @@
     The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
     For simplicity, only the response data the first position was imported, and a small set of 100 samples was selected from the centre (to reduce computation time initially).
-    This time series data, as shown in the ``Force Response'' plot in Figure~\ref{fig:input-response-plot}, was used as training data to be fit by the GP\@.
+    This time series acceleration data, as shown in the ``Force Response'' plot in Figure~\ref{fig:input-response-plot}, was used as training data to be fit by the GP\@.
 
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-plot/input-response-plot.png}
-        \caption{The time series data, and the mean and standard deviation of the GPs prediction of it. Note that the prediction functions of mean and standard deviation that are output by the Gaussian Process are infact continuous, but must be evaluated at a discrete set of points in order to be plotted}
+        \caption{The time series data, and the mean and standard deviation of the GPs prediction of it. Note that the prediction functions of mean and standard deviation that are output by the Gaussian Process are infact continuous, but must be evaluated at a discrete set of points in order to be plotted.}
         \label{fig:input-response-plot}
     \end{figure}
 
@@ -370,15 +370,14 @@
     \subsection{Hyperparameter Optimisation}
     Next, this kernel class was added as an attribute to a class for the GP model itself.
     This allowed the kernel to be computed for different pairs of arrays as needed.
-    This GP model also contained an algorithm to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood.
+    The GP model also contained an algorithm to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood.
     It did this by multiplying each hyperparameter in turn by the exponent of a normally distributed continuous random variable.
     Imagine that only if the new NLML was lower than the previous, the hyperparameter was updated.
     If this was the case, the algorithm could get stuck in what is known as a local minimum, and never find the global minimum.
     This would be analogous to a ball that ``tried'' to find the bottom of a valley by always rolled directly downhill.
     If it got stuck in a small ditch half-way down the larger hill, it would never find the lowest point.
-    Therefore, a mechanism was added to the algorithm to avoid this:
+    Therefore, a mechanism was added to the algorithm to avoid this and help the algorithm find the global minimum:
     If the new NLML was higher (i.e., worse) than the previous, the hyperparameter was maybe still updated, with a larger probability the closer the NLML was to the previous NLML.
-    This enabled the algorithm to better find the global maximum because it was less likely to of get stuck in a local minima.
 
     \subsection{Predict Function}
     Next, the predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot}.
@@ -395,13 +394,12 @@
     \section{Plan for Future Work}
     Firstly, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) will be complete to allow the model to scale to large data~\cite{q-candela}.
     This will reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L]{$M$}{Number of inducing points in Sparse GP} \nomenclature[L]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
-    This modification will be made to both the NLML and predict functions, which required a very specific implementation involving multiple mathematical tricks in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
-    This is because certain matrix operations such as determinants and inversions can give imprecise results for large matrices containing floating point numbers, which is a format that computers use to store continuous variables as a decimal as opposed to integers type variables.
+    This modification will be made to both the NLML and predict functions, which requires a very specific implementation in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
     After this is complete, the hyperparameters can be optimised and the GP can be fit for functions containing more than 1000 data points in a significantly reduced computation time.
 
-    After the implementation of the Sparse GP, the next step will be to extend the input space of the joint Gaussian distribution to the frequency domain by incorporating the Fourier transform.
+    Next, the input space of the joint Gaussian distribution will be extended to the frequency domain by incorporating the Fourier transform.
 
-    Then, the best method to compare the robustness to noise of the Fourier transform computed using the GP model vs the classical FFT model needs to be determined (Objective~\ref{noise-resiliance}).
+    Then, a method to compare the robustness to noise of the Fourier transform computed using the GP model vs the classical FFT model needs to be determined (Objective~\ref{noise-resiliance}).
     One method of doing this uses the Mean Squared Error (MSE), which is a method of measuring the quality of an estimator (lower is better) by measuring the average of the squares of the differences between the points at each index position in the series, as shown in Equation~\ref{eq:mse}
 
     \begin{equation}
@@ -411,24 +409,25 @@
 
     \nomenclature[L]{$A_i$, $B_i$}{Values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i}
 
-    \noindent where $A_i$, $B_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i:
+    \noindent where $A_i$, $B_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i.
+    The method works as follows:
 
-    First the Fourier Transform can be computed using each method.
-    Then, some Gaussian noise can be added to the data and the FRF can be computed again using both methods.
-    Next, the (discrete) Mean Squared Error can be computed between Fourier Transforms of the unmodified and noisy data using the FFT method with a suitable setup of parameters such as window size and type.
-    Similarly, the MSE can be computed between the mean functions of the Fourier Transforms of the unmodified and noisy data generated by the Gaussian Process method.
-    Since these mean functions are continuous, they first need to be discretised at the same frequencies present in the FFTs generated by the first method.
+    First, the Fourier Transform of the data can be computed using each method.
+    Then, some Gaussian noise can be added to the data and the Fourier Transform can be computed again using both methods.
+    Next, for the standard FFT method, the (discrete) Mean Squared Error can be computed between Fourier Transforms of the unmodified and noisy data.
+    Similarly, for the Gaussian Process method, the MSE can be computed between the mean functions of Fourier Transforms of the unmodified and noisy data.
+    Since these mean functions are continuous, they first need to be discretised by evaluating them at the same frequencies present in the FFTs generated using the first method.
     The two MSEs can then be used to make a comparison between robustness to noise, of each method.
     This could be repeated for different levels and types of noise (Gaussian vs white noise) to test how each method performs under various conditions.
 
     If time allows, the stretch objective (\ref{stretch-obj}) of comparing how smoothed out sharp resonance peaks are due to spectral leakage can be complete.
     To do this, the Fourier Transform of a pure sine wave should be found using both the GP and FFT methods.
-    This is because it can be solved analytically on paper to provide a Fourier Transform with a sharp peak at the frequency of the wave, and the MSE of each method against the mathematically precise analytical solution can be compared.
+    This is because it can be solved analytically on paper to provide a Fourier Transform with a sharp peak at the frequency of the wave, and the MSE of each method against the mathematically exact analytical solution can be compared.
 
     Finally, a conclusion can be drawn regarding the utility of the new Gaussian Process (GP) method of computing the Fourier Transform presented in this paper when compared to the classical Fast Fourier Transform (FFT) with respect to robustness to noise and prevention of artifacts due to spectral leakage.
     Since the addition of noise is an inherently random, this should be repeated several times and statistical techniques should be employed to show whether any differences in MSE are statistically significant.
     One such technique is hypothesis testing, which provides a framework to state whether there is sufficient evidence to reject the ``null'' hypothesis.
-    This means that the default stance the new GP method is no better than classical methods is assumed unless there is sufficient evidence to prove otherwise beyond a reasonable doubt.
+    This null hypothesis is the default stance that the new GP method is no better than classical methods and is assumed true unless there is sufficient evidence to prove otherwise beyond a reasonable doubt.
 
     \subsection{Future Work Time Plan}
     A Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project is included in Figure~\ref{fig:gantt-chart_}:
@@ -437,7 +436,7 @@
         \begin{figure}[p] % 'p' places the figure on a page of its own
             \centering
             \includegraphics[width=\linewidth]{figures/gantt_chart/gantt-chart_.png}
-            \caption{A Gantt chart showing work remaining, using a format modified from~\cite{DataCampGanttChart2021}. This includes scheduled delays in the Christmas and Easter holidays to allow for exam revision and as a buffer to catch up to the schedule if the project is falling behind}
+            \caption{A Gantt chart showing work remaining, using a format modified from~\cite{DataCampGanttChart2021}. This includes scheduled delays in the Christmas and Easter holidays to allow for exam revision and as a buffer to catch up to the schedule if the project is falling behind.}
             \label{fig:gantt-chart_}
         \end{figure}
     \end{landscape}
