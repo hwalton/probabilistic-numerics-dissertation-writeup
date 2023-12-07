@@ -9,7 +9,7 @@
 \usepackage{pdflscape}
 
 \usepackage{longtable}
-
+\usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{placeins}
@@ -106,7 +106,7 @@
     Therefore, by studying these dynamic systems, they could be designed to perform better, be safer, and to have lower maintenance costs.
     However, the field of dynamics is far from being mastered since there are many types of problems that cannot yet be solved.
     To begin with, here are some examples of dynamic systems and how it would be valuable to understand them better:
-    \begin{enumerate}
+    \begin{enumerate}[listparindent=\parindent]
         \item A motorcycle suspension system is a combination of springs, dampers and linkages that connect the motorcycle chassis to its wheels.
         Its primary purpose is to keep the tyres in contact with the ground and without proper suspension, the tyres would lose traction when encountering bumps, especially when braking, accelerating or cornering~\cite{UTI2020MotorcycleSuspension}.
         It is designed to allow some relative motion between the two in order to absorb impacts while at the same time trying to maintain its equilibrium position, and its equilibrium velocity of zero - both relative to the chassis.
@@ -124,10 +124,12 @@
 
         \item An offshore wind turbine experiences a relentless random forcing the waves that repeatedly crash against the base of its tower.
         High cycle fatigue a phenomenon that causes cracks to grow over time from micro-defects in a structure due to cyclic loading below the elastic limit of the material.
+
         The rate at which this occurs increases with the amplitude of the stresses in the structure, which in turn increase with the amplitude of oscillation in response to this cyclic loading.
         If a periodic force is applied to a system with a specific frequency known as a resonant frequency, the amplitude of the oscillation may be large even for a small amplitude force, leading to a reduced lifespan from an excessive rate of high cycle fatigue.
         The same can happen in this case with a random force that has an \textit{average} frequency similar to the resonant frequency.
         Furthermore, the stresses could become so large that they exceed the ultimate tensile strength of the material, causing a sudden mechanical failure and the collapse of the turbine.
+
         Therefore, to make structures safer and reduce maintenance costs, it would be valuable to be able to model their behaviour in terms of dynamic properties such as this resonant frequency from system parameters such as the stiffness of the tower so that the frequencies at which they occur can be designed away from the expected frequencies of the periodic forces.
 
         \item An aircraft wing bends in response to aerodynamic forces.
