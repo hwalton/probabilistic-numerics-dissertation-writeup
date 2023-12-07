@@ -105,10 +105,10 @@
     Studying dynamics is valuable because it has the potential to help prevent excessive vibration or oscillation of machinery which is known to reduce the service life and in extreme cases can lead to catastrophic failure.
     Therefore, if it was possible to more accurately describe and predict the behaviour of systems and structures in response to the dynamic forces that are present in these systems, they could be designed to be perform better, be safer, and to have lower maintenance costs.
     However, the field of dynamics is far from being mastered, and there are still a large number of problems that cannot yet be solved.
-    To begin, here are some examples of dynamic systems to illustrate why studying them is valuable:
+    To begin, here are some examples of dynamic systems to illustrate why studying them would be valuable:
     \begin{enumerate}
         \item A motorcycle suspension system is a combination of springs, dampers and linkages that connect the motorcycle chassis to its wheels.
-        Its primary purpose is to keep the tyres in contact with the ground and without proper suspension, the tyres would lose traction when encountering bumps, especially when braking, accelerating or cornering [1].
+        Its primary purpose is to keep the tyres in contact with the ground and without proper suspension, the tyres would lose traction when encountering bumps, especially when braking, accelerating or cornering~\cite{UTI2020MotorcycleSuspension}.
         It is designed to allow some relative motion between the two in order to absorb impacts while at the same time trying to maintain its equilibrium position, and its equilibrium velocity of zero - both relative to the chassis.
         The dampers in the suspension produces a force proportional to the velocity, typically through viscous dampers.
         Think of these like syringes full of a liquid; the faster you move the plunger, the harder you have to push to maintain that velocity due to resistance to the flow caused by viscous drag forces.
@@ -145,12 +145,12 @@
     This means that if you double the input force over time, the response over time is exactly the same, except that the displacement at any point in time will be double.
     This is not the case for nonlinear systems (such as the aircraft wing in the example above) where non-compliance with the principle of superposition causes the system parameters to distort as the magnitude of the input force is increased.
     This causes the response to become highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
-    Nonlinearity can even lead to bifurcations, which is where the system can exhibit one of multiple stable responses, or limit cycles, at a given frequency.
+    Nonlinearity can even lead to bifurcations, which is where the system can exhibit one of multiple stable responses, or ``limit cycles'', at a given frequency.
     Therefore, forward modelling is currently too difficult for systems that are non-linear.
 
     Unfortunately, in real life, everything is non-linear, and therefore forward modelling cannot currently be used to solve system properties exactly using the system parameters as an input.
     Only in rare cases are systems close enough linear that they can be approximated as such.
-    What's worse is that even if a model did exist to solve the system, it would be of no use because typically not even the system parameters are known to be able to input them into the model.
+    What's worse is that even if a model did exist to solve the nonlinear system, it would be of no use because typically not even the system parameters are known to be able to input them into the model.
     This inherent complexity is the key reason why the field of dynamics has not been mastered, and it means that currently for medium to highly non-linear systems - which is almost all systems - all that can be done is to take real life data measurements from an existing system and identify the system properties and parameters that best fit the observed data.
     Identifying dynamic systems is known as inverse modelling, but even this process is fraught with issues.
 
@@ -229,11 +229,14 @@
     Here, and advantages to the robustness to noise would apply also.
 
     \subsection{The Gaussian Process Model}
-    The Gaussian Process (GP) is being used to map a continuous ``latent'' function, $f(x)$, to our noisy discrete sampled data that takes an input $x$ (in this case, time) and outputs in a force.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
-    A Gaussian Process ``is a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian}.
-    This is a distribution of a set of variables that include both our training data and points of interest on our latent function.
-    It describes how the probability distribution of each variable depends on the values of the other variables.
-    Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, the joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+    The Gaussian Process (GP) a type of machine learning algorithm that models a continuous ``latent'' function, $f(x)$.
+    This represents the underlying relationship between an input, $x$, and an output, $f(x)$.
+    In essence, a Gaussian Process is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the values of the other variables.
+    These variables are outputs ($f(x)$) of the latent function, each at a specific input point and include both the known training data (noisy observed samples at points in time) and unknown values of the output at other input points.
+    This approach allows the incorporation of both these variables, allowing a prediction of the latent function at new points in time by using information from the observed data.
+    Since the prediction of the output is given as probability distribution, this provides an inherent mechanism for quantifying the uncertainty in the output of the latent function as it varies with time.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
+
+    Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, this joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
         \begin{pmatrix}
