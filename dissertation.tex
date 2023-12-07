@@ -100,24 +100,27 @@
     \section{Background and Understanding of the Problem}
 
     \subsection{Dynamic Systems}
-    In the field of engineering, dynamics is focused on analyzing how systems, including structures and fluids, change and move over time in response to a dynamic force that also changes over time.
-    Examples of such forces include aerodynamic forces, and impacts from waves or bumps in the road.
-    Studying dynamics is valuable because it has the potential to help prevent excessive vibration or oscillation of machinery which is known to reduce the service life and in extreme cases can lead to catastrophic failure.
-    Therefore, if it was possible to more accurately describe and predict the behaviour of systems and structures in response to the dynamic forces that are present in these systems, they could be designed to be perform better, be safer, and to have lower maintenance costs.
-    However, the field of dynamics is far from being mastered, and there are still a large number of problems that cannot yet be solved.
-    To begin, here are some examples of dynamic systems to illustrate why studying them would be valuable:
+    In engineering, the field of dynamics studies how systems, like structures and fluids, respond and evolve over time under varying forces.
+    These forces can range from aerodynamic pressures to impacts from waves or road irregularities.
+    Excessive vibration or oscillation of machinery is known to reduce service life and in extreme cases cause catastrophic failure.
+    Therefore, by studying these dynamic systems, they could be designed to perform better, be safer, and to have lower maintenance costs.
+    However, the field of dynamics is far from being mastered since there are many types of problems that cannot yet be solved.
+    To begin with, here are some examples of dynamic systems and how it would be valuable to understand them better:
     \begin{enumerate}
         \item A motorcycle suspension system is a combination of springs, dampers and linkages that connect the motorcycle chassis to its wheels.
         Its primary purpose is to keep the tyres in contact with the ground and without proper suspension, the tyres would lose traction when encountering bumps, especially when braking, accelerating or cornering~\cite{UTI2020MotorcycleSuspension}.
         It is designed to allow some relative motion between the two in order to absorb impacts while at the same time trying to maintain its equilibrium position, and its equilibrium velocity of zero - both relative to the chassis.
-        The dampers in the suspension produces a force proportional to the velocity, typically through viscous dampers.
+
+        The dampers in the suspension produces a force proportional to the velocity that acts to slow the wheel down, typically through viscous dampers.
         Think of these like syringes full of a liquid; the faster you move the plunger, the harder you have to push to maintain that velocity due to resistance to the flow caused by viscous drag forces.
-        Similarly, damping in the system produces a force proportional to the velocity that acts to slow the wheel down and can be optimised by bringing the system back to equilibrium after a disturbance as fast as possible so that it is ready for the next bump (known as ``critical damping'').
+        Damping can be optimised by bringing the system back to equilibrium after a disturbance as fast as possible so that it is ready for the next bump (known as ``critical damping'').
         Too little damping, and the wheel will overshoot and oscillate back and forth before reaching equilibrium.
         Too much damping, and the wheel will not oscillate, but it will reach equilibrium more slowly than what is possible.
+
         Similarly, the spring creates stiffness in the system that produces a force with a magnitude proportional to the displacement of wheel from its equilibrium position which acts to return the wheel to this equilibrium position.
-        The ideal balance between comfort and handling can be tailored to the specific use of the bike by setting the stiffness of the spring low enough that the system has time to absorb the impact softly, but high enough that the bike's responses to steering inputs are fast and reactive.
-        Therefore, studying dynamic systems such as this one would be valuable because if it was possible to reliably predict how it will behave for different system parameters such as mass, stiffness and damping, it would be possible to design the system with the best system parameters within the given constraints in order to optimise the performance of the motorcycle for its purpose.
+        The stiffness of the spring that provides the ideal balance between comfort and handling can be tailored for the motorcycle's specific purpose, where it is low enough that the system has time to absorb the impact softly but high enough that the bike's responses to steering inputs are fast and reactive.
+
+        Therefore, studying dynamic systems such as this one would be valuable because if it were possible to reliably predict how it will behave for different system parameters such as mass, stiffness and damping before the motorcycle was constructed, it would be possible to optimise them without trial and error, saving resources in the research and development stage of the product lifecycle.
 
         \item An offshore wind turbine experiences a relentless random forcing the waves that repeatedly crash against the base of its tower.
         High cycle fatigue a phenomenon that causes cracks to grow over time from micro-defects in a structure due to cyclic loading below the elastic limit of the material.
