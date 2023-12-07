@@ -8,7 +8,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.3}Classically Quantifying Uncertainty with Error Bounds}{3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.4}The Fourier Transform and the Frequency Response Function (FRF)}{3}%
+\contentsline {subsection}{\numberline {1.4}The Fourier Transform and the Frequency Response Function (FRF)}{4}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.5}The Fast Fourier Transform Algorithm}{4}%
 \defcounter {refsection}{0}\relax 
