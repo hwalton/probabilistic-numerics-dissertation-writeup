@@ -201,14 +201,90 @@
     However, this is not straightforward and typically requires additional techniques and considerations beyond the core algorithm.
     Furthermore, this process would not improve the poor robustness to noise of this FFT, only serve to quantify it.
 
-    \subsection{Identifying Dynamic Systems with Probabilistic Numerics}
-    This paper proposes a new method of performing the Fourier Transform and other linear transformations.
-    This new method makes use of a machine learning model called a Gaussian Process (GP) which allows a continuous signal to be reconstructed from discrete sample data over a finite time interval.\nomenclature[L]{GP}{Gaussian Process}
-    Moreover, it is defined in the continuous domain $-\infty \text{ to } \infty$ which means that the noise resilience of an FRF computed using this method may be improved because this can be transformed by the continuous Fourier Transform instead of resorting to the discrete FFT which is highly sensitive to noise.
+    \subsection{Probabilistic Numerics and the Gaussian Process}
+    This paper proposes a new method of performing the Fourier Transform and other linear transformations using a ``Gaussian Process'' (GP) that may be more robust to noise than the FFT through its use of probabilistic numerics.
+    A GP uses noisy, discrete sampled data to model a continuous ``latent'' function, $f(x)$ that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}\nomenclature[L]{GP}{Gaussian Process}
+    In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
+    These variables are outputs of the latent function ($f(x)$) at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
-    The outputs of the reconstructed function that this GP generate are probabilistic which means that the output is not itself a single point, but a Gaussian probability distribution defined by a mean and standard deviation.
-    The GP model can be designed to include a noise term that explicitly models the observational noise.
-    This gives the GP a way to distinguish between the signal and noise components, which may allow for Fourier Transform to be performed with better robustness to noise through its use of probabilistic numerics.
+    Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, this joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+
+    \begin{equation}
+        \begin{pmatrix}
+            \mathbf{y} \\
+            \mathbf{f}^*
+        \end{pmatrix}
+        \sim \mathcal{N} \left(
+        \begin{pmatrix}
+            \boldsymbol{\mu}_X \\
+            \boldsymbol{\mu}_*
+        \end{pmatrix},
+        \begin{pmatrix}
+            \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I} & \mathbf{K}_{X,*} \\
+            \mathbf{K}_{X,*}^T & \mathbf{K}_{*,*}
+        \end{pmatrix}
+        \right)\label{eq:joint-distribution}
+    \end{equation}
+
+    \nomenclature[L]{$y_n$}{Noisy observed output based on the latent function, $f(x)$}
+    \nomenclature[L]{$\mathbf{y}$}{A vector of $y_n$ values from a set of training points}
+    \nomenclature[L]{$\mathbf{f}^*$}{A vector of values of the latent function evaluated at a set of test points, $\mathbf{X}_*$}
+    \nomenclature[L]{$\mathbf{I}$}{Identity matrix}
+    \nomenclature[L]{$\mathbf{K}_{X,X}$}{Covariance matrix for training input data, $\mathbf{K}(\mathbf{X},\mathbf{X})$}
+    \nomenclature[L]{$\mathbf{K}_{X,*}$}{Covariance matrix between training inputs and test inputs, $\mathbf{K}(\mathbf{X},\mathbf{X}_*)$}
+    \nomenclature[L]{$\mathbf{K}_{*,*}$}{Covariance matrix for test inputs, $\mathbf{K}(\mathbf{X}_*,\mathbf{X}_*)$}
+    \nomenclature[G]{$\epsilon_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
+    \nomenclature[G]{$\boldsymbol{\mu}_X$}{Mean of the Gaussian Process, given the training data $\mathbf{X}$}
+    \nomenclature[G]{$\boldsymbol{\mu}_*$}{Mean of the Gaussian Process, given the test data $\mathbf{X}_*$}
+    \nomenclature[G]{$\sigma^2_y$}{Variance of observation noise}
+
+
+    \noindent where $\mathbf{y}$ is a vector of $y_n$ values from a set of training points, $\boldsymbol{\mu}_X$ is the mean of the Gaussian Process, given the training data $\mathbf{X}$, $\boldsymbol{\mu}_*$ is the mean of the Gaussian Process, given the test data $\mathbf{X}_*$, $\mathbf{f}^*$ is a vector of values of the latent function evaluated at a set of test points $\mathbf{X}_*$, $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
+    Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$\mathbf{K}_{\mathbf{A},\mathbf{B}}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors $\mathbf{A}$, $\mathbf{B}$}\nomenclature[L]{$k(a,b)$}{Kernel function of arbitrary points, $a$, and $b$}
+
+    The kernel is a special function that when input with two vectors, produces a covariance matrix that measures the similarity between each pair of inputs based on a set of hyperparameters.
+    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
+    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}\nomenclature[L]{NLML}{Negative Log Marginal Likelihood}
+
+    \begin{equation}
+        -\log p(\mathbf{D}|\boldsymbol{\theta}) = \frac{1}{2} (\mathbf{y} - \boldsymbol{\mu}_X)^T \mathbf{K}_{\sigma}^{-1} (\mathbf{y} - \boldsymbol{\mu}_X) + \frac{1}{2} \log |\mathbf{K}_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
+    \end{equation}
+
+    \nomenclature[L]{$\mathbf{D}$}{Training data}
+    \nomenclature[G]{$\boldsymbol{\theta}$}{Set of hyperparameters}
+    \nomenclature[L]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
+    \nomenclature[L]{$N$}{Number of training points}
+
+    \noindent where $\mathbf{D}$ is the training data, $N$ is the number of training points, $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
+    This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
+    By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
+
+    In order to predict the latent function at one or multiple points, the ``posterior'' probability distribution of the latent function at these points is found by updating the initial prior assumptions its shape with the training data.
+    This process is called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, as shown in Equation~\ref{eq:18.51}, where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the conditional mean and covariance of the GP, given the training data, as shown in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
+
+    \begin{equation}
+        p(\mathbf{f}^* \vert \mathbf{D}, \mathbf{X}^*) = \mathcal{N}(\mathbf{f}^* \vert \boldsymbol{\mu}_{*\vert \mathbf{X}}, \boldsymbol{\Sigma}_{*\vert \mathbf{X}})\label{eq:18.51}
+    \end{equation}
+
+    \begin{equation}
+        \boldsymbol{\mu}_{*\vert \mathbf{X}} = \boldsymbol{\mu}_* + \mathbf{K}_{X,*}^T (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} (\mathbf{y} - \boldsymbol{\mu}_X)\label{eq:18.52}
+    \end{equation}
+
+    \begin{equation}
+        \boldsymbol{\Sigma}_{*\vert \mathbf{X}} = \mathbf{K}_{*,*} - \mathbf{K}_{X,*}^T (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} \mathbf{K}_{X,*}\label{eq:18.53}
+    \end{equation}
+
+    \nomenclature[G]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data}
+    \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
+
+
+    Furthermore, this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
+    It is also defined in the continuous domain $-\infty \text{ to } \infty$ which means Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
+    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP\@.
+    Therefore, modelling uncertainty with probabilistic numerics allows this information to be transferred naturally from the time domain to the frequency domain.
+
+    The fact that the GP model is designed to include the noise term $\epsilon_n$ that explicitly models the observational noise gives it a way to distinguish between the signal and noise components.
+    This is why it may allow for Fourier Transform to be performed with better robustness to noise through its use of probabilistic numerics.
 
     \subsection{Implications of the Findings}
 
@@ -218,19 +294,18 @@
 
     In the context of dynamic systems, the system properties and parameters could be identified more precisely especially for nonlinear systems, whose complex dynamic behaviours can be obscured by noise.
     For example, noises may cause two closely spaced resonant frequencies to be mistaken for a single resonant frequency.
-    Furthermore, better modelling and identification of nonlinear behaviour would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because an increase in nonlinear behaviour is typical of the formation or growth cracks or other defects.
-    This in turn would allow engineers to make and maintain structures more safely being more likely to detect structural damage before catastrophic failure occurs.
+    This in turn could allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because an increase in nonlinear behaviour is typical of the formation or growth cracks or other defects.
+    Consequently, engineers would be able to make and maintain structures with greater safety by increasing the likelihood of detecting structural damage before catastrophic failure occurs.
 
-    A Fourier Transform that is more robust to noise would improve other areas of engineering where it is used extensively such as control theory and signal processing, image processing, and acoustic engineering.
-    In these contexts, the Fourier Transform is used to simplify a computationally expensive operation called convolution into a simple pointwise multiplication in the frequency domain and so would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
+    A Fourier Transform that is more robust to noise could improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
+    In these contexts, the Fourier Transform is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
+    Therefore, this improvement would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
 
 
-    More generally in engineering, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed where other numerical methods would classically need to be implemented to linearly transform discrete data because the GP can convert the discrete data back into a continuous function from which the linear transformation can be applied.
-    Here, and advantages to the robustness to noise would apply also.
+    More generally in engineering, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed to improve robustness to noise where classically, other numerical methods would need to be implemented to linearly transform discrete data.
 
     \subsection{The Gaussian Process Model}
-    The Gaussian Process (GP) a type of machine learning algorithm that fits a continuous ``latent'' function, $f(x)$ to noisy, discrete sampled data using probabilistic numerics.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
-    This represents the underlying relationship between an input, $x$, and an output, $f(x)$.
+    The Gaussian Process (GP) a type of machine learning algorithm that uses noisy, discrete sampled data to model a continuous ``latent'' function, $f(x)$ that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}
     In essence, a Gaussian Process is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
     These variables are outputs of the latent function ($f(x)$) at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
@@ -304,9 +379,9 @@
     \nomenclature[G]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data}
     \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
 
-    Since the prediction of the output is given as probability distribution, this provides an inherent mechanism for quantifying its uncertainty.
 
-    This GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
+    Furthermore, this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
+    It is also defined in the continuous domain $-\infty \text{ to } \infty$ which means Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
     Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP\@.
     Therefore, modelling uncertainty with probabilistic numerics allows this information to be transferred naturally from the time domain to the frequency domain.
 
