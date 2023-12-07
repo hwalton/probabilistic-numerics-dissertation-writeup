@@ -136,23 +136,22 @@
     \subsection{Identifying Dynamic Systems}
 
     Dynamic systems have system parameters, which are fundamental characteristics of the system such as the aforementioned mass, stiffness and damping.
-    ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties are predicted from the system parameters using physical laws.
-    These properties include the resonant frequencies, which are the forcing frequencies that produce a peak in amplitude of excitation, and mode shapes are the patterns of vibration at each resonant frequency, typically in the context of multi-degree-of-freedom (MDOF) systems.
-    These MDOF systems are modelled as more than one point masses, and typically connected to each other and the environment by springs and dampers.
+    ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties are predicted, from the system parameters using physical laws.
+    These properties include the resonant frequencies, which are the forcing frequencies that produce a peak in amplitude of excitation, and mode shapes, which are the patterns of vibration at each resonant frequency.
 
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
     This means that if you double the input force over time, the response over time is exactly the same, except that the displacement at any point in time will be double.
     This is not the case for nonlinear systems (such as the aircraft wing in the example above) where non-compliance with the principle of superposition causes the system parameters to distort as the magnitude of the input force is increased.
-    This causes the response to become highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
-    Nonlinearity can even lead to bifurcations, which is where the system can exhibit one of multiple stable responses, or ``limit cycles'', at a given frequency.
+    This, in turn, causes the response to become highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
+    Nonlinearity can even lead to bifurcations, which is where the system can exhibit one of multiple stable responses at a given frequency.
     Therefore, forward modelling is currently too difficult for systems that are non-linear.
 
-    Unfortunately, in real life, everything is non-linear, and therefore forward modelling cannot currently be used to solve system properties exactly using the system parameters as an input.
-    Only in rare cases are systems close enough linear that they can be approximated as such.
+    Unfortunately, in real life, everything is non-linear;
+    only in rare cases are systems close enough linear that they can be approximated as such.
     What's worse is that even if a model did exist to solve the nonlinear system, it would be of no use because typically not even the system parameters are known to be able to input them into the model.
-    This inherent complexity is the key reason why the field of dynamics has not been mastered, and it means that currently for medium to highly non-linear systems - which is almost all systems - all that can be done is to take real life data measurements from an existing system and identify the system properties and parameters that best fit the observed data.
-    Identifying dynamic systems is known as inverse modelling, but even this process is fraught with issues.
+    This inherent complexity is the key reason why the field of dynamics has not been mastered, and it means that all that can currently be done for medium to highly non-linear systems - \textit{which is almost all systems} - is to take real life data measurements from an existing system and identify the system properties and parameters that best fit the observed data through what is known as ``inverse modelling''.
+    However, even this process is fraught with issues.
 
     \subsection{Classically Quantifying Uncertainty with Error Bounds}
     Identifying system properties and parameters using this inverse modelling approach results in values that are not exact, but have an uncertainty associated with them that comes from multiple sources.
@@ -338,7 +337,7 @@
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-plot/input-response-plot.png}
-        \caption{The time series data, and the mean and standard deviation of the GPs prediction of it. Note that the prediction functions of mean and standard deviation that are output by the Gaussian Process are infact continuous, but must be evaluated at a discrete set of points in order to be plotted.}
+        \caption{The time series data, and the mean and standard deviation of the GPs prediction of it. Note that the prediction functions of mean and standard deviation that are output by the Gaussian Process are in fact continuous, but must be evaluated at a discrete set of points in order to be plotted.}
         \label{fig:input-response-plot}
     \end{figure}
 
