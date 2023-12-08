@@ -10,30 +10,30 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.4}The Fourier Transform and the Frequency Response Function (FRF)}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.5}The Fast Fourier Transform Algorithm}{4}%
+\contentsline {subsection}{\numberline {1.5}The Fast Fourier Transform Algorithm}{5}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.6}Probabilistic Numerics and the Gaussian Process}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.7}Implications of the Findings}{6}%
+\contentsline {subsection}{\numberline {1.7}Implications of the Findings}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.7.1}Implications in the Context of the Fourier Transform}{6}%
+\contentsline {subsubsection}{\numberline {1.7.1}Implications in the Context of the Fourier Transform}{7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Aims and Objectives}{7}%
+\contentsline {section}{\numberline {2}Aims and Objectives}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Aim}{7}%
+\contentsline {subsection}{\numberline {2.1}Aim}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}Objectives}{7}%
+\contentsline {subsection}{\numberline {2.2}Objectives}{8}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3}Work Completed to Date}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}The Data}{8}%
+\contentsline {subsection}{\numberline {3.1}The Data}{9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2}The Kernel}{8}%
+\contentsline {subsection}{\numberline {3.2}The Kernel}{9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{9}%
+\contentsline {subsection}{\numberline {3.3}Hyperparameter Optimisation}{10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Predict Function}{9}%
+\contentsline {subsection}{\numberline {3.4}Predict Function}{10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Plan for Future Work}{9}%
+\contentsline {section}{\numberline {4}Plan for Future Work}{11}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{11}%
+\contentsline {subsection}{\numberline {4.1}Future Work Time Plan}{12}%

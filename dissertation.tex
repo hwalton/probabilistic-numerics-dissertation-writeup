@@ -56,6 +56,7 @@
 \renewcommand{\theequation}{\thesection.\arabic{equation}}
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 
+\usepackage{gensymb}
 \usepackage{nomencl}
 \usepackage{chngcntr}
 \usepackage{amssymb}
@@ -140,9 +141,9 @@
 
     \subsection{Identifying Dynamic Systems}
 
-    Dynamic systems have system parameters, which are fundamental characteristics of the system such as the aforementioned mass, stiffness and damping.
+    Dynamic systems have system parameters such as mass, stiffness and damping coefficient, which are fundamental characteristics of the system.
     ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties are predicted, from the system parameters using physical laws.
-    These properties include the resonant frequencies, which are the forcing frequencies that produce a peak in amplitude of excitation, and mode shapes, which are the patterns of vibration at each resonant frequency.
+    These properties include the resonant frequencies, which are the forcing frequencies that produce a peak in amplitude of excitation, and the damping ratio which compares the damping coefficient to that of critical damping
 
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
@@ -166,7 +167,7 @@
     This noise and lack of uniqueness is reflected in the uncertainty of the outputted system properties and parameters.
 
     In classical numerical methods, the uncertainty of parameters derived from computations is often quantified using error bounds determined via sensitivity analysis.
-    For example, the error bound of a damping ratio could be represented as $0.1 \pm 0.02$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
+    For example, the error bound of a stiffness could be represented as $0.1 \pm 0.02 Nm^{-1}$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
     Here, the uncertainty of the input data is estimated, perhaps using the resolution of the measuring equipment, or observed variability in the time-domain sample data.
     Based on these estimates, one can then calculate the upper and lower bounds the output parameters.
     However, this is not straightforward and typically requires additional techniques and considerations beyond the core algorithm.
@@ -175,9 +176,20 @@
     \subsection{The Fourier Transform and the Frequency Response Function (FRF)}
 
     In inverse modelling of dynamic system analysis, any collected time series data is almost always converted into the frequency domain.
+    Specifically, the Frequency Response Function (FRF) is typically computed, which is defined as the frequency domain response divided by the frequency domain input force.
     This is because the physical meaning of the system properties have a clear visual interpretation in this domain.
-    Specifically, the Frequency Response Function (FRF) is typically found, which is defined as the frequency domain response divided by the frequency domain input force (Equation). %elaborate + figure
-    The decomposition of the force input and response functions from the time domain to the frequency domain relies on a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
+    The outputted function is complex, which means it has two components that provide both the amplitude and phase information.
+    If the system parameters (mass, damping coefficient or stiffness) change, so do the system properties (resonant frequency and damping ratio) as visible in the FRF (Figure~\ref{fig:frequency-response-function}); a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping datio results in a sharper peak.
+    Note the phase shifts by $\pi$ rad ($180\degree$) across the peak.
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=1.0\linewidth]{figures/frequency-response-function/frequency-response-function_}
+        \caption{The magnitude and phase of H, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass m $[kg]$, damping coefficient c [$N \cdot s \cdot m^{-1}$] and stiffness k [$N \cdot m^{-1}$] affects the system parameters resonant frequency $\omega_r$ [$rad \cdot s^{-1}$] and damping ratio $\zeta$ [-]}
+        \label{fig:frequency-response-function}
+    \end{figure}
+
+    The decomposition of the force input and response functions from the time domain to the frequency domain needed to compute this FRF relies on a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
 
     \begin{equation}
         F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
@@ -188,13 +200,12 @@
 
     \noindent where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
-    The outputted function is complex, which means it has two components that provide both the amplitude and phase information.
     However, it for it to be applied in its base form to a function, this function must be defined for every point in time in the domain $-\infty \text{ to } \infty$.
     Although in the real world time passes continuously forever, the Fourier Transform of data sampled from the real world cannot be found by using the continuous Fourier Transform directly.
     This is because sampled data is never defined continuously at every point in time, but over a finite window containing discrete points seperated by a finite time interval.
     Classically, a numerical method called the Discrete Fourier Transform algorithm called the Fast Fourier Transform is used in this case.
 
-    A numerical method is a discrete approximation of a transformation that cannot be solved using its exact mathematical definition because this would be either impossible or impractical and they are typically used for transformations of discrete data such as data sampled from real life.
+    A numerical method is a discrete approximation of a transformation that cannot be solved using its exact mathematical definition because this would be either impossible or impractical, and they are typically used for transformations of discrete data such as data sampled from real life.
 
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
@@ -238,7 +249,9 @@
     \nomenclature[L]{$\mathbf{K}_{X,*}$}{Covariance matrix between training inputs and test inputs, $\mathbf{K}(\mathbf{X},\mathbf{X}_*)$}
     \nomenclature[L]{$\mathbf{K}_{*,*}$}{Covariance matrix for test inputs, $\mathbf{K}(\mathbf{X}_*,\mathbf{X}_*)$}
     \nomenclature[G]{$\epsilon_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
-    \nomenclature[G]{$\boldsymbol{\mu}_X$}{Mean of the Gaussian Process, given the training data $\mathbf{X}$}
+    \nomenclature[G]{$\boldsymbol{\mu}_X$}{Mean of the Gaussian Process, given the training data inputs $\mathbf{X}$}
+    \nomenclature[L]{$\boldsymbol{X}$}{Training Point Inputs}
+    \nomenclature[L]{$\boldsymbol{X}_*$}{Test Point Inputs}
     \nomenclature[G]{$\boldsymbol{\mu}_*$}{Mean of the Gaussian Process, given the test data $\mathbf{X}_*$}
     \nomenclature[G]{$\sigma^2_y$}{Variance of observation noise}
 
