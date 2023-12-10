@@ -101,7 +101,7 @@
     \section{Background and Understanding of the Problem}
 
     \subsection{Dynamic Systems}
-    In engineering, the field of dynamics studies how systems, like structures and fluids, respond and evolve over time under varying forces.
+    In mechanical engineering, the field of dynamics studies how systems, like structures and fluids, respond and evolve over time under varying forces.
     These forces can range from aerodynamic pressures to impacts from waves or road irregularities.
     Excessive vibration or oscillation of machinery is known to reduce service life and in extreme cases cause catastrophic failure.
     Therefore, by studying these dynamic systems, they could be designed to perform better, be safer, and to have lower maintenance costs.
@@ -110,76 +110,83 @@
     \begin{enumerate}[listparindent=\parindent]
         \item A motorcycle suspension system is a combination of springs, dampers and linkages that connect the motorcycle chassis to its wheels.
         Its primary purpose is to keep the tyres in contact with the ground and without proper suspension, the tyres would lose traction when encountering bumps, especially when braking, accelerating or cornering~\cite{UTI2020MotorcycleSuspension}.
-        It is designed to allow some relative motion between the two in order to absorb impacts while at the same time trying to maintain its equilibrium position, and its equilibrium velocity of zero - both relative to the chassis.
+        It is designed to allow some relative motion between the two in order to absorb impacts while at the same time trying to maintain its equilibrium position, and its equilibrium velocity of zero (both relative to the chassis).
 
-        The dampers in the suspension produces a force proportional to the velocity that acts to slow the wheel down, typically through viscous dampers.
+        The dampers in the suspension produce a force proportional to the velocity that acts to slow the wheel down, typically through viscous dampers.
         Think of these like syringes full of a liquid; the faster you move the plunger, the harder you have to push to maintain that velocity due to resistance to the flow caused by viscous drag forces.
         Damping can be optimised by bringing the system back to equilibrium after a disturbance as fast as possible so that it is ready for the next bump (known as ``critical damping'').
         Too little damping, and the wheel will overshoot and oscillate back and forth before reaching equilibrium.
-        Too much damping, and the wheel will not oscillate, but it will reach equilibrium more slowly than what is possible.
+        Too much damping, and the wheel will not oscillate, but it will reach equilibrium more slowly than optimal.
 
-        Similarly, the spring creates stiffness in the system that produces a force with a magnitude proportional to the displacement of wheel from its equilibrium position which acts to return the wheel to this equilibrium position.
-        The stiffness of the spring that provides the ideal balance between comfort and handling can be tailored for the motorcycle's specific purpose, where it is low enough that the system has time to absorb the impact softly but high enough that the bike's responses to steering inputs are fast and reactive.
+        Similarly, the spring creates stiffness in the system that produces a force with a magnitude proportional to the displacement of wheel which acts to return the wheel to its equilibrium position.
+        The stiffness of the spring that provides the ideal balance between comfort and handling can be tailored for the motorcycle's specific purpose.
+        Here, the stiffness is low enough that the system has time to absorb the impact softly but high enough that the bike's responses to steering inputs are fast and reactive.
 
-        Therefore, studying dynamic systems such as this one would be valuable because if it were possible to reliably predict how it will behave for different system parameters such as mass, stiffness and damping before the motorcycle was constructed, it would be possible to optimise them without trial and error, saving resources in the research and development stage of the product lifecycle.
+        Studying dynamic systems like this may be beneficial as it would allow for the prediction of behavior based on varying parameters like mass, stiffness, and damping.
+        This predictive ability would enable optimization without trial and error, conserving resources during the research and development phase of the product lifecycle.
 
-        \item Offshore wind turbines are known to experience high cycle fatigue due to a relentless random forcing the waves that repeatedly crash against the base of its tower.
-        This is a phenomenon that causes cracks to grow over time from micro-defects in a structure due to cyclic loading below the elastic limit of the material.
+        \item Offshore wind turbines are known to experience high cycle fatigue (HCF) due to a relentless random forcing the waves that repeatedly crash against the base of its tower.
+        This is a phenomenon that causes any micro-defects to grow into cracks over time due to cyclic loading below the elastic limit of the material which reduces the life of the structure due to risk of mechanical failure.
 
         The rate at which this occurs increases with the amplitude of the stresses in the structure, which in turn increase with the amplitude of oscillation in response to this cyclic loading.
-        If a periodic force is applied to a system with a specific frequency known as a resonant frequency, the amplitude of the oscillation may be large even for a small amplitude force, leading to a reduced lifespan from an excessive rate of high cycle fatigue.
-        The same can happen in this case with a random force with an \textit{average} frequency similar to this resonant frequency.
-        Furthermore, it is possible for the stresses to become so large that they exceed the ultimate tensile strength of the material, causing a sudden mechanical failure and the collapse of the turbine.
+        If a periodic force is applied to any system with a specific frequency known as a resonant frequency, the amplitude of the oscillation may become very large even for a small amplitude force, leading to an excessive rate of high cycle fatigue.
+        The same can happen in the case of the wind turbine that receives a random force with an \textit{average} frequency similar to this resonant frequency.
+        It is even possible for the stresses in a structure to become so large that they exceed the ultimate tensile strength of the material, causing a sudden mechanical failure and the collapse of the turbine.
 
         Therefore, to make structures safer and reduce maintenance costs, it would be valuable to be able to model their dynamic properties such as this resonant frequency from system parameters such as the stiffness of the tower so that the frequencies at which they occur can be designed away from the expected frequencies of the periodic forces.
 
         \item An aircraft wing bends in response to aerodynamic forces.
-        However, in this case the forces themselves change as the wing twists and bends.
+        However, the forces themselves change as the wing twists and bends.
         The interdependence of these two effects creates complicated ``nonlinear'' interactions that are difficult to model accurately.
-        However, it is important to do so because if at high airspeed, energy from the wing forcing is added to the system faster than it can be dissipated, the positive feedback loop can lead to a phenomenon called aerodynamic flutter where the oscillations become larger and larger until they cause catastrophic failure.
+        But it is important to do so because if at high airspeed, energy from the wing forcing is added to the system faster than it can be dissipated, the positive feedback loop can lead to a phenomenon called aerodynamic flutter where the oscillations become larger and larger until they cause catastrophic failure.
     \end{enumerate}
 
     \subsection{Identifying Dynamic Systems}
 
-    Dynamic systems have system parameters such as mass, stiffness and damping coefficient, which are fundamental characteristics of the system.
-    ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties are predicted, from the system parameters using physical laws.
-    These properties include the resonant frequencies, which are the forcing frequencies that produce a peak in amplitude of excitation, and the damping ratio which compares the damping coefficient to that of critical damping
+    Dynamic systems have system parameters such as mass, stiffness and damping coefficient which are fundamental characteristics of the system.
+    ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties, are predicted from the system parameters using physical laws.
+    These properties include the resonant frequencies which are the forcing frequencies that produce a peak in amplitude of excitation, and the damping ratio which compares the damping coefficient to that of critical damping.
 
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
-    This means that if you double the input force over time, the response over time is exactly the same, except that the displacement at any point in time will be double.
+    This means that if you double the input force over time, the response over time is exactly double, but otherwise identical.
     This is not the case for nonlinear systems (such as the aircraft wing in the example above) where non-compliance with the principle of superposition causes the system parameters to distort as the magnitude of the input force is increased.
     This, in turn, causes the response to become highly complex and chaotic, meaning that it is highly sensitive to initial conditions.
-    Nonlinearity can even lead to bifurcations, which is where the system can exhibit one of multiple stable responses at a given frequency.
-    Therefore, forward modelling is currently too difficult for systems that are non-linear.
+    One such cause of chaotic behaviour is the presence of bifurcations, which are where the system can exhibit one of multiple stable shapes of response cycle (or ``limit cycle'') at a given frequency.
+    This is why forward modelling is currently too difficult for systems that are non-linear.
 
-    Unfortunately, in real life, everything is non-linear;
-    only in rare cases are systems close enough linear that they can be approximated as such.
+    Unfortunately, everything is non-linear in real life.
+    Only in rare cases are systems close enough to being linear that they can be approximated as such.
     What's worse is that even if a model did exist to solve the nonlinear system, it would be of no use because typically not even the system parameters are known to be able to input them into the model.
-    This inherent complexity is the key reason why the field of dynamics has not been mastered, and it means that all that can currently be done for medium to highly non-linear systems - \textit{which is almost all systems} - is to take real life data measurements from an existing system and identify the system properties and parameters that best fit the observed data through what is known as ``inverse modelling''.
+    This is why the field of dynamics has not been mastered, and all that can currently be done for medium to highly non-linear systems - \textit{which is almost all systems} - is to take real life data measurements from an existing system and identify the system properties and parameters that best fit the observed data through what is known as ``inverse modelling''.
     However, even this process is fraught with issues.
 
     \subsection{Classically Quantifying Uncertainty with Error Bounds}
     Identifying system properties and parameters using this inverse modelling approach results in values that are not exact, but have an uncertainty associated with them that comes from multiple sources.
-    The first cause of this uncertainty is due to noise that is always present to some degree in the sampled input data due to the measuring devices - typically accelerometers - that are used to capture the force input into and corresponding response from the system.
+    The first source of uncertainty is noise that is always present to some degree in sampled input data due to the measuring devices - typically accelerometers - that are used to capture the force input and corresponding response from the system.
     Furthermore, even if the true input and response could be sampled exactly, the non-identifiability problem states that since there are multiple sets of system parameters that could give the same set of observed outputs, it's impossible to uniquely determine them.
-    Similarly, many algorithms make use of mathematical objects (such as matrix pseudoinverses) which have multiple alternatives, the correct choice of which is arguable and not definitive.
+    Similarly, many algorithms make use of mathematical objects (such as matrix pseudoinverses) which have multiple alternatives, the correct choice of which is subjective.
     This noise and lack of uniqueness is reflected in the uncertainty of the outputted system properties and parameters.
 
-    In classical numerical methods, the uncertainty of parameters derived from computations is often quantified using error bounds determined via sensitivity analysis.
-    For example, the error bound of a stiffness could be represented as $0.1 \pm 0.02 Nm^{-1}$, which provides a range bounded by an upper and lower limit which the true value is expected to be within.
-    Here, the uncertainty of the input data is estimated, perhaps using the resolution of the measuring equipment, or observed variability in the time-domain sample data.
-    Based on these estimates, one can then calculate the upper and lower bounds the output parameters.
+
+    Time passes continuously forever, and the governing equations of dynamic systems are defined mathematically in the continuous domain and would be solved ``analytically'' to give an exact mathematical solution in the continuous domain.
+    But in practice, data sampled from the real world is usually discrete, meaning that it is defined over a finite set of points seperated by a finite time interval.
+    In addition, many sets of governing of equations are too complex to solve analytically for systems that are not highly idealised.
+    This is why when modelling, problems are classically solved using ``numerical methods'', which are discrete approximations of analytical solutions of the governing equations.
+    Here, uncertainty of parameters is often quantified using error bounds derived from sensitivity analysis.
+    For instance, the error bound of a stiffness could be represented as $0.1 \pm 0.02 Nm^{-1}$, indicating the expected range of the true value.
+    This process involves estimating the uncertainty of input data, possibly from the measuring equipment's resolution or variability in sample data.
+    From these estimates, the output parameters' upper and lower bounds can be calculated.
     However, this is not straightforward and typically requires additional techniques and considerations beyond the core algorithm.
 
 
     \subsection{The Fourier Transform and the Frequency Response Function (FRF)}
 
-    In inverse modelling of dynamic system analysis, any collected time series data is almost always converted into the frequency domain.
+    When inverse modelling during the analysis of dynamic systems, any collected time series data is almost always converted into the frequency domain.
     Specifically, the Frequency Response Function (FRF) is typically computed, which is defined as the frequency domain response divided by the frequency domain input force.
     This is because the physical meaning of the system properties have a clear visual interpretation in this domain.
     The outputted function is complex, which means it has two components that provide both the amplitude and phase information.
-    If the system parameters (mass, damping coefficient or stiffness) change, so do the system properties (resonant frequency and damping ratio) as visible in the FRF (Figure~\ref{fig:frequency-response-function}); a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping datio results in a sharper peak.
+    If the system parameters (mass, damping coefficient or stiffness) change, so do the system properties (resonant frequency and damping ratio) as visible in the FRF (Figure~\ref{fig:frequency-response-function}; a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping datio results in a sharper peak.
     Note the phase shifts by $\pi$ rad ($180\degree$) across the peak.
 
     \begin{figure}[ht]
@@ -201,11 +208,8 @@
     \noindent where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
     However, it for it to be applied in its base form to a function, this function must be defined for every point in time in the domain $-\infty \text{ to } \infty$.
-    Although in the real world time passes continuously forever, the Fourier Transform of data sampled from the real world cannot be found by using the continuous Fourier Transform directly.
-    This is because sampled data is never defined continuously at every point in time, but over a finite window containing discrete points seperated by a finite time interval.
-    Classically, a numerical method called the Discrete Fourier Transform algorithm called the Fast Fourier Transform is used in this case.
 
-    A numerical method is a discrete approximation of a transformation that cannot be solved using its exact mathematical definition because this would be either impossible or impractical, and they are typically used for transformations of discrete data such as data sampled from real life.
+    Therefore, when working with sampled real world data, an approximation of this is classically found using a numerical method called the Discrete Fourier Transform.
 
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
