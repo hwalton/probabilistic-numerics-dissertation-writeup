@@ -123,7 +123,7 @@
         Here, the stiffness is low enough that the system has time to absorb the impact softly but high enough that the bike's responses to steering inputs are fast and reactive.
 
         Studying dynamic systems like this may be beneficial as it would allow for the prediction of behavior based on varying parameters like mass, stiffness, and damping.
-        This predictive ability would enable optimization without trial and error, conserving resources during the research and development phase of the product lifecycle.
+        This predictive ability would enable optimisation without trial and error, conserving resources during the research and development phase of the product lifecycle.
 
         \item Offshore wind turbines are known to experience high cycle fatigue (HCF) due to a relentless random forcing the waves that repeatedly crash against the base of its tower.
         This is a phenomenon that causes any micro-defects to grow into cracks over time due to cyclic loading below the elastic limit of the material which reduces the life of the structure due to risk of mechanical failure.
@@ -182,21 +182,22 @@
 
     \subsection{The Fourier Transform and the Frequency Response Function (FRF)}
 
-    When inverse modelling during the analysis of dynamic systems, any collected time series data is almost always converted into the frequency domain.
-    Specifically, the Frequency Response Function (FRF) is typically computed, which is defined as the frequency domain response divided by the frequency domain input force.
-    This is because the physical meaning of the system properties have a clear visual interpretation in this domain.
-    The outputted function is complex, which means it has two components that provide both the amplitude and phase information.
-    If the system parameters (mass, damping coefficient or stiffness) change, so do the system properties (resonant frequency and damping ratio) as visible in the FRF (Figure~\ref{fig:frequency-response-function}; a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping datio results in a sharper peak.
-    Note the phase shifts by $\pi$ rad ($180\degree$) across the peak.
+    When inverse modelling during the analysis of dynamic systems, any collected time series data is almost always converted into the frequency domain because this gives the physical meaning of the system properties a clear visual interpretation.
+    This means that the output becomes a function of frequency instead of a function of time.
+    Specifically, the Frequency Response Function (FRF) is computed, which is the ratio between the response and input in the frequency domain.
+    This function is complex, which means it has two components that provide the amplitude and phase information respectively.
+    If the system parameters (mass, damping coefficient or stiffness) change, so do the system properties (resonant frequency and damping ratio).
+    This is visible in the FRF in Figure~\ref{fig:frequency-response-function}, where a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping datio results in a sharper peak.
+    Note the phase shifts by $\pi$ rad ($180\degree$) across a resonant frequency.
 
     \begin{figure}[ht]
         \centering
-        \includegraphics[width=1.0\linewidth]{figures/frequency-response-function/frequency-response-function_}
+        \includegraphics[width=0.8\linewidth]{figures/frequency-response-function/frequency-response-function_}
         \caption{The magnitude and phase of H, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass m $[kg]$, damping coefficient c [$N \cdot s \cdot m^{-1}$] and stiffness k [$N \cdot m^{-1}$] affects the system parameters resonant frequency $\omega_r$ [$rad \cdot s^{-1}$] and damping ratio $\zeta$ [-]}
         \label{fig:frequency-response-function}
     \end{figure}
 
-    The decomposition of the force input and response functions from the time domain to the frequency domain needed to compute this FRF relies on a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
+    The decomposition of the input and response functions from the time domain to the frequency domain uses a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft})
 
     \begin{equation}
         F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
@@ -208,25 +209,24 @@
     \noindent where $\omega$ is the angular frequency.
     This is an extremely powerful analytical technique that is used widely in engineering.
     However, it for it to be applied in its base form to a function, this function must be defined for every point in time in the domain $-\infty \text{ to } \infty$.
-
-    Therefore, when working with sampled real world data, an approximation of this is classically found using a numerical method called the Discrete Fourier Transform.
+    Therefore, when working with sampled real world data, an approximation of this function is classically found using a numerical method called the Discrete Fourier Transform.
 
     \subsection{The Fast Fourier Transform Algorithm}
-    Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
-    Firstly, the Fast Fourier Transform (FFT) assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window\cite{MathStackExchange2023}.\nomenclature[L]{FFT}{Fast Fourier Transform}
+    Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory~\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
+    Firstly, the Fast Fourier Transform (FFT) assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window~\cite{MathStackExchange2023}.\nomenclature[L]{FFT}{Fast Fourier Transform}
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
     But most importantly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
 
     \subsection{Probabilistic Numerics and the Gaussian Process}
     This paper proposes a new method of performing the Fourier Transform and other linear transformations using a ``Gaussian Process'' (GP) that may be more robust to noise than the FFT through its use of probabilistic numerics.
-    This is a new paradigm that seeks to expand on traditional numerical methods by incorporating probabilistic reasoning into the process of computation and ``treats a numerical problem as one of statistical inference instead''~\cite{ProbabilisticNumerics2023}.
+    This is a new paradigm that seeks to expand on traditional numerical methods by incorporating probabilistic reasoning into the process of computation by treating ``a numerical problem as one of statistical inference instead''~\cite{ProbabilisticNumerics2023}.
     Here, uncertainty of outputs is modelled with a probability distribution as opposed to the error bounds as in traditional numerical methods.
 
     A GP uses noisy, discrete sampled data to model a continuous ``latent'' function, $f(x)$ that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L]{$f(x)$}{Latent function of the variable $x$}\nomenclature[L]{GP}{Gaussian Process}
     In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
     These variables are outputs of the latent function ($f(x)$) at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
-    Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, this joint density of the observed data and the latent, noise-free function on our test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+    Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, this joint distribution of the observed data and the latent, noise-free function at the test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
         \begin{pmatrix}
@@ -261,10 +261,13 @@
 
 
     \noindent where $\mathbf{y}$ is a vector of $y_n$ values from a set of training points, $\boldsymbol{\mu}_X$ is the mean of the Gaussian Process, given the training data $\mathbf{X}$, $\boldsymbol{\mu}_*$ is the mean of the Gaussian Process, given the test data $\mathbf{X}_*$, $\mathbf{f}^*$ is a vector of values of the latent function evaluated at a set of test points $\mathbf{X}_*$, $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$, when evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
+    The noise term $\epsilon_n$ explicitly models the observational noise gives it a way to distinguish between the signal and noise components.
     Note that block matrix notation is used where matrices are conjoined to form a larger block matrix. \nomenclature[L]{$\mathbf{K}_{\mathbf{A},\mathbf{B}}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors $\mathbf{A}$, $\mathbf{B}$}\nomenclature[L]{$k(a,b)$}{Kernel function of arbitrary points, $a$, and $b$}
 
-    The kernel is a special function that when input with two vectors, produces a covariance matrix that measures the similarity between each pair of inputs based on a set of hyperparameters.
-    The function is chosen to reflect any prior knowledge about the problem domain, and must ensure that the resulting matrix is symmetrical about the main diagonal, and have a property called Positive Semi-definiteness.
+    The kernel is a special function that produces a covariance matrix when input with two vectors.
+    This function measures the similarity between each pair of inputs based on a set of hyperparameters and is chosen to reflect any prior knowledge about the problem domain.
+    It must ensure that the resulting matrix is symmetrical about the main diagonal and has a property called Positive Semi-definiteness.
+
     These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}\nomenclature[L]{NLML}{Negative Log Marginal Likelihood}
 
     \begin{equation}
@@ -278,10 +281,11 @@
 
     \noindent where $\mathbf{D}$ is the training data, $N$ is the number of training points, $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
-    By minimizing this NLML, we identify the hyperparameter values that are most likely to produce the observed training data.
+    This is because the model has not only learnt the underlying function but also its associated noise, which will not be consistent between datasets due to its random nature.
+    Optimisation in this manor works by identifying the hyperparameter values that are most likely to produce the observed training data.
 
-    In order to predict the latent function at one or multiple points, the ``posterior'' probability distribution of the latent function at these points is found by updating the initial prior assumptions its shape with the training data.
-    This process is called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, as shown in Equation~\ref{eq:18.51}, where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the conditional mean and covariance of the GP, given the training data, as shown in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
+    To predict the latent function at one or multiple points, the ``posterior'' probability distribution of the function is determined by updating the initial prior assumptions its shape using the training data.
+    This process is called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, as shown in Equation~\ref{eq:18.51}
 
     \begin{equation}
         p(\mathbf{f}^* \vert \mathbf{D}, \mathbf{X}^*) = \mathcal{N}(\mathbf{f}^* \vert \boldsymbol{\mu}_{*\vert \mathbf{X}}, \boldsymbol{\Sigma}_{*\vert \mathbf{X}})\label{eq:18.51}
@@ -298,28 +302,27 @@
     \nomenclature[G]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data}
     \nomenclature[G]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data}
 
+    \noindent where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the conditional mean and covariance of the GP, given the training data, as shown in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
 
     Furthermore, this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
-    It is also defined in the continuous domain $-\infty \text{ to } \infty$ which means Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
+    It is also defined in the continuous domain $-\infty \text{ to } \infty$ so the Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
     Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP\@.
-    Therefore, modelling uncertainty with probabilistic numerics allows this information to be transferred naturally from the time domain to the frequency domain.
-
-    The fact that the GP model is designed to include the noise term $\epsilon_n$ that explicitly models the observational noise gives it a way to distinguish between the signal and noise components.
-    This is why it may allow for Fourier Transform to be performed with better robustness to noise through its use of probabilistic numerics.
+    Therefore, modelling this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally when performing transformations of the data.
+    This is why the use of probabilistic numerics may allow for Fourier Transform to be performed with better robustness to noise.
 
     \subsection{Implications of the Findings}
 
     \subsubsection{Implications in the Context of the Fourier Transform}
 
-    A Fourier Transform method that can be applied to discrete data and that is more robust to noise than the FFT would have significant implications in various fields of engineering.
+    A Fourier Transform method that can be applied to discrete data and is more robust to noise than the FFT would have significant implications in various fields of engineering.
 
-    In the context of dynamic systems, the system properties and parameters could be identified more precisely especially for nonlinear systems, whose complex dynamic behaviours can be obscured by noise.
-    For example, noises may cause two closely spaced resonant frequencies to be mistaken for a single resonant frequency.
-    This in turn could allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because an increase in nonlinear behaviour is typical of the formation or growth cracks or other defects.
-    Consequently, engineers would be able to make and maintain structures with greater safety by increasing the likelihood of detecting structural damage before catastrophic failure occurs.
+    In the context of dynamic systems, the system properties and parameters could be identified more precisely.
+    This is especially true for nonlinear systems whose complex dynamic behaviours can be obscured by noise such as two closely spaced resonant frequencies that may be mistaken for a single one.
+    Consequently, this would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because an increase in nonlinear behaviour is typical of the formation or growth of cracks or other defects.
+    Therefore, engineers would be able to make and maintain structures with greater safety by increasing the likelihood of detecting structural damage before catastrophic failure occurs.
 
     A Fourier Transform that is more robust to noise could improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
-    In these contexts, the Fourier Transform is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
+    In these contexts, it is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
     Therefore, this improvement would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
 
 
@@ -328,26 +331,25 @@
 
     \section{Aims and Objectives}
     \subsection{Aim}
-    To improve the noise resilience of time series data when converted to frequency domain.
+    The main aim is to improve the noise resilience of time series data when converted to frequency domain.
 
     \subsection{Objectives}
-    The overarching aim can be broken down into four objectives:
+    This overarching aim can be broken down into four objectives:
         \begin{enumerate}
-            \item Get a working Gaussian Process model.
-            This involves:
+            \item Get a working Gaussian Process model, which involves:
                 \begin{itemize}
-                    \item Choosing and creating a Kernel.
-                    \item Implementing optimisation of Kernel hyperparameters. \label{item:nll}
+                    \item Choosing and creating a kernel.
+                    \item Implementing optimisation of kernel hyperparameters. \label{item:nll}
                     \item Creating a prediction function to predict the outputs of new inputs. \label{item:predict}
                 \end{itemize}
-            \item Scale to Large data by implementing a Sparse GP approximation.
+            \item Scale to large data by implementing a Sparse GP approximation.
             \item Adjust this model to enable the closed form Fourier Transform to be found.
             \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.\label{noise-resiliance}
             \item Stretch Objective: Compare the smoothing out of sharp resonance peaks due to spectral leakage.\label{stretch-obj}
         \end{enumerate}
 
     \section{Work Completed to Date}
-    The first thing needed to be complete was the basic Gaussian Proces.
+    The first thing needed to be complete was the basic Gaussian Process.
     This was implemented using the programming language Python and consisted of the following components:
     \subsection{The Data}
     Previously collected turbine tap test data~\cite{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.

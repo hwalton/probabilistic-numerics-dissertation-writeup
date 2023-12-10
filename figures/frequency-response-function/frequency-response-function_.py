@@ -44,8 +44,8 @@ def plot_frf(m1, c1, k1, m2, c2, k2):
              label=f'm={m1:.1f}, c={c1:.1f}, k={k1:.1f} $\Rightarrow$ $\omega_r$={omega_r_1:.1f}, $\zeta$={zeta_1:.1f}')
     plt.plot(freq_range, magnitude_mod, color='red', linewidth=3.5,
              label=f'm={m2:.1f}, c={c2:.1f}, k={k2:.1f} $\Rightarrow$ $\omega_r$={omega_r_2:.1f}, $\\zeta$={zeta_2:.1f}')
-    plt.xlabel('Frequency [$rad \cdot s^{-1}$]')
-    plt.ylabel('Abs(H) [$m \cdot s^{-2} \cdot N^{-1}$]')
+    plt.xlabel('Frequency, $\omega$ [$rad \cdot s^{-1}$]')
+    plt.ylabel('Abs(H($\omega$)) [$m \cdot s^{-2} \cdot N^{-1}$]')
     plt.title('Magnitude of Frequency Response Function of an SDOF System')
     plt.ylim(0, 1.8)
     plt.xlim(0, 5)
@@ -59,8 +59,8 @@ def plot_frf(m1, c1, k1, m2, c2, k2):
     plt.plot(freq_range, phase_mod, color='red', linewidth=3.5,
              label=f'm={m2:.1f}, c={c2:.1f}, k={k2:.1f} $\Rightarrow$ $\omega_r$={omega_r_2:.1f}, $\zeta$={zeta_2:.1f}')
 
-    plt.xlabel('Frequency [$rad \cdot s^{-1}$]')
-    plt.ylabel('Phase(H) [rad]')
+    plt.xlabel('Frequency, $\omega$ [$rad \cdot s^{-1}$]')
+    plt.ylabel('Phase(H($\omega$)) [rad]')
     plt.title('Phase of Frequency Response Function of an SDOF System')
     plt.gca().yaxis.set_major_formatter(mticker.FormatStrFormatter('%.1f'))
     plt.ylim(-3, 1.2)
