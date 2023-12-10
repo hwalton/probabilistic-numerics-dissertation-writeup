@@ -112,18 +112,16 @@
         Its primary purpose is to keep the tyres in contact with the ground and without proper suspension, the tyres would lose traction when encountering bumps, especially when braking, accelerating or cornering~\cite{UTI2020MotorcycleSuspension}.
         It is designed to allow some relative motion between the two in order to absorb impacts while at the same time trying to maintain its equilibrium position, and its equilibrium velocity of zero (both relative to the chassis).
 
-        The dampers in the suspension produce a force proportional to the velocity that acts to slow the wheel down, typically through viscous dampers.
-        Think of these like syringes full of a liquid; the faster you move the plunger, the harder you have to push to maintain that velocity due to resistance to the flow caused by viscous drag forces.
-        Damping can be optimised by bringing the system back to equilibrium after a disturbance as fast as possible so that it is ready for the next bump (known as ``critical damping'').
+        The dampers in the suspension produce a force proportional to the velocity that acts to slow the wheel down.
+        Viscous dampers do this by pushing a liquid though a small orifice as the wheel moves.
+        Damping can be optimised (or made ``critical'') by bringing the system back to equilibrium after a disturbance as fast as possible.
         Too little damping, and the wheel will overshoot and oscillate back and forth before reaching equilibrium.
         Too much damping, and the wheel will not oscillate, but it will reach equilibrium more slowly than optimal.
 
         Similarly, the spring creates stiffness in the system that produces a force with a magnitude proportional to the displacement of wheel which acts to return the wheel to its equilibrium position.
-        The stiffness of the spring that provides the ideal balance between comfort and handling can be tailored for the motorcycle's specific purpose.
-        Here, the stiffness is low enough that the system has time to absorb the impact softly but high enough that the bike's responses to steering inputs are fast and reactive.
+        Too high of a stiffness means that the system will not have enough time to absorb the impact softly, but too low means that the bike's responses to steering inputs are too slow and unreactive.
 
-        Studying dynamic systems like this may be beneficial as it would allow for the prediction of behavior based on varying parameters like mass, stiffness, and damping.
-        This predictive ability would enable optimisation without trial and error, conserving resources during the research and development phase of the product lifecycle.
+        Studying dynamic systems like this may be beneficial as it would allow for the prediction of behavior based on varying these parameters which would enable optimisation without trial and error, conserving resources during the research and development phase of the product lifecycle.
 
         \item Offshore wind turbines are known to experience high cycle fatigue (HCF) due to a relentless random forcing the waves that repeatedly crash against the base of its tower.
         This is a phenomenon that causes any micro-defects to grow into cracks over time due to cyclic loading below the elastic limit of the material which reduces the life of the structure due to risk of mechanical failure.
@@ -193,7 +191,7 @@
     \begin{figure}[ht]
         \centering
         \includegraphics[width=0.8\linewidth]{figures/frequency-response-function/frequency-response-function_}
-        \caption{The magnitude and phase of H, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass m $[kg]$, damping coefficient c [$N \cdot s \cdot m^{-1}$] and stiffness k [$N \cdot m^{-1}$] affects the system parameters resonant frequency $\omega_r$ [$rad \cdot s^{-1}$] and damping ratio $\zeta$ [-]}
+        \caption{The magnitude and phase of $H(\omega)$, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass $m$ $[kg]$, damping coefficient $c$ [$N \cdot s \cdot m^{-1}$] and stiffness $k$ [$N \cdot m^{-1}$] affects the system parameters resonant frequency $\omega_r$ [$rad \cdot s^{-1}$] and damping ratio $\zeta$ [-]}
         \label{fig:frequency-response-function}
     \end{figure}
 
@@ -334,7 +332,7 @@
     The main aim is to improve the noise resilience of time series data when converted to frequency domain.
 
     \subsection{Objectives}
-    This overarching aim can be broken down into four objectives:
+    This overarching aim can be broken down into four objectives and an optional stretch objective if time allows:
         \begin{enumerate}
             \item Get a working Gaussian Process model, which involves:
                 \begin{itemize}
@@ -353,24 +351,24 @@
     This was implemented using the programming language Python and consisted of the following components:
     \subsection{The Data}
     Previously collected turbine tap test data~\cite{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.
-    The tap data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
+    The test data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
-    For simplicity, only the response data the first position was imported, and a small set of 100 samples was selected from the centre (to reduce computation time initially).
-    This time series acceleration data, as shown in the ``Force Response'' plot in Figure~\ref{fig:input-response-plot}, was used as training data to be fit by the GP\@.
+    For simplicity, only the response data at the first position was imported, and a small set of 100 samples was selected from the centre (to reduce computation time initially).
+    This time series acceleration data, as shown in the ``Force Response Over Time'' plot in Figure~\ref{fig:input-response-plot}, was used as training data to be fit by the GP\@.
 
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-plot/input-response-plot.png}
-        \caption{The time series data, and the mean and standard deviation of the GPs prediction of it. Note that the prediction functions of mean and standard deviation that are output by the Gaussian Process are in fact continuous, but must be evaluated at a discrete set of points in order to be plotted.}
+        \caption{The time series training data, and the mean and standard deviation of the GPs prediction of its latent function. Note that the prediction functions are continuous but must be evaluated at a discrete set of points in order to be plotted.}
         \label{fig:input-response-plot}
     \end{figure}
 
 
 
     \subsection{The Kernel}
-    Next, a python class was created to contain the kernel.
-    The Squared Exponential Kernel~\cite{duvenaud2014kernel}, defined in Equation~\ref{eq:se-kernel} was chosen to reflect the nature of the sample data that is continuous and smooth, with no sudden jumps.
-    In addition, it only has two hyperparameters, this low number speeds up their optimisation process compared to alternative kernels.
+    A Squared Exponential Kernel~\cite{duvenaud2014kernel} was chosen to reflect the nature of the sample data that is continuous and smooth, with no sudden jumps.
+    In addition, it only has two hyperparameters, and this low number speeds up their optimisation process compared to alternative kernels.
+    This function is defined in Equation~\ref{eq:se-kernel}
 
     \begin{equation}
         \mathbf{K}_{ij} = \sigma^2 \exp\left(-\frac{(\mathbf{x}_i - \mathbf{x}_j)^2}{2l^2}\right) \label{eq:se-kernel}
@@ -380,31 +378,36 @@
     \nomenclature[L]{$\sigma^2$}{Variance, a hyperparamer in the context of the kernel}
     \nomenclature[L]{$l$}{Length scale parameter of the SE kernel}
 
-    \noindent where $\mathbf{K}_{ij}$ is the element of the covariance matrix, $\mathbf{K}$, at index $i, j$, $\mathbf{x}_i, \mathbf{x}_j$ are input vectors, $\sigma^2$ is the variance hyperparameter, and $l$ is the length scale parameter of the SE kernel.
+    \noindent where $\mathbf{K}_{ij}$ is the element of the covariance matrix, $\mathbf{K}$, at index $i, j$; $\mathbf{x}_i, \mathbf{x}_j$ are input vectors; $\sigma^2$ is the variance hyperparameter; and $l$ is the length scale parameter.
 
-    The `variance' hyperparameter is a scale factor that determines the average distance of the function away from its mean, whereas the `length' hyperparameter determines how smooth or wiggly the function is, i.e., how fast the function can change direction.
+    The variance hyperparameter, $\sigma^2$, determines the average distance of the function away from its mean.
+    It is a simple scale factor present in all kernels.
+    Finally, length hyperparameter, $l$, determines how smooth or wiggly the function is, i.e., how fast the function can change direction.
 
     \subsection{Hyperparameter Optimisation}
-    Next, this kernel class was added as an attribute to a class for the GP model itself.
-    This allowed the kernel to be computed for different pairs of arrays as needed.
-    The GP model also contained an algorithm to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood.
-    It did this by multiplying each hyperparameter in turn by the exponent of a normally distributed continuous random variable.
-    Imagine that only if the new NLML was lower than the previous, the hyperparameter was updated.
-    If this was the case, the algorithm could get stuck in what is known as a local minimum, and never find the global minimum.
-    This would be analogous to a ball that ``tried'' to find the bottom of a valley by always rolled directly downhill.
+    An algorithm was written to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood (NLML).
+    It did this by modifying each hyperparameter randomly in turn and seeing if the NLML improved.
+    This was repeated for up to 100 iterations.
+
+    Imagine if the hyperparameter was only updated the new NLML was lower than the previous.
+    Since the shape of a cost function can be complex and highly dimensional, the algorithm could have got stuck in what is known as a local minimum and never find the global minimum.
+    This would be analogous to a ball that ``tried'' to find the bottom of a valley by rolling directly downhill.
     If it got stuck in a small ditch half-way down the larger hill, it would never find the lowest point.
-    Therefore, a mechanism was added to the algorithm to avoid this and help the algorithm find the global minimum:
-    If the new NLML was higher (i.e., worse) than the previous, the hyperparameter was maybe still updated, with a larger probability the closer the NLML was to the previous NLML.
+
+    Therefore, a mechanism was added to the algorithm to avoid this:
+    If the new NLML was higher (i.e., worse) than the previous, the hyperparameter was maybe still updated, with a larger probability the closer the NLML was to the previous NLML\@.
+    When the last iteration was complete, the lowest NLML of all the combinations hyperparameters was selected.
+    This allowed the algorithm to explore around after reaching a minimum to potentially find another part of the NLML function that was lower.
 
     \subsection{Predict Function}
-    Next, the predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot}.
-    Furthermore, when Gaussian noise was added to the input data, the standard deviation prediction becomes larger to take account for this noise as shown in Figure~\ref{fig:input-response-noise}.
+    The predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot}.
+    Furthermore, when Gaussian noise was added to the input data, the standard deviation of the prediction became larger to take account for this noise, as shown in Figure~\ref{fig:input-response-noise}.
 
 
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-noise/input-response-noise.png}
-        \caption{The prediction function fit by the GP overlayed on the training data. Note that the standard deviation of the prediction increases for data with more noise.}
+        \caption{The prediction functions of the GP when noise was added to the training data, showing that the standard deviation of the prediction increased compared to Figure~\ref{fig:input-response-plot}.}
         \label{fig:input-response-noise}
     \end{figure}
 
@@ -412,12 +415,12 @@
     Firstly, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) will be complete to allow the model to scale to large data~\cite{q-candela}.
     This will reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L]{$M$}{Number of inducing points in Sparse GP} \nomenclature[L]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
     This modification will be made to both the NLML and predict functions, which requires a very specific implementation in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
-    After this is complete, the hyperparameters can be optimised and the GP can be fit for functions containing more than 1000 data points in a significantly reduced computation time.
+    After this is complete, the hyperparameters can be optimised and the GP can be fit for functions containing more than 10,000 data points in a significantly reduced computation time.
 
     Next, the input space of the joint Gaussian distribution will be extended to the frequency domain by incorporating the Fourier transform.
 
     Then, a method to compare the robustness to noise of the Fourier transform computed using the GP model vs the classical FFT model needs to be determined (Objective~\ref{noise-resiliance}).
-    One method of doing this uses the Mean Squared Error (MSE), which is a method of measuring the quality of an estimator (lower is better) by measuring the average of the squares of the differences between the points at each index position in the series, as shown in Equation~\ref{eq:mse}
+    One method of doing this uses the Mean Squared Error (MSE), which is an algorithm used to measure the quality of an estimator (lower is better) using the average of the squares of the differences between the points at each index position in the series, as shown in Equation~\ref{eq:mse}
 
     \begin{equation}
         \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (A_i - B_i)^2
@@ -434,20 +437,20 @@
     Next, for the standard FFT method, the (discrete) Mean Squared Error can be computed between Fourier Transforms of the unmodified and noisy data.
     Similarly, for the Gaussian Process method, the MSE can be computed between the mean functions of Fourier Transforms of the unmodified and noisy data.
     Since these mean functions are continuous, they first need to be discretised by evaluating them at the same frequencies present in the FFTs generated using the first method.
-    The two MSEs can then be used to make a comparison between robustness to noise, of each method.
+    The two MSEs can then be used to make a comparison between robustness to noise of each method.
     This could be repeated for different levels and types of noise (Gaussian vs white noise) to test how each method performs under various conditions.
 
     If time allows, the stretch objective (\ref{stretch-obj}) of comparing how smoothed out sharp resonance peaks are due to spectral leakage can be complete.
     To do this, the Fourier Transform of a pure sine wave should be found using both the GP and FFT methods.
-    This is because it can be solved analytically on paper to provide a Fourier Transform with a sharp peak at the frequency of the wave, and the MSE of each method against the mathematically exact analytical solution can be compared.
+    This is because it can be solved exactly on paper to provide a Fourier Transform with a sharp peak at the frequency of the wave.
+    Each method can then be compared to the exact solution using the MSE to see which has peaks that are more distorted by spectral leakage.
 
-    Finally, a conclusion can be drawn regarding the utility of the new Gaussian Process (GP) method of computing the Fourier Transform presented in this paper when compared to the classical Fast Fourier Transform (FFT) with respect to robustness to noise and prevention of artifacts due to spectral leakage.
-    Since the addition of noise is an inherently random, this should be repeated several times and statistical techniques should be employed to show whether any differences in MSE are statistically significant.
-    One such technique is hypothesis testing, which provides a framework to state whether there is sufficient evidence to reject the ``null'' hypothesis.
-    This null hypothesis is the default stance that the new GP method is no better than classical methods and is assumed true unless there is sufficient evidence to prove otherwise beyond a reasonable doubt.
+    Finally, a conclusion can be drawn regarding the utility of the new Gaussian Process (GP) method of computing the Fourier Transform when compared to the classical Fast Fourier Transform (FFT) with respect to robustness to noise and prevention of artifacts due to spectral leakage in the context of dynamic systems.
+    Since the addition of noise is an inherently random, the comparison should be repeated several times and the conclusion should be drawn using a statistical technique called hypothesis testing.
+    This provides a framework to state whether there is sufficient evidence to reject the default ``null'' hypothesis - that the new GP method is no better than classical methods in these respects - allowing a strong conclusion to be drawn regarding the improvements in noise resilience of time series data when converted to frequency domain through the implementation of probabilistic numerics.
 
-    \subsection{Future Work Time Plan}
-    A Gantt chart outlining the main steps and the approximate schedule for the remaining work in the project is included in Figure~\ref{fig:gantt-chart_}:
+   % \subsection{Future Work Time Plan}
+    A Gantt chart outlining these main steps and the approximate schedule for the remaining work in the project is included in Figure~\ref{fig:gantt-chart_}.
 
     \begin{landscape}
         \begin{figure}[p] % 'p' places the figure on a page of its own
