@@ -122,7 +122,7 @@
         Similarly, the springs create stiffness in the system that produces a force with a magnitude proportional to the displacement of wheel which acts to return the wheel to its equilibrium position.
         Too high of a stiffness means that the system will not have enough time to absorb the impact softly, but too low means that the bike's responses to steering inputs are too slow and unreactive.
 
-        Studying this dynamic system would be beneficial as it may allow for the prediction of behavior based on varying these parameters.
+        Studying this dynamic system would be beneficial as it may allow for the prediction of behaviour based on varying these parameters.
         This would enable optimisation without trial and error, conserving resources during the research and development phase of the product lifecycle.
 
         \item Secondly, offshore wind turbines are known to experience high cycle fatigue (HCF) due to a relentless random forcing the waves that repeatedly crash against the base of its tower.
@@ -171,7 +171,7 @@
 
     Time passes continuously forever, and the governing equations of dynamic systems are defined mathematically in the continuous domain.
     In theory, these could be solved ``analytically'' to give an exact mathematical solution in the continuous domain.
-    But in practice, data sampled from the real world is usually discrete, meaning that it is defined over a finite set of points seperated by a finite time interval.
+    But in practice, data sampled from the real world is usually discrete, meaning that it is defined over a finite set of points separated by a finite time interval.
     In addition, many sets of governing of equations are currently too complex to solve analytically for systems that are not highly idealised.
     This is why when modelling, problems are classically solved using ``numerical methods'', which are discrete approximations of analytical solutions of the governing equations.
     Here, uncertainty of parameters is often quantified using error bounds derived from sensitivity analysis.
@@ -188,7 +188,7 @@
     Specifically, the Frequency Response Function (FRF) is computed, which is the ratio between the response and input in the frequency domain.
     This function is complex, which means it has two components that provide the amplitude (magnitude) and phase (lag) of the response vs the input.
     If the system parameters (mass, damping coefficient or stiffness) change, so do the system properties (resonant frequency and damping ratio).
-    This is visible in the FRF in Figure~\ref{fig:frequency-response-function}, where a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping datio results in a sharper peak.
+    This is visible in the FRF in Figure~\ref{fig:frequency-response-function}, where a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping ratio results in a sharper peak.
     Note the phase shifts by $\pi$ rad ($180\degree$) across a resonant frequency.
 
     \begin{figure}[ht]
@@ -345,7 +345,7 @@
                 \end{itemize}
             \item Scale to large data by implementing a Sparse GP approximation.
             \item Adjust this model to enable the closed form Fourier Transform to be found.
-            \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.\label{noise-resiliance}
+            \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.\label{noise-resilience}
             \item Stretch Objective: Compare the smoothing out of sharp resonance peaks due to spectral leakage.\label{stretch-obj}
         \end{enumerate}
 
@@ -378,7 +378,7 @@
     \end{equation}
     \nomenclature[L]{$k(a,b)$}{kernel function evaluating similarity of points $a$, $b$}
     \nomenclature[L]{$a, b$}{Input points of kernel function k(a,b)}
-    \nomenclature[L]{$\sigma^2$}{Variance, a hyperparamer in the context of the kernel}
+    \nomenclature[L]{$\sigma^2$}{Variance, a hyperparameter in the context of the kernel}
     \nomenclature[L]{$l$}{Length scale parameter of the SE kernel}
 
     \noindent where $k(a,b)$ is the kernel, evaluated at elements $a$, $b$ of vectors $\mathbf{A}$, $\mathbf{B}$ respectively; $\sigma^2$ is the variance hyperparameter and $l$ is the length scale parameter.
@@ -423,7 +423,7 @@
 
     Next, the input space of the joint Gaussian distribution will be extended to the frequency domain by incorporating the Fourier transform.
 
-    Then, a method to compare the robustness to noise of the Fourier transform computed using the GP model vs the classical FFT model needs to be determined (Objective~\ref{noise-resiliance}).
+    Then, a method to compare the robustness to noise of the Fourier transform computed using the GP model vs the classical FFT model needs to be determined (Objective~\ref{noise-resilience}).
     One method of doing this uses the (discrete) Mean Squared Error (MSE), which is an algorithm used to measure the quality of an estimator (lower is better) using the average of the squares of the differences between the points at each index position in the series, as shown in Equation~\ref{eq:mse}
 
     \begin{equation}
@@ -444,13 +444,13 @@
     The two MSEs can then be used to make a comparison between robustness to noise of each method.
     This could be repeated for different levels and types of noise (Gaussian vs white noise) to test how each method performs under various conditions.
 
-    If time allows, the stretch objective (\ref{stretch-obj}) of comparing how smoothed out sharp resonance peaks are due to spectral leakage can be complete.
+    If time allows the stretch objective (\ref{stretch-obj}) of comparing how smoothed out sharp resonance peaks are due to spectral leakage can be complete.
     To do this, the Fourier Transform of a pure sine wave should be found using both the GP and FFT methods.
     This is because it can be solved exactly on paper to provide a Fourier Transform with a sharp peak at the frequency of the wave.
     Each method can then be compared to the exact solution using the MSE to see which has peaks that are more distorted by spectral leakage.
 
     Finally, a conclusion can be drawn regarding the utility of the new Gaussian Process (GP) method of computing the Fourier Transform when compared to the classical Fast Fourier Transform (FFT) with respect to robustness to noise and prevention of artifacts due to spectral leakage in the context of dynamic systems.
-    Since the addition of noise is an inherently random, the comparison should be repeated several times and the conclusion should be drawn using a statistical technique called hypothesis testing.
+    Since the addition of noise is an inherently random, the comparison should be repeated several times, and the conclusion should be drawn using a statistical technique called hypothesis testing.
     This provides a framework to state whether there is sufficient evidence to reject the default ``null'' hypothesis - that the new GP method is no better than classical methods in these respects - allowing a strong conclusion to be drawn regarding the improvements in noise resilience of time series data when converted to frequency domain through the implementation of probabilistic numerics.
 
    % \subsection{Future Work Time Plan}
