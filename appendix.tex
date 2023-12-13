@@ -1,131 +1,50 @@
 \appendix
 \section{The use of generative AI (ChatGPT)}
-OpenAI's ChatGPT interface, powered by the GPT-4 large language model, was used to create some code.
-\subsection{\_inverse\_triangluar\_matrix\ method}
-This method is used to calculate the inverse of R in my method that computes the NLML in my FITC sparse GP approximation.
-It was generated using ChatGPT using the prompt: ``Write a Python function named \_inverse\_upper\_triangular that calculates the inverse of an upper triangular matrix in a faster and more numerically stable way than the standard np.linalg.inv function``.
-The output is provided in Figure~\ref{fig:chat-iut}.:
+OpenAI's ChatGPT interface, powered by the GPT-4 large language model, was used to implement the Negative Log Marginal Likelihood (NLML) method in my code in a specific way to ensure numerical stability though the use of the ``Cholesky decomposition''.
+The prompt and output is provided in Figure~\ref{fig:chat-NLML}.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{figures/chat-iut/chat-iut.png}
-    \caption{ChatGPT output providing a function used to inverse an upper triangular matrix in a faster and more numerically stable way}
-    \label{fig:chat-iut}
+    \includegraphics[width=1\linewidth]{figures/chat-NLML/chat-NLML.png}
+    \caption{ChatGPT prompt and output providing a way to compute the NLML that is faster and more numerically stable}
+    \label{fig:chat-NLML}
 \end{figure}
 
-
-
-After this was generated, it was modified slightly to make it work in my FITC class.
-Firstly, it was made a method instead of a function by adding ``self`` to the inputs.
-Secondly, the output was transformed into a np.array type which is expected for the subsequent code.
-The resulting method is provided below:
-
 \FloatBarrier
 
-\begin{lstlisting}[language=Python]
-    def _inverse_upper_triangular(self, matrix):
-        # Convert the input matrix to a NumPy array for easier manipulation
-        A = np.array(matrix, dtype=float)
+In order to ensure that this function was valid, its implementation was confirmed by the relevant literature~\cite{murphy2023probabilistic}~(Section 18.3.6).
+After which, this function was simplified and adapted into that it could be to be added to the $gp\_model$ class as a method, and so that it would work with the way the input data was formatted, as shown in Listing~\ref{1st:NLML}
 
-        # Check if the matrix is square
-        rows, cols = A.shape
-        if rows != cols:
-            raise ValueError("Input matrix is not square")
+\begin{lstlisting}[caption={Method used to calculate the Negative Log Marginal Likelihood (NLML).} language=Python,label={lst:NLML}]
+    def compute_nlml(self, hyperparameters):
+    self.update_hyperparameters_and_debug(hyperparameters)
+    self.reshape_X_and_y()
 
-        # Check if the matrix is upper triangular
-        if not np.allclose(np.tril(A, k=-1), 0):
-            raise ValueError("Input matrix is not upper triangular")
+    if self.gp_algo == 'cholesky':
+        K = self.gp_kernel.compute_kernel(self.X, self.X)
+        K += np.repeat(np.array(np.eye(len(self.X)) * 1e-3)[:,:, np.newaxis], self.X.shape[1], axis=2)
+        debug_K = np.squeeze(K)
+        L = scipy.linalg.cholesky(K[:, :, 0], lower=True)
+        n = len(self.y)
+        one_vector = np.ones(n)
+        y_adj = self.y - self.y_mean
 
-        # Check for zeros on the main diagonal
-        if any(np.isclose(np.diag(A), 0)):
-            raise ValueError(
-                "Matrix is singular and has no inverse")  # Changed from return None for consistency
+        alpha = scipy.linalg.cho_solve((L, True), y_adj)
 
-        # Create an identity matrix of the same size
-        I = np.identity(rows)
+        term_1_c = (0.5 * y_adj.T @ alpha).item()
+        term_2_c = np.sum(np.log(np.diag(L)))
+        term_3_c = 0.5 * n * np.log(2 * np.pi)
 
-        # Compute the inverse
-        for i in reversed(range(rows)):
-            I[i, i] = 1 / A[i, i]
-            for j in reversed(range(i + 1, rows)):
-                I[i, j] = -sum(A[i, k] * I[k, j] for k in range(i + 1, j + 1)) / A[i, i]
+        nlml = term_1_c + term_2_c + term_3_c
 
-        return np.array(I.tolist())
-\end{lstlisting}
+        out_c = {
+            'nlml': nlml,
+            'term_1': term_1_c,
+            'term_2': term_2_c,
+            'term_3': term_3_c
+        }
 
-This was proven to work by writing a unit test:
+        return out_c
 
-\FloatBarrier
-
-\begin{lstlisting}[language=Python]
-    def test__inverse_upper_triangular(self):
-        obj = GP_NLL_FITC(1, 2, 3, 4, 5, 6)
-
-        # Upper triangular matrix
-        matrix = np.array([
-            [2, 3, 1],
-            [0, 4, 5],
-            [0, 0, 7]
-        ])
-
-        start_time = timer.time()
-
-        result = obj._inverse_upper_triangular(matrix)
-
-        end_time = timer.time()
-        elapsed_time = end_time - start_time
-        print(f"The _inverse_upper_triangular func ran in {elapsed_time} seconds")
-
-        start_time = timer.time()
-
-        correct = np.linalg.inv(matrix)
-
-        end_time = timer.time()
-        elapsed_time = end_time - start_time
-
-        print(f"The np.linalg.inv func ran in {elapsed_time} seconds")
-        debug_print(f"result = {result}")
-        debug_print(f"correct = {correct}")
-        debug_print(f"difference = {result - correct}")
-
-        assert np.allclose(result, correct, atol=1E-5, rtol=1E-5)
-
-        # Another upper triangular matrix with different values
-        matrix2 = np.array([
-            [-1.9883, 2.0, 3.0],
-            [0, -9.4199, 4.0],
-            [0, 0, 1.7969]
-        ])
-
-        start_time = timer.time()
-        result2 = obj._inverse_upper_triangular(matrix2)
-        end_time = timer.time()
-
-        elapsed_time = end_time - start_time
-        print(f"The _inverse_upper_triangular func ran in {elapsed_time} seconds")
-
-        start_time = timer.time()
-        correct2 = np.linalg.inv(matrix2)
-        end_time = timer.time()
-
-        elapsed_time = end_time - start_time
-        print(f"The np.linalg.inv func ran in {elapsed_time} seconds")
-        debug_print(f"result2 = {result2}")
-        debug_print(f"correct2 = {correct2}")
-        debug_print(f"difference2 = {result2 - correct2}")
-
-        assert np.allclose(result2, correct2, atol=1E-5, rtol=1E-5)
 \end{lstlisting}
 
 
-This compared the result calculated by the method with an expected result calculated using the standard \texttt{np.linalg.inv} function for the two different input matrices.
-If they were the same within both a relative and absolute tolerance of $1E-5.$
-
-The unit test passed, showing that the function inverses the matrix correctly, however, it wasn't necessarily faster than the standard \texttt{np.linalg.inv} function.
-The inverse of the first matrix was calculated in $0.000246$ and $0.001368$ seconds using \texttt{\_inverse\_upper\_triangular} and \texttt{np.linalg.inv} methods respectively, whereas the inverse of the second matrix was calculated in $0.000312$ and $0.00005$ seconds respectively.
-This indicates that the fastest method depends on the input matrix, which is likely true for larger matrices also since both functions are of the $O(n^3)$ for an $n \times n$ matrix.
-However, the \texttt{\_inverse\_upper\_triangular} function will be more numerically stable and memory efficient because it is taking adavantages of the fact that the input matrix is upper triangular which allows the inverse to be found by back substitution instead of it being computed naively.
-\FloatBarrier
-
-\subsection{Figures for the report}
-\subsubsection{Cumulative Distribution Function}
-Put prompt and output

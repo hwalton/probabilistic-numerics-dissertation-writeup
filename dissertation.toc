@@ -35,3 +35,5 @@
 \contentsline {subsection}{\numberline {3.4}Predict Function}{10}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Plan for Future Work}{10}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{13}%
