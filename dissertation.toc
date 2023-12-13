@@ -40,4 +40,4 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{Appendices}{14}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}The use of generative AI (ChatGPT)}{14}%
+\contentsline {section}{\numberline {A}The Use of Generative AI (ChatGPT)}{14}%

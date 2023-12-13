@@ -3,7 +3,7 @@
 \addcontentsline{toc}{section}{Appendices}
 \renewcommand{\thelstlisting}{\thesection.\arabic{lstlisting}}
 \setcounter{lstlisting}{0}
-\section{The use of generative AI (ChatGPT)}
+\section{The Use of Generative AI (ChatGPT)}
 \label{app:GPT}
 OpenAI's ChatGPT interface, powered by the GPT-4 large language model, was used to implement the Negative Log Marginal Likelihood (NLML) method in my code in a specific way to ensure numerical stability though the use of the ``Cholesky decomposition''.
 The prompt and output is provided in Figure~\ref{fig:chat-NLML}.
@@ -17,7 +17,7 @@ The prompt and output is provided in Figure~\ref{fig:chat-NLML}.
 \FloatBarrier
 
 To ensure that this function was valid, its implementation was confirmed by the relevant literature~\cite{murphy2023probabilistic}~(Section 18.3.6).
-After which, this function was simplified and adapted into that it could be to be added to the $gp\_model$ class as a method, and so that it would work with the way the input data was formatted, as shown in Listing~\ref{lst:NLML}.
+After which, this function was simplified and adapted so that it could be to be added to the $gp\_model$ class as a method, and so that it would work with the way the input data was formatted, as shown in Listing~\ref{lst:NLML}.
 
 \newpage
 
