@@ -66,6 +66,7 @@
 }
 
 \lstset{style=mystyle, language=Python}
+\captionsetup[lstlisting]{font=bf}
 
 \usepackage{amsmath} % For mathematical features
 
@@ -396,7 +397,7 @@
     Finally, length hyperparameter, $l$, determines how smooth or wiggly the function is, i.e., how fast the function can change direction.
 
     \subsection{Hyperparameter Optimisation}
-    An algorithm was written to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood (NLML).
+    An algorithm was designed to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood (NLML), for which a method was written (Appendix.~\ref{app:GPT}).
     It did this by modifying each hyperparameter randomly in turn and seeing if the NLML improved.
     This was repeated for up to 100 iterations.
 
@@ -473,9 +474,12 @@
 
     \FloatBarrier
 
-    \input{appendix}
+
 
     \newpage
     \printbibliography
+    \addcontentsline{toc}{section}{References}
+    \newpage
+    \input{appendix}
 
 \end{document}
