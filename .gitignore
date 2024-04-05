@@ -13,3 +13,5 @@ git.sh
 *.log
 *.nlo
 *.nls
+figures/to-be-used
+
