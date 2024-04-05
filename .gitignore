@@ -1,0 +1,17 @@
+venv
+.env
+.idea
+dissertation.pdf
+*_.png
+git.sh
+
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.ilg
+*.log
+*.nlo
+*.nls
+figures/to-be-used
+
