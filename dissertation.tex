@@ -107,6 +107,8 @@
     \thispagestyle{empty}
     \includepdf[pages=1, frame, scale=1.09, pagecommand={}, offset=0 -35]{figures/titlepage.pdf}
 
+    \section{Summary}
+
     \printnomenclature
 
     \newpage
@@ -223,7 +225,7 @@
 
 
     \noindent where $\omega$ is the angular frequency and $f(t)$ is the time domain latent function being transformed.
-    This is an extremely powerful analytical technique that is used widely in engineering.
+    This is an extremely powerful analytical technique that is at the core of signal processing, which in turn is a set of techniques that are widely used in engineering to analyse, manipulate and interprete experimental data that changes over time in order to extract useful information or improve them for a specific purpose.
     However, for it to be applied in its base form to a function, this function must be defined for every point in time in the continuous domain $-\infty \text{ to } \infty$.
     Therefore, when working with sampled real world data, an approximation of this function is classically found using a numerical method called a Discrete Fourier Transform, specifically the Fast Fourier Transform (FFT).
 
@@ -231,12 +233,24 @@
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory~\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
     Firstly, the Fast Fourier Transform (FFT) assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window~\cite{MathStackExchange2023}.\nomenclature[L04]{FFT}{Fast Fourier Transform}
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
-    But most importantly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
+    Secondly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
+    Similarly, since the time domain and resulting frequency domain data is discrete, there can be a large variability in the amplitude and frequency of peaks depending on if the sampled frequencies fall exactly on the peak or either side of it, which in turn can affect modal properties and parameters calculated downstream of this data in the context of dynamics.
+    Finally, there is a highest ``Nyquist'' frequency that is half the sampling frequency, for which any higher frequencies present in the time domain signal will cause aliasing.
+    This is where these frequencies are misrepresented as lower frequencies, distorting the spectrum.
+
+    However, over time this spectra will need to be measured more accurately and at higher frequencies.
+    For example, as scramjet engines are developed for faster hypersonic aircraft, the vibration endured will be stronger and at higher frequencies.
+    This can lead to failure of components in the engines from fatigue, so being able to accurately measure the FFT spectra at these higher frequencies allows engineers to design effective damping systems and structures that can withstand the stresses over the lifespan of the vehicle while minimising weight of material.
+
+    Currently, spectra found with the FFT more accurately and at higher frequencies by simply collecting more and more data, but this is not always feasible since there are limits to the available resources such as time, energy and capital.
+    To use the scramjet engine example again, their hypersonic wind tunnel test only last on the order of milliseconds~\cite{Mec463} to reduce the cost of energy used and  to prevent damage from resulting high temperatures.
+    This provides very little time for vibration data to be collected.
+
 
     \subsection{Probabilistic Numerics and the Gaussian Process}
-    This paper proposes a new method of performing the Fourier Transform and other linear transformations using a ``Gaussian Process'' (GP) that may be more robust to noise than the FFT through its use of probabilistic numerics.
-    This is a new paradigm that seeks to expand on traditional numerical methods by incorporating probabilistic reasoning into the process of computation by treating ``a numerical problem as one of statistical inference instead''~\cite{ProbabilisticNumerics2023}.
+    This paper explores the potential advantages of a new paradigm of ``probabilistic numerics'' over traditional numerical methods in the context of dynamic systems whereby probabilistic reasoning is incorporated into the process of computation by treating ``a numerical problem as one of statistical inference instead''~\cite{ProbabilisticNumerics2023}.
     Here, uncertainty of outputs is modelled with a probability distribution as opposed to the error bounds as in traditional numerical methods.
+    This paper does this through the implementation of a promising type machine learning model called a Gaussian Process (GP) to find the Fourier Transform of a single degree of freedom (SDOF) dynamic system.
 
     A GP uses noisy, discrete sampled data to model the probability distribution of a continuous ``latent'' function, $f(x)$, that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L06]{$f(x)$}{Latent function of the variable $x$}\nomenclature[L08]{GP}{Gaussian Process}
     In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
@@ -245,19 +259,25 @@
     Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, this joint distribution of the observed data and the latent, noise-free function at the test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
-        \begin{pmatrix}
-            \mathbf{y} \\
-            \mathbf{f}_*
-        \end{pmatrix}
+        \left[
+            \begin{array}{c}
+                \mathbf{y} \\
+                \mathbf{f}_*
+            \end{array}
+            \right]
         \sim \mathcal{N} \left(
-        \begin{pmatrix}
+        \left\{
+        \begin{array}{c}
             \boldsymbol{\mu}_X \\
             \boldsymbol{\mu}_*
-        \end{pmatrix},
-        \begin{pmatrix}
-            \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I} & \mathbf{K}_{X,*} \\
-            \mathbf{K}_{X,*}^T & \mathbf{K}_{*,*}
-        \end{pmatrix}
+        \end{array}
+        \right\},
+        \left[
+            \begin{array}{cc}
+                \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I} & \mathbf{K}_{X,*} \\
+                \mathbf{K}_{X,*}^T & \mathbf{K}_{*,*}
+            \end{array}
+            \right]
         \right)\label{eq:joint-distribution}
     \end{equation}
 
@@ -316,27 +336,52 @@
 
     Note that this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
     It is also defined in the continuous domain $-\infty \text{ to } \infty$ so the Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
-    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP\@.
-    Therefore, modelling this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally when performing transformations of the data.
-    Furthermore, the noise term  $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
-    This is why the use of probabilistic numerics may allow for Fourier Transform to be performed with better robustness to noise.
+    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP, as shown in Equation~\ref{eq:linear-trans}
+
+    \begin{equation}
+        \left[
+            \begin{array}{c}
+                \mathbf{f}(t) \\
+                \mathbf{g}(\omega)
+            \end{array}
+            \right]
+        \sim \mathcal{N} \left(
+        \left\{
+        \begin{array}{c}
+            \boldsymbol{\mu} \\
+            \mathcal{F}(\boldsymbol{\mu})
+        \end{array}
+        \right\},
+        \left[
+            \begin{array}{cc}
+                \mathbf{K}_{X,X} & \mathcal{F}_x (\mathbf{K}_{X,*}) \\
+                \mathcal{F}_* (\mathbf{K}_{X,*}^T) & \mathcal{F}_* (\mathcal{F}_* (\mathbf{K}_{*,*}))
+            \end{array}
+            \right]
+        \right)\label{eq:linear-trans}
+    \end{equation}
 
     \subsection{Implications of the Findings}
+    Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing transformations of the data.
+    Furthermore, the noise term  $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
+    This means that the use of probabilistic numerics may be advantageous since it could allow for Fourier Transform and other linear transformations to be performed with better robustness to noise.
 
-    \subsubsection{Implications in the Context of the Fourier Transform}
+    Moreover, the proposed method of using a GP to perform a Fourier Transform has qualitative advantages over the traditional DFT.
+    Firstly, unlike the DFT, the time domain input data need not be uniformly spaced, which would allow the direct use of datasets that contain missing samples.
+    To use this data with the DFT, one would first need to find a suitable way to replace them, which gives an opportunity to add complication, error and human bias.
+    Similarly, since the Fourier Transform is a continuous function, it can be sampled anywhere, as many times as needed.
+    Assuming the time domain GP is a good fit to the latent function, this would allow the frequency and amplitude of peaks in the spectrum to be found very precisely, by having a cluster of samples around the peak of the spectrum.
+    This is not possible with the DFT because the input data and resulting spectrum must be evenly spaced and samples may fall either side of a peak.
+    Here, a suitable peak finding algorithm would instead be required, which again gives an opportunity to add complication, error and human bias.
 
-    A Fourier Transform method that can be applied to discrete data and is more robust to noise than the FFT would have significant implications in various fields of engineering.
 
-    In the context of dynamic systems, the system properties and parameters could be identified more precisely.
-    This is especially true for nonlinear systems whose complex dynamic behaviours can be obscured by noise such as two closely spaced resonant frequencies that may be mistaken for a single one.
-    Consequently, this would allow earlier detection of changes in structural integrity in the context of Structural Health Monitoring because an increase in nonlinear behaviour is typical of the formation or growth of cracks or other defects.
-    Therefore, engineers would be able to make and maintain structures with greater safety by increasing the likelihood of detecting structural damage before catastrophic failure occurs.
-
+    Such advantages would have significant implications in various fields of engineering.
+    In the context of dynamic systems, the system properties and parameters could be identified more precisely where data is limited, such as in scramjet hypersonic wind tunnel tests.
     A Fourier Transform that is more robust to noise could improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
     In these contexts, it is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
     Therefore, this improvement would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
 
-    More generally, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed to improve robustness to noise where classically, other numerical methods would need to be implemented to linearly transform discrete data.
+    More generally, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed to improve robustness to noise where classically, other numerical methods would need to be implemented to linearly transform discrete data, such as the Discrete Cosine Transform (DCT) used extensively in lossy JPEG compression.~\cite{StanfordJPEGDCT}
 
     \section{Aims and Objectives}
     \subsection{Aim}
