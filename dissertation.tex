@@ -336,7 +336,7 @@
 
     Note that this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
     It is also defined in the continuous domain $-\infty \text{ to } \infty$ so the Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
-    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP, as shown in Equation~\ref{eq:linear-trans}
+    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP, as shown in Equation~\ref{eq:linear-trans}.
 
     \begin{equation}
         \left[
@@ -360,6 +360,8 @@
             \right]
         \right)\label{eq:linear-trans}
     \end{equation}
+
+    \noindent As described by Ambrogioni et al~\cite{Ambrogioni2018}, this distribution can be conditioned to find the mean and covariance of the Fourier transform for a specific set of desired frequencies.
 
     \subsection{Implications of the Findings}
     Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing transformations of the data.
