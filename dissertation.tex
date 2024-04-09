@@ -1,6 +1,8 @@
 \documentclass[12pt]{article}
 \usepackage{fontspec}
 
+\usepackage{xcolor}
+
 \setmainfont{Times New Roman} % Times New Roman, Arial, Calibri
 
 \usepackage{setspace}
@@ -371,7 +373,7 @@
     Moreover, the proposed method of using a GP to perform a Fourier Transform has qualitative advantages over the traditional DFT.
     Firstly, unlike the DFT, the time domain input data need not be uniformly spaced, which would allow the direct use of datasets that contain missing samples.
     To use this data with the DFT, one would first need to find a suitable way to replace them, which gives an opportunity to add complication, error and human bias.
-    Similarly, since the Fourier Transform is a continuous function, it can be sampled anywhere, as many times as needed.
+    Similarly, since the Fourier Transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
     Assuming the time domain GP is a good fit to the latent function, this would allow the frequency and amplitude of peaks in the spectrum to be found very precisely, by having a cluster of samples around the peak of the spectrum.
     This is not possible with the DFT because the input data and resulting spectrum must be evenly spaced and samples may fall either side of a peak.
     Here, a suitable peak finding algorithm would instead be required, which again gives an opportunity to add complication, error and human bias.
@@ -398,13 +400,11 @@
                     \item Implementing optimisation of kernel hyperparameters. \label{item:nll}
                     \item Creating a prediction function to predict the outputs of new inputs. \label{item:predict}
                 \end{itemize}
-            \item Scale to large data by implementing a Sparse GP approximation.
-            \item Adjust this model to enable the closed form Fourier Transform to be found.
-            \item Compare the noise resilience with existing Discrete Fourier Transform methods such as the Fast Fourier Transform.\label{noise-resilience}
-            \item Stretch Objective: Compare the smoothing out of sharp resonance peaks due to spectral leakage.\label{stretch-obj}
+            \item Adjust this model to enable the closed form Fourier Transform of the mean function to be found.
+            \item Explore the quantitative and qualitative advantages and disadvantages with respect to computation time, accuracy and robustness to noise versus existing Discrete Fourier Transform methods such as the Fast Fourier Transform.\label{noise-resilience}
         \end{enumerate}
 
-    \section{Work Completed to Date}
+    \section{Creating the Gaussian Process Model}
     The first thing needed to be complete was the basic Gaussian Process model.
     This was implemented using the programming language Python and consisted of the following components:
     \subsection{The Data}
@@ -462,7 +462,6 @@
     The predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot}.
     Furthermore, when Gaussian noise was added to the input data, the standard deviation of the prediction became larger to take account for this noise, as shown in Figure~\ref{fig:input-response-noise}.
 
-
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/input-response-noise/input-response-noise.png}
@@ -470,17 +469,19 @@
         \label{fig:input-response-noise}
     \end{figure}
 
-    \section{Plan for Future Work}
-    Firstly, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) will be complete to allow the model to scale to large data~\cite{q-candela}.
-    This will reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L17]{$M$}{Number of inducing points in Sparse GP} \nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}
-    This modification will be made to both the NLML and predict functions, which requires a very specific implementation in order to keep the calculations numerically stable and efficient in terms of computation time and memory required.
+    After this, the function for the Fourier Transform of the mean prediction was constructed using the method described by Ambrogioni et al~\cite{Ambrogioni2018}, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
 
-    After this is complete, the hyperparameters can be optimised and the GP can be fit for functions containing more than 10,000 data points in a significantly reduced computation time.
+    \section{Results and discussion}
+    After this Gaussian Process Model was complete, it could then be setup and used in a variety of test cases to explore the quantitative advantages and disadvantages versus the Fast Fourier Transform.
 
-    Next, the input space of the joint Gaussian distribution will be extended to the frequency domain by incorporating the Fourier Transform.
+    Here, the test data was constructed from the time domain acceleration of a simulated single degree of freedom (SDOF) system in free vibration because the system properties and the exact Fourier Transform of the latent function could be calculated analytically using the system parameters.
+    Since these were exact and known to be mathematically correct, they could be used to test how well the GP calculated them, using the performance of the FFT as a benchmark.
 
-    Then, a method to compare the robustness to noise of the Fourier transform computed using the GP model vs the classical FFT model needs to be determined (Objective~\ref{noise-resilience}).
-    One method of doing this uses the (discrete) Mean Squared Error (MSE), which is an algorithm used to measure the quality of an estimator (lower is better) using the average of the squares of the differences between the points at each index position in the series, as shown in Equation~\ref{eq:mse}
+    \subsection{Basic Case}
+    The performance of the GP was first compared to that of the FFT algorithm using a basic dataset of \textcolor{red}{[N] datapoints from 0 to xxx using system parameters M = ; C = ; K = }.
+
+    The first comparison was made by calculating the Mean Squared Error (MSE) with respect to the analytically exact Fourier Transform for each.
+    This is an algorithm used to measure the quality of an estimator (lower is better) using the average of the squares of the differences between the points at each index position in the series, as shown in Equation~\ref{eq:mse}
 
     \begin{equation}
         \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (a_i - b_i)^2
@@ -488,42 +489,60 @@
     \end{equation}
 
     \noindent where $a_i$, $b_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i.
-    The method works as follows:
 
-    First, the Fourier Transform of the data can be computed using each method.
-    Then, some Gaussian noise can be added to the data and the Fourier Transform can be computed again using both methods.
-    Next, for the standard FFT method, the Mean Squared Error can be computed between Fourier Transforms of the unmodified and noisy data.
-    Similarly, for the Gaussian Process method, the MSE can be computed between the mean functions of Fourier Transforms of the unmodified and noisy data.
-    Since these mean functions are continuous, to compute the MSE they first need to be discretised by evaluating them at the same frequencies present in the FFTs generated using the first method.
-    The two MSEs can then be used to make a comparison between robustness to noise of each method.
-    This could be repeated for different levels and types of noise (Gaussian vs white noise) to test how each method performs under various conditions.
+    Here, the \textcolor{red}{GP was shown to be better, with a MSE of xxx versus xxx for the FFT}
 
-    If time allows the stretch objective (\ref{stretch-obj}) of comparing how smoothed out sharp resonance peaks are due to spectral leakage can be complete.
-    To do this, the Fourier Transform of a pure sine wave should be found using both the GP and FFT methods.
-    This is because it can be solved exactly on paper to provide a Fourier Transform with a sharp peak at the frequency of the wave.
-    Each method can then be compared to the exact solution using the MSE to see which has peaks that are more distorted by spectral leakage.
+    Next, the amplitude and frequency of the peak was compared to the exact simulated value for each.
+    The \textcolor{red}{GP was shown to be better, with an error in wn of xxx versus xxx for the FFT}
 
-    Finally, a conclusion can be drawn regarding the utility of the new Gaussian Process (GP) method of computing the Fourier Transform when compared to the classical Fast Fourier Transform (FFT) with respect to robustness to noise and prevention of artifacts due to spectral leakage in the context of dynamic systems.
-    Since the addition of noise is an inherently random, the comparison should be repeated several times, and the conclusion should be drawn using a statistical technique called hypothesis testing.
-    This provides a framework to state whether there is sufficient evidence to reject the default ``null'' hypothesis - that the new GP method is no better than classical methods in these respects - allowing a strong conclusion to be drawn regarding the improvements in noise resilience of time series data when converted to frequency domain through the implementation of probabilistic numerics.
+    Being able to precisely determine the amplitude and ``resonant'' frequency of peaks in such closed form functions is crucial for mechanical design.
+    For simplicity, simulated system here is an SDOF system in free vibration, meaning that it is not driven by an external oscillating force.
+    However, this process could be applied to an SDOF system under forced vibration instead.
+    If the spectrum of the displacement, velocity or acceleration was normalised by dividing by each spectrum of the force, a ``Frequency Response Function'' (FRF) known as the receptance, mobility, or accelerance would be produced respectively.
+    The FRF can be used with the forces that the system is expected to experience in its lifetime to predict the amplitude of vibration.
+    If this is excessive and the system is at risk of mechanical failure, the design can be changed preventatively.
+    For example, the mass could be changed to move the resonant frequency away from the expected forcing frequency, reducing the expected amplitude of oscillation.
+    Alternately, damping could be added to smooth out the resonance peak, reducing its amplitude.
+    Therefore, being able to more precisely determine the properties of a peak through the new GP method would be beneficial in the design process because one would be able to more precisely determine which changes (if any) need to occur to the design to make it safer as required.
 
-   % \subsection{Future Work Time Plan}
-    A Gantt chart outlining these main steps and the approximate schedule for the remaining work in the project is included (Figure~\ref{fig:gantt-chart_}).
+    \subsection{Non-uniform Sampling of Spectrum}
+    Since the GP's spectrum is continuous in closed form, a cluster of an arbitrary number of samples can be taken around the peak to ensure the maximum sampled point is closer to the true maximum.
+    Since in the frequency interval in the spectrum produced by the FFT is uniform and predetermined, the same clustering of samples around the peak is not possible for this.
+    Therefore, using the same dataset as above, \textcolor{red}{ with [N] datapoints, such clustering in the GP improved the error in wn and amplitude to be xxx and xxx respectively, compared to xxx and xxx for the FFT}
 
-    \begin{landscape}
-        \begin{figure}[p] % 'p' places the figure on a page of its own
-            \centering
-            \includegraphics[width=\linewidth]{figures/gantt_chart/gantt-chart_.png}
-            \caption{A Gantt chart showing work remaining, using a format modified from~\cite{DataCampGanttChart2021}. This includes scheduled delays in the Christmas and Easter holidays to allow for exam revision and as a buffer to catch up to the schedule if the project is falling behind.}
-            \label{fig:gantt-chart_}
-        \end{figure}
-    \end{landscape}
+    Furthermore, since the frequency interval is inversely proportional to the total time period, the difference between the amplitude and frequency of the peak calculated with the GP and FFT is more pronounced for datasets over a shorter time period.
+    \textcolor{red}{For instance, using only the first [N] points of the dataset above the error in wn and amplitude is xxx and xxx respectively, compared to xxx and xxx for the FFT, showing that the GP calculated the wn performs significantly better}
+    This means that this proposed GP model may be best suited to designs in which there is limited time for testing, such as in the aforementioned example of hypersonic wind tunnel tests of scramjets.
+
+    \subsection{Robustness to Noise}
+    The robustness to noise was also compared (Objective~\ref{noise-resilience}) by seeing by how much each MSE increased when noise was added.
+    The \textcolor{red}{GP was shown to be better, with an error in wn of xxx versus xxx for the FFT}
+
+    \subsection{data missing}
+    One qualitative difference
+
+
+    \subsection{non-uniform spacing}
+    \subsection{Nyquist Limit}
+
+
+    \section{Directions for Future Work}
+    Although this new Gaussian Process (GP) method of performing the Fourier Transform has some advantages, it certainly has some aspects that would benefit further improvement.
+    Firstly, the GP scaled poorly with large datasets, especially the hyperparameter training phase which is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT). To address this, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) could be employed to allow both the NLML and predict functions to scale to large data~\cite{q-candela}.
+    Successful implementation can be shown if the NLML is the same for the basic GP and its sparse approximation when the set of inducing points is exactly the same as the test dataset.
+    This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L17]{$M$}{Number of inducing points in Sparse GP}
+    After this is complete, the hyperparameters could be optimised and the GP can be fit for functions containing more than 10,000 data points in a significantly reduced computation time.
+
+    This was originally an objective before implementing the functionality for the Fourier Transform.
+    It was attempted extensively but the implentations did not produce NLML values consistent with the basic GP and thus failed to converge to fit the test data.
+    This is likely to be because the sparse approximation requires a very specific implementation in order to keep the calculations numerically stable and efficient in terms of computation time and memory required due to the large matrix multiplications that are involved that must produce matrices that remain positive semi-definite.
+    However, this vital information is not included in the source for the method~(\cite{q-candela}).
+
+    + Stdv function of the fourier transform and its applications can be explored
+
+    + Find frequencies above the nyquist limit
 
     \FloatBarrier
-
-
-
-
 
     \newpage
     \printbibliography
