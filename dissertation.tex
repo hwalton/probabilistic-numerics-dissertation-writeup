@@ -250,7 +250,8 @@
 
 
     \subsection{Probabilistic Numerics and the Gaussian Process}
-    This paper explores the potential advantages of a new paradigm of ``probabilistic numerics'' over traditional numerical methods in the context of dynamic systems whereby probabilistic reasoning is incorporated into the process of computation by treating ``a numerical problem as one of statistical inference instead''~\cite{ProbabilisticNumerics2023}.
+    This paper explores the potential advantages of a new paradigm of ``probabilistic numerics'' over traditional numerical methods that may allow one to get more from less data.
+    This is primarily in the context of dynamic systems whereby probabilistic reasoning is incorporated into the process of computation by treating ``a numerical problem as one of statistical inference instead''~\cite{ProbabilisticNumerics2023}.
     Here, uncertainty of outputs is modelled with a probability distribution as opposed to the error bounds as in traditional numerical methods.
     This paper does this through the implementation of a promising type machine learning model called a Gaussian Process (GP) to find the Fourier Transform of a single degree of freedom (SDOF) dynamic system.
 
@@ -363,7 +364,8 @@
         \right)\label{eq:linear-trans}
     \end{equation}
 
-    \noindent As described by Ambrogioni et al~\cite{Ambrogioni2018}, this distribution can be conditioned to find the mean and covariance of the Fourier transform for a specific set of desired frequencies.
+    \noindent Like before, this distribution can be conditioned to find the conditional mean and covariance of the Fourier Transform at a specific set of desired frequencies, given the training data, $\mathbf{X}$.
+    This is equivalent to taking the Fourier Transform of the time domain prediction functions, as described by Ambrogioni et al~\cite{Ambrogioni2018}.
 
     \subsection{Implications of the Findings}
     Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing transformations of the data.
@@ -459,8 +461,10 @@
     This allowed the algorithm to explore after reaching a minimum to potentially find another part of the NLML function that was lower.
 
     \subsection{Predict Function}
-    The predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot}.
-    Furthermore, when Gaussian noise was added to the input data, the standard deviation of the prediction became larger to take account for this noise, as shown in Figure~\ref{fig:input-response-noise}.
+    The predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot} respectively.
+    The mean of each prediction point is calculated using Equation~\ref{eq:18.52} directly, whereas the standard deviation of each point uses only the main diagonal of the covariance matrix resulting from Equation~\ref{18.53}, which is square rooted in order to find the standard deviation.
+    In combination, this predict function defines the probability distribution of the value of the latent function at any point, given the training data.
+    Hence, when Gaussian noise was added to the training data, the standard deviation of the prediction became larger to take account for the uncertainty created by this noise, as shown in Figure~\ref{fig:input-response-noise}.
 
     \begin{figure}[ht]
         \centering
@@ -469,7 +473,8 @@
         \label{fig:input-response-noise}
     \end{figure}
 
-    After this, the function for the Fourier Transform of the mean prediction was constructed using the method described by Ambrogioni et al~\cite{Ambrogioni2018}, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
+    Next, the function for the Fourier Transform of the prediction of the mean was constructed using the method described by Ambrogioni et al~\cite{Ambrogioni2018}, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
+
 
     \section{Results and discussion}
     After this Gaussian Process Model was complete, it could then be setup and used in a variety of test cases to explore the quantitative advantages and disadvantages versus the Fast Fourier Transform.
@@ -528,8 +533,10 @@
 
     \section{Directions for Future Work}
     Although this new Gaussian Process (GP) method of performing the Fourier Transform has some advantages, it certainly has some aspects that would benefit further improvement.
+
+    \subsection{Scaling to large data}
     Firstly, the GP scaled poorly with large datasets, especially the hyperparameter training phase which is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT). To address this, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) could be employed to allow both the NLML and predict functions to scale to large data~\cite{q-candela}.
-    Successful implementation can be shown if the NLML is the same for the basic GP and its sparse approximation when the set of inducing points is exactly the same as the test dataset.
+    Successful implementation can be confirmed if the NLML is the same for the basic GP and its sparse approximation when the set of inducing points is exactly the same as the test dataset.
     This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L17]{$M$}{Number of inducing points in Sparse GP}
     After this is complete, the hyperparameters could be optimised and the GP can be fit for functions containing more than 10,000 data points in a significantly reduced computation time.
 
@@ -538,7 +545,10 @@
     This is likely to be because the sparse approximation requires a very specific implementation in order to keep the calculations numerically stable and efficient in terms of computation time and memory required due to the large matrix multiplications that are involved that must produce matrices that remain positive semi-definite.
     However, this vital information is not included in the source for the method~(\cite{q-candela}).
 
-    + Stdv function of the fourier transform and its applications can be explored
+    \subsection{Fourier Transform of the Covariance Matrix}
+    As described by Ambrogioni et al~\cite{Ambrogioni2018}, it should also be possible to find the Fourier Transform of the predictive covariance function.
+
+    This is not s
 
     + Find frequencies above the nyquist limit
 
