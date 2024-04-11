@@ -546,9 +546,9 @@
     However, this vital information is not included in the source for the method~(\cite{q-candela}).
 
     \subsection{Fourier Transform of the Covariance Matrix}
-    As described by Ambrogioni et al~\cite{Ambrogioni2018}, it should also be possible to find the Fourier Transform of the predictive covariance function.
+    As described by Ambrogioni et al~\cite{Ambrogioni2018}, it should also be possible to find the Fourier Transform of the predictive covariance function, the main diagonal of which should be positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p. 96), meaning that its phase is always 0.
+    This should transform the information regarding the uncertainty of the prediction to the frequency domain, which may be useful in determining whether or not the amount of data is sufficient to provide meaningful, reliable results in the frequencies of interest.
 
-    This is not s
 
     + Find frequencies above the nyquist limit
 
