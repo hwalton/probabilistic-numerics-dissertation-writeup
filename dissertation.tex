@@ -236,24 +236,25 @@
     Firstly, the Fast Fourier Transform (FFT) assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window~\cite{MathStackExchange2023}.\nomenclature[L04]{FFT}{Fast Fourier Transform}
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
     Secondly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
-    Similarly, since the time domain and resulting frequency domain data is discrete, there can be a large variability in the amplitude and frequency of peaks depending on if the sampled frequencies fall exactly on the peak or either side of it, which in turn can affect modal properties and parameters calculated downstream of this data in the context of dynamics.
+    Similarly, since the time domain and resulting frequency domain data is discrete, the basic algorithm can exhibit large variability in the amplitude and frequency of peaks depending on if the sampled frequencies fall exactly on the peak or either side of it, which in turn can affect modal properties and parameters calculated downstream of this data in the context of dynamics.
     Finally, there is a highest ``Nyquist'' frequency that is half the sampling frequency, for which any higher frequencies present in the time domain signal will cause aliasing.
     This is where these frequencies are misrepresented as lower frequencies, distorting the spectrum.
 
     However, over time this spectra will need to be measured more accurately and at higher frequencies.
-    For example, as scramjet engines are developed for faster hypersonic aircraft, the vibration endured will be stronger and at higher frequencies.
+    For example, as scramjet engines are developed in the aerospace insdustry for faster hypersonic aircraft, the vibration endured will be stronger and at higher frequencies.
     This can lead to failure of components in the engines from fatigue, so being able to accurately measure the FFT spectra at these higher frequencies allows engineers to design effective damping systems and structures that can withstand the stresses over the lifespan of the vehicle while minimising weight of material.
 
     Currently, spectra found with the FFT more accurately and at higher frequencies by simply collecting more and more data, but this is not always feasible since there are limits to the available resources such as time, energy and capital.
-    To use the scramjet engine example again, their hypersonic wind tunnel test only last on the order of milliseconds~\cite{Mec463} to reduce the cost of energy used and  to prevent damage from resulting high temperatures.
+    In the example of the scramjet engine, their hypersonic wind tunnel tests only last on the order of milliseconds~\cite{Mec463} to reduce the cost of energy used and  to prevent damage from resulting high temperatures.
     This provides very little time for vibration data to be collected.
+    Similarly, if measurement instruments with higher sampling frequencies are required to bring the limiting nyquist frequency above higher frequency vibrations, the cost of this equipment, and the computation required to process the data will increase.
 
 
     \subsection{Probabilistic Numerics and the Gaussian Process}
     This paper explores the potential advantages of a new paradigm of ``probabilistic numerics'' over traditional numerical methods that may allow one to get more from less data.
     This is primarily in the context of dynamic systems whereby probabilistic reasoning is incorporated into the process of computation by treating ``a numerical problem as one of statistical inference instead''~\cite{ProbabilisticNumerics2023}.
     Here, uncertainty of outputs is modelled with a probability distribution as opposed to the error bounds as in traditional numerical methods.
-    This paper does this through the implementation of a promising type machine learning model called a Gaussian Process (GP) to find the Fourier Transform of a single degree of freedom (SDOF) dynamic system.
+    This paper does this through the implementation of a promising type of machine learning model called a Gaussian Process (GP) to find the Fourier Transform of a single degree of freedom (SDOF) dynamic system.
 
     A GP uses noisy, discrete sampled data to model the probability distribution of a continuous ``latent'' function, $f(x)$, that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L06]{$f(x)$}{Latent function of the variable $x$}\nomenclature[L08]{GP}{Gaussian Process}
     In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
@@ -550,7 +551,7 @@
     This should transform the information regarding the uncertainty of the prediction to the frequency domain, which may be useful in determining whether or not the amount of data is sufficient to provide meaningful, reliable results in the frequencies of interest.
 
 
-    + Find frequencies above the nyquist limit
+    \subsection{Find frequencies above the nyquist limit}
 
     \FloatBarrier
 
