@@ -2,6 +2,7 @@
 \usepackage{fontspec}
 
 \usepackage{xcolor}
+\usepackage{mathrsfs}
 
 \setmainfont{Times New Roman} % Times New Roman, Arial, Calibri
 
@@ -79,6 +80,7 @@
 \usepackage{nomencl}
 \usepackage{chngcntr}
 \usepackage{amssymb}
+\usepackage{hyperref}
 \counterwithin{figure}{section}
 \counterwithin{equation}{section}
 
@@ -352,20 +354,22 @@
         \sim \mathcal{N} \left(
         \left\{
         \begin{array}{c}
-            \boldsymbol{\mu} \\
-            \mathcal{F}(\boldsymbol{\mu})
+            \boldsymbol{\mu}_X(t) \\
+            \mathcal{F}[{\boldsymbol{\mu}_*}](\omega)
         \end{array}
         \right\},
         \left[
             \begin{array}{cc}
-                \mathbf{K}_{X,X} & \mathcal{F}_x (\mathbf{K}_{X,*}) \\
-                \mathcal{F}_* (\mathbf{K}_{X,*}^T) & \mathcal{F}_* (\mathcal{F}_* (\mathbf{K}_{*,*}))
+                \mathbf{K}_{X,X} & \mathcal{F}_{*} [\boldsymbol{K}_{X,*}] \\
+                \mathcal{F}_{*} [\boldsymbol{K}_{X,*}^T] & \mathcal{F}_{*1} [\mathcal{F}_{*2} [\boldsymbol{K}_{*1,*2}]]
             \end{array}
             \right]
         \right)\label{eq:linear-trans}
     \end{equation}
 
-    \noindent Like before, this distribution can be conditioned to find the conditional mean and covariance of the Fourier Transform at a specific set of desired frequencies, given the training data, $\mathbf{X}$.
+    \noindent where $\mathcal{F}_*, \mathcal{F}_{*1} and \mathcal{F}_{*2}$ are (elementwise) Fourier Transforms with respect to test points in vectors $\mathbf{X_{*}}$, $\mathbf{X_{*1}}$ and $\mathbf{X_{*2}}$ respectively, where $\mathbf{X_{*1}}$ and $\mathbf{X_{*2}}$ are separate instantiations of the vector $\mathbf{X_{*}}$. CHANGE THIS TO $\mathbf{F}$
+
+    Like before, this distribution can be conditioned to find the conditional mean and covariance of the Fourier Transform at a specific set of desired frequencies, given the training data, $\mathbf{X}$.
 
 
     Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing linear operations of the data.
@@ -430,7 +434,7 @@
     \nomenclature[G06]{$\sigma^2$}{The variance hyperparameter of the SE kernel}
     \nomenclature[L16]{$l$}{Length scale hyperparameter of the SE kernel}
 
-    \noindent where $k(a,b)$ is the kernel function evaluated at elements $a_i$, $b_j$ of vectors $\mathbf{A}$, $\mathbf{B}$ respectively; $\sigma^2$ is the variance hyperparameter and $l$ is the length scale parameter.
+    \noindent where $k(a,b)$ is the kernel function evaluated at elements $a_i$, $b_j$ of vectors $\mathbf{A}$, $\mathbf{B}$ respectively and $\sigma^2$ is the variance hyperparameter and $l$ is the length scale parameter.
 
     The variance hyperparameter, $\sigma^2$, determines the average distance of the function away from its mean.
     It is a simple scale factor present in all kernels.
@@ -453,7 +457,7 @@
 
     \subsection{Predict Function}
     The predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:input-response-plot} respectively.
-    The mean of each prediction point is calculated using Equation~\ref{eq:18.52} directly, whereas the standard deviation of each point uses only the main diagonal of the covariance matrix resulting from Equation~\ref{18.53}, which is square rooted in order to find the standard deviation.
+    The mean of each prediction point is calculated using Equation~\ref{eq:18.52} directly, whereas the standard deviation of each point uses only the main diagonal of the covariance matrix resulting from Equation~\ref{eq:18.53}, which is square rooted in order to find the standard deviation.
     In combination, this predict function defines the probability distribution of the value of the latent function at any point, given the training data.
     Hence, when Gaussian noise was added to the training data, the standard deviation of the prediction became larger to take account for the uncertainty created by this noise, as shown in Figure~\ref{fig:input-response-noise}.
 
@@ -465,19 +469,43 @@
     \end{figure}
 
     \section{Finding the Fourier Transform of the Mean}
-    Next, the function for the Fourier Transform of the prediction of the mean was constructed using the neat method described by Ambrogioni et al~\cite{Ambrogioni2018}, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
-    This is an equivalent method to conditioning the joint distribution in Equation~\ref{eq:linear-trans} which instead takes the Fourier Transform of the time domain predictive mean function directly.
-    It did this by taking the Fourier Transform of the kernel function only.
-    Here, the Fourier shift theorem was first applied to ensure that the kernel was a function of a single variable.
-    This was possible because the Squared Exponential Kernel used is stationary, and allowed a remarkably simple expression for the Fourier Transform to be found analytically, as shown in Equation~\ref{eq:se-kernel-ft}
+    Next, the function for the Fourier Transform of the prediction of the mean was constructed, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
+    This was done using a neat method described by Ambrogioni et al~\cite{Ambrogioni2018} which is equivalent to conditioning the joint distribution in Equation~\ref{eq:linear-trans} but instead takes the Fourier Transform of the time domain predictive mean function directly.
+    Remarkably, this only involves taking the Fourier Transform of the kernel, provided that first the Fourier shift theorem is applied to ensure that the kernel is a function of a single variable.
+    This Fourier shift theorem can be applied to stationary kernels only, such as the Squared Exponential Kernel used in this paper, which has a Fourier Transform that can be found analytically and is shown in Equation~\ref{eq:se-kernel-ft}
 
     \begin{equation}
-        k(\omega,0) = \frac{\sigma^2 l}{\sqrt{2 \pi}} \exp\left(-\frac{l^2 \omega^2}{2}\right) \label{eq:se-kernel-ft}
+        \mathcal{K}(\omega,0) = \frac{\sigma^2 l}{\sqrt{2 \pi}} \exp\left(-\frac{l^2 \omega^2}{2}\right) \label{eq:se-kernel-ft}
     \end{equation}
     \nomenclature[L165]{$k(\omega,0)$}{Fourier Transform of the Squared Exponential Kernel function evaluated at $\omega$}
 
-    \noindent where $\omega$ is the frequency and $k(\omega,0)$ is the Fourier Transform of the Squared Exponential Kernel function evaluated at $\omega$.
+    \noindent where $\omega$ is the frequency and $mathcal{K}(\omega,0)$ is the Fourier Transform of the Squared Exponential Kernel function evaluated at $\omega$.
 
+    For the mean function written in the form shown in Equation~\ref{eq:mean-sum-time-domain}
+
+    \begin{equation}
+        \mathbf{\mu}(t) = \sum_{k} w_k k(t,t_k) \label{eq:mean-sum-time-domain}
+    \end{equation}
+
+    \noindent where $t_k$ is the $k^{th}$ element in the vector of training points $\mathbf{X}$; $t$ is an element in the vector of test points, $\mathbf{X}_*$ and $w_k$ is defined in Equation~\ref{eq:w_k}
+
+    \begin{equation}
+        w_k = \sum_{n} a_{kn} y_n \label{eq:w_k}
+    \end{equation}
+
+    \noindent where $a_{kn}$ is an element in matrix $\mathbf{A}$ defined in Equation~\ref{eq:A},
+
+    \begin{equation}
+         \mathbf{A} = (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} \label{eq:A}
+    \end{equation}
+
+    \noindent its Fourier Transform is shown to be Equation~\ref{eq:mean-sum-freq-domain}.
+
+    \begin{equation}
+        \mathbf{\mu}(\omega) = \mathcal{K}(\omega,0) \sum_k w_k e^{i \omega t_k} \label{eq:mean-sum-freq-domain}
+    \end{equation}
+
+    The same steps can be used to derive the equation for the Fourier Transform of the function for the main diagonal of the Covariance Matrix as shown in Equation...
 
     \section{Results and discussion}
     After this Gaussian Process Model was complete, it could then be setup and used in a variety of test cases to explore the quantitative advantages and disadvantages versus the Fast Fourier Transform.
