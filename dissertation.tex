@@ -217,16 +217,16 @@
         \label{fig:frequency-response-function}
     \end{figure}
 
-    The decomposition of the input and response functions from the time domain to the frequency domain uses a linear transformation called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft}
+    The decomposition of the input and response functions from the time domain to the frequency domain uses a linear operator called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft}
 
     \begin{equation}
-        F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
+        F(\omega) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
     \end{equation}
     \nomenclature[L05]{$F(\omega)$}{Fourier Transform of $f(t)$}
     \nomenclature[G08]{$\omega$}{Angular frequency}
 
 
-    \noindent where $\omega$ is the angular frequency and $f(t)$ is the time domain latent function being transformed.
+    \noindent where $\omega$ is the angular frequency and $f(t)$ is the time domain latent function being operated on.
     This is an extremely powerful analytical technique that is at the core of signal processing, which in turn is a set of techniques that are widely used in engineering to analyse, manipulate and interprete experimental data that changes over time in order to extract useful information or improve them for a specific purpose.
     However, for it to be applied in its base form to a function, this function must be defined for every point in time in the continuous domain $-\infty \text{ to } \infty$.
     Therefore, when working with sampled real world data, an approximation of this function is classically found using a numerical method called a Discrete Fourier Transform, specifically the Fast Fourier Transform (FFT).
@@ -340,12 +340,12 @@
 
     Note that this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
     It is also defined in the continuous domain $-\infty \text{ to } \infty$ so the Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
-    Incredibly, since the Fourier Transform is also a linear transformation, the result of this transformation of the GP is yet another GP, as shown in Equation~\ref{eq:linear-trans}.
+    Incredibly, since the Fourier Transform is also a linear operator~\cite{Jidling2017}, the result of this operation of the GP is yet another GP. The joint distribution of the two can therefore be written as shown in Equation~\ref{eq:linear-trans}.
 
     \begin{equation}
         \left[
             \begin{array}{c}
-                \mathbf{f}(t) \\
+                \mathbf{y}(t) \\
                 \mathbf{g}(\omega)
             \end{array}
             \right]
@@ -366,39 +366,25 @@
     \end{equation}
 
     \noindent Like before, this distribution can be conditioned to find the conditional mean and covariance of the Fourier Transform at a specific set of desired frequencies, given the training data, $\mathbf{X}$.
-    This is equivalent to taking the Fourier Transform of the time domain prediction functions, as described by Ambrogioni et al~\cite{Ambrogioni2018}.
+
+
+    Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing linear operations of the data.
+    Furthermore, the noise term  $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
+    This means that the use of probabilistic numerics may be advantageous since it could allow for Fourier Transform and other linear operators to be performed with better robustness to noise.
 
     \subsection{Implications of the Findings}
-    Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing transformations of the data.
-    Furthermore, the noise term  $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
-    This means that the use of probabilistic numerics may be advantageous since it could allow for Fourier Transform and other linear transformations to be performed with better robustness to noise.
 
-    Moreover, the proposed method of using a GP to perform a Fourier Transform has qualitative advantages over the traditional DFT.
-    Firstly, unlike the DFT, the time domain input data need not be uniformly spaced, which would allow the direct use of datasets that contain missing samples.
-    To use this data with the DFT, one would first need to find a suitable way to replace them, which gives an opportunity to add complication, error and human bias.
-    Similarly, since the Fourier Transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
-    Assuming the time domain GP is a good fit to the latent function, this would allow the frequency and amplitude of peaks in the spectrum to be found very precisely, by having a cluster of samples around the peak of the spectrum.
-    This is not possible with the DFT because the input data and resulting spectrum must be evenly spaced and samples may fall either side of a peak.
-    Here, a suitable peak finding algorithm would instead be required, which again gives an opportunity to add complication, error and human bias.
-
-
-    Such advantages would have significant implications in various fields of engineering.
-    In the context of dynamic systems, the system properties and parameters could be identified more precisely where data is limited, such as in scramjet hypersonic wind tunnel tests.
-    A Fourier Transform that is more robust to noise could improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
-    In these contexts, it is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
-    Therefore, this improvement would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
-
-    More generally, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed to improve robustness to noise where classically, other numerical methods would need to be implemented to linearly transform discrete data, such as the Discrete Cosine Transform (DCT) used extensively in lossy JPEG compression.~\cite{StanfordJPEGDCT}
 
     \section{Aims and Objectives}
     \subsection{Aim}
     The main aim of this paper is to improve the noise resilience of time series data when converted to frequency domain.
 
     \subsection{Objectives}
-    This overarching aim can be broken down into four objectives, plus an optional stretch objective if time allows:
+    This overarching aim can be broken down into three objectives:
         \begin{enumerate}
-            \item Get a working Gaussian Process model, which involves:
+            \item Create a working Gaussian Process model, which involves:
                 \begin{itemize}
+                    \item Sourcing some time series signal data.
                     \item Choosing and creating a kernel.
                     \item Implementing optimisation of kernel hyperparameters. \label{item:nll}
                     \item Creating a prediction function to predict the outputs of new inputs. \label{item:predict}
@@ -408,10 +394,14 @@
         \end{enumerate}
 
     \section{Creating the Gaussian Process Model}
-    The first thing needed to be complete was the basic Gaussian Process model.
-    This was implemented using the programming language Python and consisted of the following components:
+    The first objective was completed by implementing the Gaussian Process (GP) model in the programming language Python.
     \subsection{The Data}
-    Previously collected turbine tap test data~\cite{MEC326} was converted to a .csv file (a file that formats data into table of values), and imported into python.
+    To test the functionality of the GP model during its creation, a prototypical time series dataset was required.
+    For this, previously collected turbine tap test data~\cite{MEC326} was used.
+    Note that the data was collected empirically as opposed to being simulated in order to test that the GP has practical applications for fitting real life data which may have contained unforeseen complexities that may have been otherwise forgotten.
+    For example, since all real systems exhibit some form of damping, the magnitude of the vibrations decay over time.
+    However, if data was simulated, this behaviour may have been neglected, and a stationary signal may have been used instead, therefore, the performance of the GP's ability to fit real life data could not be tested.
+
     The test data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
     This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
     For simplicity, only the response data at the first position was imported, and initially a small set of 100 samples was selected from the centre (to reduce computation time).
@@ -474,7 +464,19 @@
         \label{fig:input-response-noise}
     \end{figure}
 
-    Next, the function for the Fourier Transform of the prediction of the mean was constructed using the method described by Ambrogioni et al~\cite{Ambrogioni2018}, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
+    \section{Finding the Fourier Transform of the Mean}
+    Next, the function for the Fourier Transform of the prediction of the mean was constructed using the neat method described by Ambrogioni et al~\cite{Ambrogioni2018}, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
+    This is an equivalent method to conditioning the joint distribution in Equation~\ref{eq:linear-trans} which instead takes the Fourier Transform of the time domain predictive mean function directly.
+    It did this by taking the Fourier Transform of the kernel function only.
+    Here, the Fourier shift theorem was first applied to ensure that the kernel was a function of a single variable.
+    This was possible because the Squared Exponential Kernel used is stationary, and allowed a remarkably simple expression for the Fourier Transform to be found analytically, as shown in Equation~\ref{eq:se-kernel-ft}
+
+    \begin{equation}
+        k(\omega,0) = \frac{\sigma^2 l}{\sqrt{2 \pi}} \exp\left(-\frac{l^2 \omega^2}{2}\right) \label{eq:se-kernel-ft}
+    \end{equation}
+    \nomenclature[L165]{$k(\omega,0)$}{Fourier Transform of the Squared Exponential Kernel function evaluated at $\omega$}
+
+    \noindent where $\omega$ is the frequency and $k(\omega,0)$ is the Fourier Transform of the Squared Exponential Kernel function evaluated at $\omega$.
 
 
     \section{Results and discussion}
@@ -531,6 +533,24 @@
     \subsection{non-uniform spacing}
     \subsection{Nyquist Limit}
 
+    \subsection{Qualitative Advantages}
+    Moreover, the proposed method of using a GP to perform a Fourier Transform has qualitative advantages over the traditional DFT.
+    Firstly, unlike the DFT, the time domain input data need not be uniformly spaced, which would allow the direct use of datasets that contain missing samples.
+    To use this data with the DFT, one would first need to find a suitable way to replace them, which gives an opportunity to add complication, error and human bias.
+    Similarly, since the Fourier Transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
+    Assuming the time domain GP is a good fit to the latent function, this would allow the frequency and amplitude of peaks in the spectrum to be found very precisely, by having a cluster of samples around the peak of the spectrum.
+    This is not possible with the DFT because the input data and resulting spectrum must be evenly spaced and samples may fall either side of a peak.
+    Here, a suitable peak finding algorithm would instead be required, which again gives an opportunity to add complication, error and human bias.
+
+
+    Such advantages would have significant implications in various fields of engineering.
+    In the context of dynamic systems, the system properties and parameters could be identified more precisely where data is limited, such as in scramjet hypersonic wind tunnel tests.
+    A Fourier Transform that is more robust to noise could improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
+    In these contexts, it is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
+    Therefore, this improvement would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
+
+    More generally, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed to improve robustness to noise where classically, other numerical methods would need to be implemented to linearly operate on discrete data, such as the Discrete Cosine Transform (DCT) used extensively in lossy JPEG compression.~\cite{StanfordJPEGDCT}
+
 
     \section{Directions for Future Work}
     Although this new Gaussian Process (GP) method of performing the Fourier Transform has some advantages, it certainly has some aspects that would benefit further improvement.
@@ -548,7 +568,7 @@
 
     \subsection{Fourier Transform of the Covariance Matrix}
     As described by Ambrogioni et al~\cite{Ambrogioni2018}, it should also be possible to find the Fourier Transform of the predictive covariance function, the main diagonal of which should be positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p. 96), meaning that its phase is always 0.
-    This should transform the information regarding the uncertainty of the prediction to the frequency domain, which may be useful in determining whether or not the amount of data is sufficient to provide meaningful, reliable results in the frequencies of interest.
+    This should convert the information regarding the uncertainty of the prediction to the frequency domain, which may be useful in determining whether or not the amount of data is sufficient to provide meaningful, reliable results in the frequencies of interest.
 
 
     \subsection{Find frequencies above the nyquist limit}
