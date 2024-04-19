@@ -81,6 +81,7 @@
 \usepackage{chngcntr}
 \usepackage{amssymb}
 \usepackage{hyperref}
+\usepackage{hyperref}
 \counterwithin{figure}{section}
 \counterwithin{equation}{section}
 
@@ -215,20 +216,20 @@
     \begin{figure}[ht]
         \centering
         \includegraphics[width=0.8\linewidth]{figures/frequency-response-function/frequency-response-function_}
-        \caption{The magnitude and phase of $H(\omega)$, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass $m$ [$kg$], damping coefficient $c$ [$N \cdot s \cdot m^{-1}$] and stiffness $k$ [$N \cdot m^{-1}$] affects the system parameters resonant frequency $\omega_r$ [$rad \cdot s^{-1}$] and damping ratio $\zeta$ [$-$].}
+        \caption{The magnitude and phase of $H(\xi)$, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass $m$ [$kg$], damping coefficient $c$ [$N \cdot s \cdot m^{-1}$] and stiffness $k$ [$N \cdot m^{-1}$] affects the system parameters resonant frequency $\xi_r$ [$rad \cdot s^{-1}$] and damping ratio $\zeta$ [$-$].}
         \label{fig:frequency-response-function}
     \end{figure}
 
-    The decomposition of the input and response functions from the time domain to the frequency domain uses a linear operator called the Fourier Transform, $F(\omega)$, as defined in Equation~\ref{eq:ft}
+    The decomposition of the input and response functions from the time domain to the frequency domain uses a linear operator called the Fourier Transform, $F(\xi)$, as defined in Equation~\ref{eq:ft}
 
     \begin{equation}
-        F(\omega) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty} f(t) e^{-i \omega t} \, dt\label{eq:ft}
+        F(\xi) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty} f(t) e^{-i \xi t} \, dt\label{eq:ft}
     \end{equation}
-    \nomenclature[L05]{$F(\omega)$}{Fourier Transform of $f(t)$}
-    \nomenclature[G08]{$\omega$}{Angular frequency}
+    \nomenclature[L05]{$F(\xi)$}{Fourier Transform of $f(t)$}
+    \nomenclature[G08]{$\xi$}{Angular frequency}
 
 
-    \noindent where $\omega$ is the angular frequency and $f(t)$ is the time domain latent function being operated on.
+    \noindent where $\xi$ is the angular frequency and $f(t)$ is the time domain latent function being operated on.
     This is an extremely powerful analytical technique that is at the core of signal processing, which in turn is a set of techniques that are widely used in engineering to analyse, manipulate and interprete experimental data that changes over time in order to extract useful information or improve them for a specific purpose.
     However, for it to be applied in its base form to a function, this function must be defined for every point in time in the continuous domain $-\infty \text{ to } \infty$.
     Therefore, when working with sampled real world data, an approximation of this function is classically found using a numerical method called a Discrete Fourier Transform, specifically the Fast Fourier Transform (FFT).
@@ -262,7 +263,7 @@
     In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
     These variables are outputs of the latent function at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
-    Assuming a mean of the latent function of zero, and a noisy observed force, $y_n = f(x_n)+\epsilon_n$, where $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$, this joint distribution of the observed data and the latent, noise-free function at the test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+    Assuming a mean of the latent function of zero, and a noisy observed force, $y_j = f(x_j)+\epsilon_j$, where $\epsilon_j \sim \mathcal{N}(0, \sigma^2_y)$, this joint distribution of the observed data and the latent, noise-free function at the test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
         \left[
@@ -287,21 +288,21 @@
         \right)\label{eq:joint-distribution}
     \end{equation}
 
-    \nomenclature[L22]{$y_n$}{Noisy observed output based on the latent function, $f(x)$}
-    \nomenclature[L21]{$\mathbf{y}$}{A vector of $y_n$ values from a set of training points}
+    \nomenclature[L22]{$y_j$}{Noisy observed output based on the latent function, $f(x)$}
+    \nomenclature[L21]{$\mathbf{y}$}{A vector of $y_j$ values from a set of training points}
     \nomenclature[L07]{$\mathbf{f}_*$}{is a vector of function values at a set of test points $\mathbf{X}_*$}
     \nomenclature[L09]{$\mathbf{I}$}{Identity matrix}
     \nomenclature[L11]{$\mathbf{K}_{X,X}$}{Covariance matrix for training input data, $X$}
     \nomenclature[L12]{$\mathbf{K}_{X,*}$}{Covariance matrix between training inputs and test inputs, $\mathbf{X}$ and $\mathbf{X_*}$ respectively}
     \nomenclature[L13]{$\mathbf{K}_{*,*}$}{Covariance matrix for test inputs, $\mathbf{X}_*$}
-    \nomenclature[G01]{$\epsilon_n$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
+    \nomenclature[G01]{$\epsilon_j$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
     \nomenclature[L23]{$\boldsymbol{X}$}{A vector of training point inputs}
     \nomenclature[L24]{$\boldsymbol{X}_*$}{A vector of test point inputs}
     \nomenclature[G07]{$\sigma^2_y$}{Variance of observation noise}
     \nomenclature[G03]{$\boldsymbol{\mu}_X, \boldsymbol{\mu}_*$}{Vectors containing the mean of the distribution of values of the latent function, at the training points, $\mathbf{X}$, and test points $\mathbf{X}_*$ respectively}
     \nomenclature[L10]{$\mathbf{K}_{\mathbf{A},\mathbf{B}}$}{Covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors $\mathbf{A}$, $\mathbf{B}$}
 
-    \noindent where $\epsilon_n$ is the observational noise; $\mathbf{y}$ is a vector of $y_n$ values from a set of training points; $\boldsymbol{\mu}_X$ and $\boldsymbol{\mu}_*$ are a vectors containing the mean of the distribution of values of the latent function, at the training and test points, $\mathbf{X}$ and  $\mathbf{X}_*$ respectively; $\mathbf{f}_*$ is a vector of function values at a set of test points $\mathbf{X}_*$; $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$ that is evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
+    \noindent where $\epsilon_j$ is the observational noise; $\mathbf{y}$ is a vector of $y_j$ values from a set of training points; $\boldsymbol{\mu}_X$ and $\boldsymbol{\mu}_*$ are a vectors containing the mean of the distribution of values of the latent function, at the training and test points, $\mathbf{X}$ and  $\mathbf{X}_*$ respectively; $\mathbf{f}_*$ is a vector of function values at a set of test points $\mathbf{X}_*$; $\mathbf{I}$ is the identity matrix and $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ \& $\mathbf{K}_{*,*}$ are a type of covariance matrix, $\mathbf{K}(\mathbf{A},\mathbf{B})$, based on the ``kernel'' function, $k(a,b)$ that is evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
     Note that block matrix notation is used where matrices are conjoined to form a larger block matrix.
 
     The kernel is type of function that measures the similarity between each pair of inputs based on a set of hyperparameters and is chosen to reflect any prior knowledge about the problem domain.
@@ -348,14 +349,14 @@
         \left[
             \begin{array}{c}
                 \mathbf{y}(t) \\
-                \mathbf{g}(\omega)
+                \mathbf{g}(\xi)
             \end{array}
             \right]
         \sim \mathcal{N} \left(
         \left\{
         \begin{array}{c}
             \boldsymbol{\mu}_X(t) \\
-            \mathcal{F}[{\boldsymbol{\mu}_*}](\omega)
+            \mathcal{F}[{\boldsymbol{\mu}_*}](\xi)
         \end{array}
         \right\},
         \left[
@@ -367,17 +368,14 @@
         \right)\label{eq:linear-trans}
     \end{equation}
 
-    \noindent where $\mathcal{F}_*, \mathcal{F}_{*1} and \mathcal{F}_{*2}$ are (elementwise) Fourier Transforms with respect to test points in vectors $\mathbf{X_{*}}$, $\mathbf{X_{*1}}$ and $\mathbf{X_{*2}}$ respectively, where $\mathbf{X_{*1}}$ and $\mathbf{X_{*2}}$ are separate instantiations of the vector $\mathbf{X_{*}}$. CHANGE THIS TO $\mathbf{F}$
+    \noindent where $\mathcal{F}_*$, $\mathcal{F}_{*1}$ and $\mathcal{F}_{*2}$ are (elementwise) Fourier Transforms with respect to test points in vectors $\mathbf{X_{*}}$, $\mathbf{X_{*1}}$ and $\mathbf{X_{*2}}$ respectively, where $\mathbf{X_{*1}}$ and $\mathbf{X_{*2}}$ are separate instantiations of the vector $\mathbf{X_{*}}$. \textcolor{red}{CHANGE THIS TO $\mathbf{F}$?}
 
     Like before, this distribution can be conditioned to find the conditional mean and covariance of the Fourier Transform at a specific set of desired frequencies, given the training data, $\mathbf{X}$.
 
 
     Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing linear operations of the data.
-    Furthermore, the noise term  $\epsilon_n \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
+    Furthermore, the noise term  $\epsilon_j \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
     This means that the use of probabilistic numerics may be advantageous since it could allow for Fourier Transform and other linear operators to be performed with better robustness to noise.
-
-    \subsection{Implications of the Findings}
-
 
     \section{Aims and Objectives}
     \subsection{Aim}
@@ -393,7 +391,7 @@
                     \item Implementing optimisation of kernel hyperparameters. \label{item:nll}
                     \item Creating a prediction function to predict the outputs of new inputs. \label{item:predict}
                 \end{itemize}
-            \item Adjust this model to enable the closed form Fourier Transform of the mean function to be found.
+            \item Adjust this model for the frequency domain by finding the Fourier Transform of the mean and covariance functions in closed form.
             \item Explore the quantitative and qualitative advantages and disadvantages with respect to computation time, accuracy and robustness to noise versus existing Discrete Fourier Transform methods such as the Fast Fourier Transform.\label{noise-resilience}
         \end{enumerate}
 
@@ -468,52 +466,82 @@
         \label{fig:input-response-noise}
     \end{figure}
 
-    \section{Finding the Fourier Transform of the Mean}
+    \section{Adjusting the Model for the Frequency Domain}
+
+    \subsection{Finding the Fourier Transform of the Mean}
     Next, the function for the Fourier Transform of the prediction of the mean was constructed, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
     This was done using a neat method described by Ambrogioni et al~\cite{Ambrogioni2018} which is equivalent to conditioning the joint distribution in Equation~\ref{eq:linear-trans} but instead takes the Fourier Transform of the time domain predictive mean function directly.
     Remarkably, this only involves taking the Fourier Transform of the kernel, provided that first the Fourier shift theorem is applied to ensure that the kernel is a function of a single variable.
     This Fourier shift theorem can be applied to stationary kernels only, such as the Squared Exponential Kernel used in this paper, which has a Fourier Transform that can be found analytically and is shown in Equation~\ref{eq:se-kernel-ft}
 
     \begin{equation}
-        \mathcal{K}(\omega,0) = \frac{\sigma^2 l}{\sqrt{2 \pi}} \exp\left(-\frac{l^2 \omega^2}{2}\right) \label{eq:se-kernel-ft}
+        \mathcal{K}(\xi,0) = \frac{\sigma^2 l}{\sqrt{2 \pi}} \exp\left(-\frac{l^2 \xi^2}{2}\right) \label{eq:se-kernel-ft}
     \end{equation}
-    \nomenclature[L165]{$k(\omega,0)$}{Fourier Transform of the Squared Exponential Kernel function evaluated at $\omega$}
+    \nomenclature[L165]{$k(\xi,0)$}{Fourier Transform of the Squared Exponential Kernel function evaluated at $\xi$}
 
-    \noindent where $\omega$ is the frequency and $mathcal{K}(\omega,0)$ is the Fourier Transform of the Squared Exponential Kernel function evaluated at $\omega$.
+    \noindent where $\xi$ is the frequency and $\mathcal{K}(\xi,0)$ is the Fourier Transform of the Squared Exponential Kernel function evaluated at $\xi$.
 
     For the mean function written in the form shown in Equation~\ref{eq:mean-sum-time-domain}
 
     \begin{equation}
-        \mathbf{\mu}(t) = \sum_{k} w_k k(t,t_k) \label{eq:mean-sum-time-domain}
+        \mathbf{\mu}(t) = \sum_{k} w_k \, k(t,t_k) \label{eq:mean-sum-time-domain}
     \end{equation}
 
     \noindent where $t_k$ is the $k^{th}$ element in the vector of training points $\mathbf{X}$; $t$ is an element in the vector of test points, $\mathbf{X}_*$ and $w_k$ is defined in Equation~\ref{eq:w_k}
 
     \begin{equation}
-        w_k = \sum_{n} a_{kn} y_n \label{eq:w_k}
+        w_k = \sum_{j} a_{kj} \, y_j \label{eq:w_k}
     \end{equation}
 
-    \noindent where $a_{kn}$ is an element in matrix $\mathbf{A}$ defined in Equation~\ref{eq:A},
+    \noindent where $a_{kj}$ is an element in matrix $\mathbf{A}$ defined in Equation~\ref{eq:A},
 
     \begin{equation}
-         \mathbf{A} = (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} \label{eq:A}
+         \mathbf{A} = (\mathbf{K}_{X,X} + \sigma^2_y \, \mathbf{I})^{-1} \label{eq:A}
     \end{equation}
 
     \noindent its Fourier Transform is shown to be Equation~\ref{eq:mean-sum-freq-domain}.
 
     \begin{equation}
-        \mathbf{\mu}(\omega) = \mathcal{K}(\omega,0) \sum_k w_k e^{i \omega t_k} \label{eq:mean-sum-freq-domain}
+        \mathcal{F}[{\mu}](\xi) = \mathcal{K}(\xi,0) \sum_k w_k \, e^{i \xi t_k} \label{eq:mean-sum-freq-domain}
     \end{equation}
 
-    The same steps can be used to derive the equation for the Fourier Transform of the function for the main diagonal of the Covariance Matrix as shown in Equation...
+    \subsection{Finding the Fourier Transform of the Covariance}
+
+    The same steps can be used to derive the equation for the Fourier Transform of the function for the main diagonal of the Covariance Matrix when written in the form shown in Equation~\ref{eq:var-sum-time-domain}
+
+    \begin{equation}
+        \Sigma(t) = k(t,t) - \sum_k v_k \, k(t,t_k) \label{eq:var-sum-time-domain}
+    \end{equation}
+
+    \noindent where $v_k$ is defined in Equation~\ref{eq:v_k}
+
+    \begin{equation}
+        v_k = \sum_j a_{kj} \, K(t,t_j) \label{eq:v_k}
+    \end{equation}
+
+    \noindent where $t_j$ is the $j^{th}$ element in the vector of training points $\mathbf{X}$.
+
+    The resulting Fourier Transform can be written as shown in Equation~\ref{eq:var-sum-freq-domain}.
+
+    \begin{equation}
+        \mathcal{F}[\Sigma](\xi) = \frac{1}{2 \pi} e^{i \xi^2} k(- \xi,0)  - \sum_k \sum_j a_{kj} \, e^{-i \xi (t_j - t_k)} \mathcal{K}(\xi,0)^2 \label{eq:var-sum-freq-domain}
+    \end{equation}
+
+    Note that $k(- \xi, 0)$ is the original time domain kernel since the Fourier Transform applied to a function twice is equivalent to the original function reflected about zero and divided by $2 \pi$.
+
+    This method was only able to produce the main diagonal of the covariance matrix, not the whole matrix, but this was sufficient since hyperparameter training was completed in the time domain already, and only the main diagonal was required to plot the standard deviation of the output predictions (which is the square root of this main diagonal).
+    In fact, only calculating the main diagonal was preferred since it decreased the compute requirements significantly.
+
+
 
     \section{Results and discussion}
+    \subsection{Quantitative Comparison}
     After this Gaussian Process Model was complete, it could then be setup and used in a variety of test cases to explore the quantitative advantages and disadvantages versus the Fast Fourier Transform.
 
     Here, the test data was constructed from the time domain acceleration of a simulated single degree of freedom (SDOF) system in free vibration because the system properties and the exact Fourier Transform of the latent function could be calculated analytically using the system parameters.
     Since these were exact and known to be mathematically correct, they could be used to test how well the GP calculated them, using the performance of the FFT as a benchmark.
 
-    \subsection{Basic Case}
+    \subsubsection{Basic Case}
     The performance of the GP was first compared to that of the FFT algorithm using a basic dataset of \textcolor{red}{[N] datapoints from 0 to xxx using system parameters M = ; C = ; K = }.
 
     The first comparison was made by calculating the Mean Squared Error (MSE) with respect to the analytically exact Fourier Transform for each.
@@ -541,7 +569,7 @@
     Alternately, damping could be added to smooth out the resonance peak, reducing its amplitude.
     Therefore, being able to more precisely determine the properties of a peak through the new GP method would be beneficial in the design process because one would be able to more precisely determine which changes (if any) need to occur to the design to make it safer as required.
 
-    \subsection{Non-uniform Sampling of Spectrum}
+    \subsubsection{Non-uniform Sampling of Frequency Domain}
     Since the GP's spectrum is continuous in closed form, a cluster of an arbitrary number of samples can be taken around the peak to ensure the maximum sampled point is closer to the true maximum.
     Since in the frequency interval in the spectrum produced by the FFT is uniform and predetermined, the same clustering of samples around the peak is not possible for this.
     Therefore, using the same dataset as above, \textcolor{red}{ with [N] datapoints, such clustering in the GP improved the error in wn and amplitude to be xxx and xxx respectively, compared to xxx and xxx for the FFT}
@@ -550,26 +578,25 @@
     \textcolor{red}{For instance, using only the first [N] points of the dataset above the error in wn and amplitude is xxx and xxx respectively, compared to xxx and xxx for the FFT, showing that the GP calculated the wn performs significantly better}
     This means that this proposed GP model may be best suited to designs in which there is limited time for testing, such as in the aforementioned example of hypersonic wind tunnel tests of scramjets.
 
-    \subsection{Robustness to Noise}
+    \subsubsection{Robustness to Noise}
     The robustness to noise was also compared (Objective~\ref{noise-resilience}) by seeing by how much each MSE increased when noise was added.
     The \textcolor{red}{GP was shown to be better, with an error in wn of xxx versus xxx for the FFT}
 
-    \subsection{data missing}
-    One qualitative difference
 
-
-    \subsection{non-uniform spacing}
-    \subsection{Nyquist Limit}
 
     \subsection{Qualitative Advantages}
     Moreover, the proposed method of using a GP to perform a Fourier Transform has qualitative advantages over the traditional DFT.
+
+    \subsubsection{Non-Uniform Sampling of the Time Domain and Overcoming the Nyquist Limit}
     Firstly, unlike the DFT, the time domain input data need not be uniformly spaced, which would allow the direct use of datasets that contain missing samples.
     To use this data with the DFT, one would first need to find a suitable way to replace them, which gives an opportunity to add complication, error and human bias.
+    \textcolor{red}{results data mse for non-uniform and 1 datapoint missing??}
     Similarly, since the Fourier Transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
     Assuming the time domain GP is a good fit to the latent function, this would allow the frequency and amplitude of peaks in the spectrum to be found very precisely, by having a cluster of samples around the peak of the spectrum.
     This is not possible with the DFT because the input data and resulting spectrum must be evenly spaced and samples may fall either side of a peak.
     Here, a suitable peak finding algorithm would instead be required, which again gives an opportunity to add complication, error and human bias.
 
+    Finally, the fact that time intervals need not be uniform and that the spectrum is avaialable in closed form allows frequencies to be detected that would be above the nyquist frequency for the DFT with the same number of datapoints and the same total sampling period... \textcolor{red}{data}
 
     Such advantages would have significant implications in various fields of engineering.
     In the context of dynamic systems, the system properties and parameters could be identified more precisely where data is limited, such as in scramjet hypersonic wind tunnel tests.
@@ -579,27 +606,41 @@
 
     More generally, this alternative method of modelling uncertainty using probabilistic numerics via a Gaussian Process (GP) could be employed to improve robustness to noise where classically, other numerical methods would need to be implemented to linearly operate on discrete data, such as the Discrete Cosine Transform (DCT) used extensively in lossy JPEG compression.~\cite{StanfordJPEGDCT}
 
+    \subsubsection{Fourier Transform of the Covariance}
+    Unlike the DFT, the standard deviation of the prediction of the spectrum can be found using the GP, as shown in \textcolor{red}{Figure ... is plotted in Figure ...}
+    This is derived from the main diagonal of the covariance matrix.
+    Note that it only appears in the magnitude plot, not the phase plot since it is positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p.96), meaning that its phase is always 0.
+    Since each amplitude prediction is a gaussian distribution, some portion of it will always be negative.
+    However, since amplitudes are usually positive only, this can be interpreted as a positive amplitude of the same magnitude but the opposite phase.
+    The uncertainty has a peak around zero and gradually reduces for higher frequencies, which makes intuitive sense because lower frequency vibrations will experience fewer cycles in a given time period, so there will be less information available to determine its magnitude.
+
+    This ability allows one to convert to the frequency domain information about the uncertainty of the magnitude of vibrations provided that the GP in the time domain fits the noise in the training data.
+    In the automotive industry, a piston connecting (``con'') rod in an internal combustion engine undergoes heavy vibration, so fatigue analysis is crucial to ensure that it does not fail from crack formation and propagation before the end of the design life of the vehicle.
+    Since they are typically made of a ferrous alloy such as forged steel, they have a fatigue limit~\cite{RoymechFatigue}, which is a distinct stress level for a given frequency below which failure from fatigue will not occur - even from an infinite number of loading cycles~\cite{BeerJohnston1992}.
+    This stress level can be calculated from experimental acceleration data, and therefore it can be shown that the stress on the con rod is below the fatigue limit by showing that the magnitude of acceleration across the range of frequencies is below its corresponding limit.
+    However, if the FFT was used to convert to the frequency domain, the uncertainty information would not directly be provided and so it would not be clear whether this uncertainty would cause the upper bound of the range of acceleration possible given the data to fall above the limit.
+    In contrast, since the GP provides the acceleration at a given frequency as a Gaussian distribution, the uncertainty information is encoded in standard deviation of the distribution.
+    Therefore, it would be possible to calculate the probability that the acceleration falls over the limit and if this chance is sufficiently low, one can conclude with confidence that the component is below the fatigue limit.
 
     \section{Directions for Future Work}
     Although this new Gaussian Process (GP) method of performing the Fourier Transform has some advantages, it certainly has some aspects that would benefit further improvement.
 
     \subsection{Scaling to large data}
-    Firstly, the GP scaled poorly with large datasets, especially the hyperparameter training phase which is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT). To address this, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) could be employed to allow both the NLML and predict functions to scale to large data~\cite{q-candela}.
+    Firstly, the GP scaled poorly with large datasets, especially the hyperparameter training phase which is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT).
+    This means that the model handles poorly datasets consisting of more than a few thousand points, and even at this scale, fitting the GP to the time domain then converting this to the frequency domain takes around 4 orders of magnitude longer than the FFT, which is nearly instantaneous.
+    This performance is poor considering that it is not uncommon to need to work with datasets consisting of up to a million datapoints, for which this GP model in its current state would be unsuitable.
+
+    To address this, the Sparse GP approximation known as the Fully Independent Training Conditional (FITC) could be employed to allow both the NLML and predict functions to scale to large data~\cite{q-candela}.
     Successful implementation can be confirmed if the NLML is the same for the basic GP and its sparse approximation when the set of inducing points is exactly the same as the test dataset.
     This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L17]{$M$}{Number of inducing points in Sparse GP}
     After this is complete, the hyperparameters could be optimised and the GP can be fit for functions containing more than 10,000 data points in a significantly reduced computation time.
 
     This was originally an objective before implementing the functionality for the Fourier Transform.
-    It was attempted extensively but the implentations did not produce NLML values consistent with the basic GP and thus failed to converge to fit the test data.
+    It was attempted extensively but the implementations did not produce NLML values consistent with the basic GP and thus failed to converge to fit the test data.
     This is likely to be because the sparse approximation requires a very specific implementation in order to keep the calculations numerically stable and efficient in terms of computation time and memory required due to the large matrix multiplications that are involved that must produce matrices that remain positive semi-definite.
     However, this vital information is not included in the source for the method~(\cite{q-candela}).
 
-    \subsection{Fourier Transform of the Covariance Matrix}
-    As described by Ambrogioni et al~\cite{Ambrogioni2018}, it should also be possible to find the Fourier Transform of the predictive covariance function, the main diagonal of which should be positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p. 96), meaning that its phase is always 0.
-    This should convert the information regarding the uncertainty of the prediction to the frequency domain, which may be useful in determining whether or not the amount of data is sufficient to provide meaningful, reliable results in the frequencies of interest.
-
-
-    \subsection{Find frequencies above the nyquist limit}
+    \textcolor{red}{and another subsection??:: New kernel types; multi degree of freedom / dimension GP's?; different solver types? etc.}
 
     \FloatBarrier
 

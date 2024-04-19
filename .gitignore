@@ -14,5 +14,6 @@ git.sh
 *.nlo
 *.nls
 *.toc
+*.out
 figures/to-be-used
 
