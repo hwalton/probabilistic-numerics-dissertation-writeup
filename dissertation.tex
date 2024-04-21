@@ -660,7 +660,11 @@
     \textcolor{red}{ New kernel types; multi degree of freedom / dimension GP's!!!!; different solver types? etc.}
 
     \section{Conclusions}
-    \textcolor{red}{Overall the new method of computing the Fourier Transform of time domain data using a GP was shown to have better?? robustness to noise than the Fast Fourier Transform(FFT)  several promising features}
+    Overall, when compared to the industry standard Fast Fourier Transform (FFT), the alternative Gaussian Process (GP) model proposed showed \textcolor{red}{better??} robustness to noise as well as several promising features that make it more versatile.
+    Most notably, the fact that the time domain input data need not be evenly spaced enables the model to detect frequencies that would be above the Nyquist limit of an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
+    This gives the model the potential to exceed the performance of the FFT in industrial contexts where there are constraints to the amount of data that can be collected due to cost or availability.
+    However, the computational speed of this model is currently orders of magnitude slower than the FFT, so before the GP model can be a viable alternative to the FFT in practice, it would need to be developed to scale better to large datasets.
+    This could be done by implementing a sparse GP approximation such as the variational free energy (VFE) approach~\cite{murphy2023probabilistic}.
 
     \FloatBarrier
 
