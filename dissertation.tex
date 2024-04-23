@@ -118,6 +118,7 @@
     \includepdf[pages=1, frame, scale=1.09, pagecommand={}, offset=0 -35]{figures/titlepage.pdf}
 
     \section{Summary}
+    \textcolor{red}{rework the conclusion}
 
     \printnomenclature
 
@@ -126,9 +127,6 @@
     \newpage
 
     \pagenumbering{arabic}
-
-    \section{Acknowledgements}
-
 
     \section{Background and Understanding of the Problem}
 
@@ -231,7 +229,7 @@
     The decomposition of the input and response functions from the time domain to the frequency domain uses a linear operator called the Fourier Transform, $F(\xi)$, as defined in Equation~\ref{eq:ft}
 
     \begin{equation}
-        F(\xi) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty} f(t) e^{-i \xi t} \, dt\label{eq:ft}
+        F(\xi) = \frac{1}{2 \pi} \int_{-\infty}^{\infty} f(t) e^{-i \xi t} \, dt\label{eq:ft}
     \end{equation}
     \nomenclature[L05]{$F(\xi)$}{Fourier Transform of $f(t)$}
     \nomenclature[G08]{$\xi$}{Angular frequency}
@@ -240,7 +238,7 @@
     \noindent where $\xi$ is the angular frequency and $f(t)$ is the time domain latent function being operated on.
     This is an extremely powerful analytical technique that is at the core of signal processing, which in turn is a set of techniques that are widely used in engineering to analyse, manipulate and interprete experimental data that changes over time in order to extract useful information or improve them for a specific purpose.
     However, for it to be applied in its base form to a function, this function must be defined for every point in time in the continuous domain $-\infty \text{ to } \infty$.
-    Therefore, when working with sampled real world data, an approximation of this function is classically found using a numerical method called a Discrete Fourier Transform, specifically the Fast Fourier Transform (FFT).
+    Therefore, when working with sampled real world data, an approximation of this function is classically found using a numerical method called a Discrete Fourier Transform (DFT), specifically the Fast Fourier Transform (FFT).
 
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory~\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
@@ -324,7 +322,7 @@
     \nomenclature[L03]{$\mathbf{D}$}{Training data}
     \nomenclature[G02]{$\boldsymbol{\theta}$}{Set of hyperparameters}
     \nomenclature[L14]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
-    \nomenclature[L18]{$N$}{Number of training points}
+    \nomenclature[L18]{$N$}{Number of training or testing points}
 
     \noindent where $\mathbf{D}$ is the training data; $N$ is the number of training points; $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
@@ -479,7 +477,7 @@
     \subsection{Finding the Fourier Transform of the Mean}
     Next, the function for the Fourier Transform of the prediction of the mean was constructed, which could be evaluated at any set of points in the domain $(-\infty, \infty)$.
     This was done using a neat method described by Ambrogioni et al~\cite{Ambrogioni2018} which is equivalent to conditioning the joint distribution in Equation~\ref{eq:linear-trans} but instead takes the Fourier Transform of the time domain predictive mean function directly.
-    Remarkably, this only involves taking the Fourier Transform of the kernel, provided that first the Fourier shift theorem is applied to ensure that the kernel is a function of a single variable.
+    Remarkably, this involves taking the Fourier Transform of only the kernel, provided that the Fourier shift theorem is first applied to ensure that the kernel is a function of a single variable.
     This Fourier shift theorem can be applied to stationary kernels only, such as the Squared Exponential Kernel used in this paper, which has a Fourier Transform that can be found analytically and is shown in Equation~\ref{eq:se-kernel-ft}
 
     \begin{equation}
@@ -510,7 +508,7 @@
     \noindent its Fourier Transform is shown to be Equation~\ref{eq:mean-sum-freq-domain}.
 
     \begin{equation}
-        \mathcal{F}[{\mu}](\xi) = \mathcal{K}(\xi,0) \sum_k w_k \, e^{i \xi t_k} \label{eq:mean-sum-freq-domain}
+        \mathcal{F}[{\mu}](\xi) = \mathcal{K}(\xi,0) \sum_k w_k \, e^{- i \xi t_k} \label{eq:mean-sum-freq-domain}
     \end{equation}
 
     \subsection{Finding the Fourier Transform of the Covariance}
@@ -518,27 +516,31 @@
     The same steps can be used to derive the equation for the Fourier Transform of the function for the main diagonal of the Covariance Matrix when written in the form shown in Equation~\ref{eq:var-sum-time-domain}
 
     \begin{equation}
-        \Sigma(t) = k(t,t) - \sum_k v_k \, k(t,t_k) \label{eq:var-sum-time-domain}
+        \Sigma(t, t) = k(t,t) - \sum_k v_k \, k(t,t_k) \label{eq:var-sum-time-domain}
     \end{equation}
 
     \noindent where $v_k$ is defined in Equation~\ref{eq:v_k}
 
     \begin{equation}
-        v_k = \sum_j a_{kj} \, K(t,t_j) \label{eq:v_k}
+        v_k = \sum_j a_{kj} \, k(t,t_j) \label{eq:v_k}
     \end{equation}
 
     \noindent where $t_j$ is the $j^{th}$ element in the vector of training points $\mathbf{X}$.
 
     The resulting Fourier Transform can be written as shown in Equation~\ref{eq:var-sum-freq-domain}.
 
+%    \begin{equation}
+%        \mathcal{F}[\Sigma](\xi, \xi) = \frac{1}{2 \pi} e^{- i \xi^2} k(- \xi,0)  - \sum_k \sum_j a_{kj} \, e^{-i \xi (t_j - t_k)} \mathcal{K}(\xi,0)^2 \label{eq:var-sum-freq-domain}
+%    \end{equation}
+
     \begin{equation}
-        \mathcal{F}[\Sigma](\xi) = \frac{1}{2 \pi} e^{- i \xi^2} k(- \xi,0)  - \sum_k \sum_j a_{kj} \, e^{-i \xi (t_j - t_k)} \mathcal{K}(\xi,0)^2 \label{eq:var-sum-freq-domain}
+        \mathcal{F}[\Sigma](\xi, \xi) = \mathcal{K}(\xi,0) \delta(\xi - \xi)  - \sum_k \sum_j a_{kj} \, e^{-i \xi (t_j - t_k)} \mathcal{K}(\xi,0)^2 \label{eq:var-sum-freq-domain}
     \end{equation}
 
-    Note that $k(- \xi, 0)$ is the original time domain kernel since the Fourier Transform applied to a function twice is equivalent to the original function reflected about zero and scaled by dividing by $2 \pi$.
+%    Note that $k(- \xi, 0)$ is the original time domain kernel since the Fourier Transform applied to a function twice is equivalent to the original function reflected about zero and scaled by dividing by $2 \pi$.
 
-    This method was only able to produce the main diagonal of the covariance matrix, not the whole matrix, but this was sufficient since hyperparameter training was completed in the time domain already, and only the main diagonal was required to plot the standard deviation of the output predictions (which is the square root of this main diagonal).
-    In fact, only calculating the main diagonal was preferred since it decreased the compute requirements significantly.
+    Only the Fourier Transform of the main diagonal of the covariance matrix was computed because hyperparameter training (which would require the full matrix) was completed in the time domain already, and only the diagonal is required to plot the standard deviation of the output predictions (which is the square root of the covariance).
+    This decreased the compute requirements significantly, from $O(N^2)$ to $O(N)$, where N is the number of frequency predictions required.
 
 
 
@@ -566,7 +568,7 @@
     Next, the amplitude and frequency of the peak was compared to the exact simulated value for each.
     The \textcolor{red}{GP was shown to be better, with an error in wn of xxx versus xxx for the FFT}
 
-    A more accurate Fourier Transform allows for more accurate Frequency Response Functions, which would have widespread benefits in Mechanical Engineering.
+    A more accurate Fourier Transform allows for more accurate Frequency Response Functions, which would have widespread benefits in mechanical engineering.
     After the FRF of a structure, such as a wind turbine tower, is determined, it can be evaluated with the same forces that the system is expected to experience to predict the maximum amplitude of vibration expected during its lifetime.
     If this is excessive, the system is at risk of mechanical failure so the design can be changed to preventative this.
     For example, the mass could be changed to move the resonant frequency away from the expected forcing frequency, reducing the expected amplitude of oscillation.
@@ -597,16 +599,14 @@
 
     \textcolor{red}{For this dataset, the covariance function was nearly zero amplitude at all frequencies except for a narrow spike around zero frequency between -xxx and xxx rad/s, reaching a maximum of xxx at - rad/s.
     This spike around zero makes intuitive sense because the amplitude of very low frequencies, the number of cycles they will experience in a given time period will tend to zero so there will be limited data to deduce the magnitude.
-    However,
-    }
-
-    The fact that the standard deviation frequency domain amplitude predictions are near zero for all other frequencies suggests that the Fourier Transform is defined precisely, although the accuracy depends on how well the GP fits the time domain data.
+    However,...
+    The fact that the standard deviation frequency domain amplitude predictions are near zero for all other frequencies suggests that the Fourier Transform is defined precisely, although the accuracy depends on how well the GP fits the time domain data.}
 
     \subsection{Robustness to Noise}
     The robustness to noise was also compared (Objective~\ref{noise-resilience}) by seeing by how much each MSE increased when noise was added.
     The \textcolor{red}{GP was shown to have better robustness to noise, with an error in wn of xxx versus xxx for the FFT}
 
-    A Fourier Transform that is more robust to noise would be more accurate and therefore would be beneficial in the context of Mechanical Engineering as explained in Section~\ref{Acc}, but would also improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
+    A Fourier Transform that is more robust to noise would be more accurate and therefore would be beneficial in the context of mechanical engineering as explained in Section~\ref{Acc}, but would also improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
     In these contexts, it is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
     Therefore, this improvement would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
 
@@ -621,7 +621,7 @@
     \textcolor{red}{For instance, using only the first [N] points of the dataset above the error in wn and amplitude is xxx and xxx respectively, compared to xxx and xxx for the FFT, showing that the GP calculated the wn performs significantly better}
     This means that this proposed GP model may be best suited to designs in which there is limited time for testing, such as in the aforementioned example of hypersonic wind tunnel tests of scramjets.
 
-    \subsection{Non-Uniform Sampling of the Time Domain and Overcoming the Nyquist Limit}
+    \subsection{Non-Uniform Sampling of the Time Domain and Overcoming Aliasing and the Nyquist Limit}
     Similarly, the time domain input data need not be uniformly spaced in order to fit the GP.
     This would allow the model to be used to find the Fourier Transform of datasets with missing data, which may occur, for example, if accelerometers placed on gas turbine engines during a test fail to transmit data for a period of time due to a loose connection.
     If enough data is still present to faithfully represent the system, the GP will not be significantly affected, which would allow the test data to still be used, whereas if the standard FFT was used, the data would not be suitable and therefore the test would need to repeated, which could be highly costly.
@@ -638,6 +638,9 @@
     This could include Fourier analysis of accelerometer data to monitor vibration in the frequency domain.
     However, the memory available to do this is limited because added memory adds weight, every gram of which can significantly increase fuel requirements and cost to get the satellite to orbit.
     Therefore, this ability to detect higher frequencies than an equivalent FFT using the same amount of data and memory would make the new GP method of performing the Fourier Transform would be valuable here.
+
+    Another aliasing issue of FFT, spectral leakage, is avoided in the GP model due to the fact that the prediction functions are not assumed to be periodic, but continuous throughout the domain $(-\infty, \infty)$.
+    Therefore, windowing is not required to prevent this spectral leakage, as would be in the FFT, reducing the total number of steps required which would otherwise add computational cost and perhaps an opportunity for human bias to be introduced when choosing the type of window.
 
     \section{Directions for Future Work}
 
@@ -660,10 +663,10 @@
     \textcolor{red}{ New kernel types; multi degree of freedom / dimension GP's!!!!; different solver types? etc.}
 
     \section{Conclusions}
-    Overall, when compared to the industry standard Fast Fourier Transform (FFT), the alternative Gaussian Process (GP) model proposed showed \textcolor{red}{better??} robustness to noise as well as several promising features that make it more versatile.
+    Overall, when compared to the industry standard Fast Fourier Transform (FFT), the proposed alternative Gaussian Process (GP) model showed \textcolor{red}{better??} robustness to noise as well as several promising features that make it more versatile in the context of dynamic systems in mechanical engineering.
     Most notably, the fact that the time domain input data need not be evenly spaced enables the model to detect frequencies that would be above the Nyquist limit of an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
-    This gives the model the potential to exceed the performance of the FFT in industrial contexts where there are constraints to the amount of data that can be collected due to cost or availability.
-    However, the computational speed of this model is currently orders of magnitude slower than the FFT, so before the GP model can be a viable alternative to the FFT in practice, it would need to be developed to scale better to large datasets.
+    This gives the model potential to exceed the performance of the FFT in industrial contexts where there are constraints to the amount of data that can be collected due to cost or availability.
+    However, the computational speed of this GP model is currently orders of magnitude slower than the FFT, so before it can be a viable alternative to the FFT in practice, it would need to be developed to scale better to large datasets.
     This could be done by implementing a sparse GP approximation such as the variational free energy (VFE) approach~\cite{murphy2023probabilistic}.
 
     \FloatBarrier
