@@ -226,7 +226,7 @@
     When inverse modelling during the analysis of dynamic systems, any collected time series data is almost always converted into the frequency domain, meaning the output becomes a function of frequency instead of a function of time.
     This is because it gives the physical meaning of the system properties a clear visual interpretation.
     Specifically, the Frequency Response Function (FRF) is computed, which is the ratio between the response and input in the frequency domain.
-    This function is complex, which means it has two components that provide the amplitude (magnitude) and phase (lag) of the response vs the input.
+    This function is complex, which means it has two components that provide information regarding the amplitude (magnitude) and phase (lag) of the response vs the input.
     If the system parameters (mass, damping coefficient or stiffness) change, so do the system properties (resonant frequency and damping ratio).
     This is visible in the FRF in Figure~\ref{fig:frequency-response-function}, where a larger resonant frequency creates a peak in excitation at a higher frequency, and a lower damping ratio results in a sharper peak.
     Note the phase shifts by $\pi$ rad ($180\degree$) across a resonant frequency.
@@ -634,7 +634,7 @@
 
     \subsubsection{Fourier Transform of the Covariance}
     Unlike the DFT, the GP provides some uncertainty data the standard deviation of the prediction of the spectrum can be found using the GP\@.
-    This is derived from the main diagonal of the covariance matrix and is always positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p.96), meaning that its phase is always 0.
+    This is derived from the main diagonal of the covariance matrix and is always positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p.96), meaning that its phase is always zero.
     Note that since each amplitude prediction is a Gaussian distribution, some portion of the distribution will always fall below zero.
     This is unusual because amplitudes are usually positive only, but this portion of the distribution can be interpreted as simply a positive amplitude of the same magnitude but the opposite phase.
 
