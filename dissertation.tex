@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage{fontspec}
 
+\usepackage{afterpage} % For deferring content to a specific later page
 \usepackage{xcolor}
 \usepackage{mathrsfs}
 
@@ -21,6 +22,14 @@
 
 % Apply the custom font command to the captions
 \captionsetup[figure]{
+    font=small,
+    format=plain,
+    labelfont=bf,
+    textfont=bf,
+    labelsep=period
+}
+
+\captionsetup[table]{
     font=small,
     format=plain,
     labelfont=bf,
@@ -68,6 +77,8 @@
     tabsize=2
 }
 
+\usepackage{array} % For better column formatting
+
 \lstset{style=mystyle, language=Python}
 \captionsetup[lstlisting]{font=bf}
 
@@ -89,6 +100,7 @@
 \usepackage{hyperref}
 \counterwithin{figure}{section}
 \counterwithin{equation}{section}
+\counterwithin{table}{section}
 
 \title{Identifying Dynamic Systems with Probabilistic Numerics}
 \author{Harvey Walton}
@@ -203,7 +215,7 @@
     In addition, many sets of governing of equations are currently too complex to solve analytically for systems that are not highly idealised.
     This is why when modelling, problems are classically solved using ``numerical methods'', which are discrete approximations of analytical solutions of the governing equations.
     Here, uncertainty of values is often quantified using error bounds derived from sensitivity analysis.
-    For instance, the error bound of a stiffness could be represented as $0.1 \pm 0.02 Nm^{-1}$, indicating the expected range of the true value.
+    For instance, the error bound of a stiffness could be represented as $0.1 \pm 0.02 \, Nm^{-1}$, indicating the expected range of the true value.
     This process involves estimating the uncertainty of input data, usually from the measuring equipment's resolution or variability in sample data.
     From these estimates, upper and lower bounds of the output parameters can be calculated.
     However, this is not straightforward and typically requires additional techniques and considerations beyond the core algorithm.
@@ -242,8 +254,8 @@
 
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory~\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
-    Firstly, the Fast Fourier Transform (FFT) assumes the input signal is periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen window~\cite{MathStackExchange2023}.\nomenclature[L04]{FFT}{Fast Fourier Transform}
-    This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby.
+    Firstly, the Fast Fourier Transform (FFT) assumes the input signal is finite and periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen total time period~\cite{MathStackExchange2023}.\nomenclature[L04]{FFT}{Fast Fourier Transform}
+    This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby, and is typically mitigated by using a window to decrease the magnitude of the time domain signal at either end of the data to smoothly bring the data to zero at the boundary between the end and start, thus minimizing and abrupt changes that could lead to distortion of the spectrum.
     Secondly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
     Similarly, since the time domain and resulting frequency domain data is discrete, the basic algorithm can exhibit large variability in the amplitude and frequency of peaks depending on if the sampled frequencies fall exactly on the peak or either side of it, which in turn can affect modal properties and parameters calculated downstream of this data in the context of dynamics.
     Finally, there is a highest ``Nyquist'' frequency that is half the sampling frequency, for which any higher frequencies present in the time domain signal will cause aliasing.
@@ -548,14 +560,43 @@
     After this Gaussian Process Model was complete, it could then be setup and used in a variety of test cases to explore its advantages and disadvantages versus the Fast Fourier Transform.
 
     Here, the test data was constructed from the time domain acceleration of a simulated single degree of freedom (SDOF) system in free vibration because the system properties and the exact Fourier Transform of the latent function could be calculated analytically using the system parameters.
-    Since these were exact and known to be mathematically correct, they could be used to test how well the GP calculated them, using the performance of the FFT as a benchmark.
+    Since these were exact and known to be mathematically correct, they could be used to test how well the GP calculated them, using the performance of the FFT (using a Hanning window) on the same data as a benchmark.
 
-    \subsection{Basic Case}
+    \subsection{Basic Dataset}
     \subsection{Accuracy of the Fourier Transform} \label{Acc}
-    The performance of the GP was first compared to that of the FFT algorithm using a basic dataset of \textcolor{red}{[N] datapoints from 0 to xxx using system parameters M = ; C = ; K = }.
+    The accuracy of the Fourier Transform computed by the GP was first compared to that of the FFT algorithm using a basic dataset of a free vibration SDOF system with damping, but with no noise added.
+    The dataset, along with the time domain the prediction functions of the GP model fit to this data are shown in Figure~\ref{fig:basic-data-time-domain}.
 
-    A comparison was made by calculating the Mean Squared Error (MSE) with respect to the analytically exact Fourier Transform for each.
-    This is an algorithm used to measure the quality of an estimator (lower is better) using the average of the squares of the differences between the points at each index position in the series, as shown in Equation~\ref{eq:mse}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=1.0\linewidth]{figures/basic-data-time-domain/basic-data-time-domain.png}
+        \caption{The basic training dataset of time domain acceleration of a simulated SDOF system consisting of 1024 datapoints at a sample rate of $32 \, Hz$ using system parameters $M = 1 \, kg$; $C = 0.3 \, Nsm^{-1}$; $K = 100 \, Nm^{-1}$ with no noise added, and the time domain prediction functions of the GP model fit to this data.}
+        \label{fig:basic-data-time-domain}
+    \end{figure}
+
+    The Fourier Transform of the GP's prediction mean, as well as the FFT and the analytical Fourier Transform were calculated.
+    Since the Fourier Transform is complex, to show it fully in a graph, it must be broken down into two components - either into its magnitude and phase, or into its real and imaginary parts.
+    Both representations are shown for each of the three variants of the Fourier Transform in Figure~\ref{fig:basic-data-freq-domain}.
+    \afterpage{
+        \begin{landscape}
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=\linewidth]{figures/basic-data-freq-domain/basic-data-freq-domain.png}
+                \caption{The analytical Fourier Transform, FFT and the Fourier Transform of the GP's prediction mean of the basic dataset of the SDOF system without noise, broken down into the magnitude and phase components, as well as the real and imaginary components.}
+                \label{fig:basic-data-freq-domain}
+            \end{figure}
+        \end{landscape}
+        \clearpage
+    }
+
+    First, the properties of the peak were compared to the exact simulated value for each.
+    From observation of the magnitude plots, the GP Fourier Transform seems to more smoothly reach the peak, which resembles the shape of the analytical Fourier Transform more closely than the FFT.
+    This suggests that it captures information relating to damping better, likely because the FFT's Hanning window would distort the signal's exponential decay in the time domain from the damping dissipating energy over time.
+    Since the mean of the GP was sampled in the frequency domain in the same places as the FFT, the amplitude of the peak as measured by the sample with the largest magnitude in both was identical, $10.01 \, rad \, s^{-1}$, within one sample interval of the analytical peak of $10.00 \, rad \, s^{-1}$.
+    The percentage error in the magnitude of the peaks was $22.7\%$ and $54.4\%$ for the FFT and GP model respectively.
+
+    Next, the Mean Squared Error (MSE) was used to quantitatively compare the accuracy (lower is better) of each of the FFT and the Fourier Transform of the GP's prediction mean with respect to the analytically exact Fourier Transform.
+    This algorithm finds the average of the squares of the differences between the points at each index position of two series, as shown in Equation~\ref{eq:mse}.
 
     \begin{equation}
         \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (a_i - b_i)^2 \label{eq:mse}
@@ -563,17 +604,32 @@
 
     \noindent where $a_i$, $b_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i.
 
-    Here, the \textcolor{red}{GP was shown to be better, with a MSE of xxx versus xxx for the FFT}
+    The MSE for the components of each of the two numerical methods is shown in Table~\ref{tab:basic-mse}, where the error of the GP model was between $4.1\%$ and $64.0\%$ larger than that of the FFT.
 
-    Next, the amplitude and frequency of the peak was compared to the exact simulated value for each.
-    The \textcolor{red}{GP was shown to be better, with an error in wn of xxx versus xxx for the FFT}
 
-    A more accurate Fourier Transform allows for more accurate Frequency Response Functions, which would have widespread benefits in mechanical engineering.
-    After the FRF of a structure, such as a wind turbine tower, is determined, it can be evaluated with the same forces that the system is expected to experience to predict the maximum amplitude of vibration expected during its lifetime.
-    If this is excessive, the system is at risk of mechanical failure so the design can be changed to preventative this.
-    For example, the mass could be changed to move the resonant frequency away from the expected forcing frequency, reducing the expected amplitude of oscillation.
-    Alternately, damping could be added to smooth out the resonance peak, reducing its amplitude.
-    Therefore, being able to more accurately determine the FRF and the properties of its peaks through this new GP method would be beneficial in the design process because one would be able to more accurately determine how much the design needs to occur (if at all) to reduce the risk of failure to acceptable levels.
+    \begin{table}[h]
+        \centering % This centers the table on the page
+        \setlength{\arrayrulewidth}{1pt} % Sets the thickness of the table borders
+        \begin{tabular}{|c|c|c|} % 'c' for centered columns, '|' for vertical lines between columns
+            \hline
+            Basic Dataset & FFT & GP FT Mean \\ % Titles for the columns
+            \hline
+            Magnitude MSE [ms$^{-2}$] & $1.11 \times 10^{-4}$ & $1.70 \times 10^{-4}$ \\ % First row
+            \hline
+            Phase MSE [rad] & $5.59$ & $5.82$ \\ % Second row
+            \hline
+            Real Part MSE [ms$^{-2}$] & $5.98 \times 10^{-4}$ & $9.56 \times 10^{-4}$ \\ % Third row
+            \hline
+            Imag Part MSE [ms$^{-2}$] & $5.00 \times 10^{-4}$ & $8.20 \times 10^{-4}$ \\ % Fourth row
+            \hline
+        \end{tabular}
+        \caption{A table showing the Mean Squared Error (MSE) for the components of both the FFT, and the Fourier Transform of the GP's prediction mean when compared to the analytically exact Fourier Transform for the basic dataset.}
+        \label{tab:basic-mse}
+    \end{table}
+
+
+    Although these results show that the GP model performed slightly worse, since the error was of the same order of magnitude, this shows that the Fourier Transform of the mean of the GP prediction function is a valid alternative to the FFT.
+
 
     \subsubsection{Computation Time}
     However, one major disadvantage of this GP model is that the computation time scales poorly with large datasets, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT).
@@ -603,12 +659,49 @@
     The fact that the standard deviation frequency domain amplitude predictions are near zero for all other frequencies suggests that the Fourier Transform is defined precisely, although the accuracy depends on how well the GP fits the time domain data.}
 
     \subsection{Robustness to Noise}
-    The robustness to noise was also compared (Objective~\ref{noise-resilience}) by seeing by how much each MSE increased when noise was added.
-    The \textcolor{red}{GP was shown to have better robustness to noise, with an error in wn of xxx versus xxx for the FFT}
+    The robustness to noise was tested (Objective~\ref{noise-resilience}) by calculating the MSE of the two methods when zero mean Gaussian noise with a standard deviation of $0.25 \, ms^{-2}$ was added to the signal.
+    The components of the Fourier Transforms are shown in Figure~\ref{fig:noisy-data-freq-domain}.
 
-    A Fourier Transform that is more robust to noise would be more accurate and therefore would be beneficial in the context of mechanical engineering as explained in Section~\ref{Acc}, but would also improve other areas of engineering where it is used extensively such as control theory, signal processing, image processing, and acoustic engineering.
-    In these contexts, it is used to simplify a computationally expensive operation in the time domain called a convolution into a simple pointwise multiplication in the frequency domain.
-    Therefore, this improvement would enhance operations like signal filtering, image edge detection and acoustic noise reduction by reducing the distortion that occurs during these operations due to the presence of noise in the input data.
+    \afterpage{
+        \begin{landscape}
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=\linewidth]{figures/noisy-data-freq-domain/noisy-data-freq-domain.png}
+                \caption{The analytical Fourier Transform, FFT and the Fourier Transform of the GP's prediction mean when Gaussian noise with a standard deviation of $0.25 \, ms^{-2}$ was added to the signal, broken down into the magnitude and phase components, as well as the real and imaginary components.}
+                \label{fig:noisy-data-freq-domain}
+            \end{figure}
+        \end{landscape}
+        \clearpage
+    }
+
+    Table~\ref{tab:response-noise} shows that the GP model performed significantly better here, with the MSE of the magnitude of the FFT being larger than that of the GP by a factor of 6.8
+
+    \begin{table}[h]
+        \centering % This centers the table on the page
+        \setlength{\arrayrulewidth}{1pt} % Sets the thickness of the table borders
+        \begin{tabular}{|c|c|c|} % 'c' for centered columns, '|' for vertical lines between columns
+            \hline
+            Noisy Dataset & FFT & GP FT Mean \\ % Titles for the columns
+            \hline
+            Magnitude MSE [ms$^{-2}$] & $2.94 \times 10^{-3}$ & $4.33 \times 10^{-4}$ \\ % First row
+            \hline
+            Phase MSE [rad] & $12.1$ & $11.5$ \\ % Second row
+            \hline
+            Real Part MSE [ms$^{-2}$] & $2.03 \times 10^{-3}$ & $9.09 \times 10^{-4}$ \\ % Third row
+            \hline
+            Imag Part MSE [ms$^{-2}$] & $2.20 \times 10^{-3}$ & $7.44 \times 10^{-4}$ \\ % Fourth row
+            \hline
+        \end{tabular}
+        \caption{A table showing the Mean Squared Error (MSE) for the components of both the FFT, and the Fourier Transform of the GP's prediction mean when compared to the analytically exact Fourier Transform when Gaussian noise with a standard deviation of $0.25 \, ms^{-2}$ was added to the signal.}
+        \label{tab:response-noise}
+    \end{table}
+
+    A Fourier Transform that is more robust to noise would be more accurate and therefore would have widespread benefits in mechanical engineering because it would allow for more accurate Frequency Response Functions (FRFs) of structures from noisy real world data.
+    After the FRF of a structure, such as a wind turbine tower, is determined, it can be evaluated with the same forces that the system is expected to experience to predict the maximum amplitude of vibration expected during its lifetime.
+    If this is excessive, the system is at risk of mechanical failure so the design can be changed to preventative this.
+    For example, the mass could be changed to move the resonant frequency away from the expected forcing frequency, reducing the expected amplitude of oscillation.
+    Alternately, damping could be added to smooth out the resonance peak, reducing its amplitude.
+    Therefore, being able to more accurately determine the FRF and the properties of its peaks through this new GP method would be beneficial in the design process because one would be able to more accurately determine how much the design needs to occur (if at all) to reduce the risk of failure to acceptable levels.
 
     \subsection{Non-uniform Sampling of Frequency Domain}
     Since the Fourier Transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
@@ -665,7 +758,7 @@
     \section{Conclusions}
     Overall, when compared to the industry standard Fast Fourier Transform (FFT), the proposed alternative Gaussian Process (GP) model showed \textcolor{red}{better??} robustness to noise as well as several promising features that make it more versatile in the context of dynamic systems in mechanical engineering.
     Most notably, the fact that the time domain input data need not be evenly spaced enables the model to detect frequencies that would be above the Nyquist limit of an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
-    This gives the model potential to exceed the performance of the FFT in industrial contexts where there are constraints to the amount of data that can be collected due to cost or availability.
+    This gives the model potential to exceed the performance of the FFT in industrial contexts where there are constraints to the amount of data that can be collected due to cost or availability, or limited memory.
     However, the computational speed of this GP model is currently orders of magnitude slower than the FFT, so before it can be a viable alternative to the FFT in practice, it would need to be developed to scale better to large datasets.
     This could be done by implementing a sparse GP approximation such as the variational free energy (VFE) approach~\cite{murphy2023probabilistic}.
 
