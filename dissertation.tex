@@ -259,7 +259,9 @@
     Secondly, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
     Similarly, since the time domain and resulting frequency domain data is discrete, the basic algorithm can exhibit large variability in the amplitude and frequency of peaks depending on if the sampled frequencies fall exactly on the peak or either side of it, which in turn can affect modal properties and parameters calculated downstream of this data in the context of dynamics.
     Finally, there is a highest ``Nyquist'' frequency that is half the sampling frequency, for which any higher frequencies present in the time domain signal will cause aliasing.
-    This is where these frequencies are misrepresented as lower frequencies, distorting the spectrum.
+    This is where frequencies that are too high are reflected back at the nyquist frequency.
+
+
 
     However, over time this spectra will need to be measured more accurately and at higher frequencies.
     For example, as scramjet engines are developed in the aerospace insdustry for faster hypersonic aircraft, the vibration endured will be stronger and at higher frequencies.
@@ -592,10 +594,10 @@
     First, the properties of the peak were compared to the exact simulated value for each.
     From observation of the magnitude plots, the GP Fourier Transform seems to more smoothly reach the peak, which resembles the shape of the analytical Fourier Transform more closely than the FFT.
     This suggests that it captures information relating to damping better, likely because the FFT's Hanning window would distort the signal's exponential decay in the time domain from the damping dissipating energy over time.
-    Since the mean of the GP was sampled in the frequency domain in the same places as the FFT, the amplitude of the peak as measured by the sample with the largest magnitude in both was identical, $10.01 \, rad \, s^{-1}$, within one sample interval of the analytical peak of $10.00 \, rad \, s^{-1}$.
+    Since the mean of the GP was sampled in the frequency domain in the same places as the FFT, the angular frequency of the peak as measured by the sample with the largest magnitude in both was identical, $10.01 \, rad \, s^{-1}$, within one sample interval of the analytical peak of $10.00 \, rad \, s^{-1}$.
     The percentage error in the magnitude of the peaks was $22.7\%$ and $54.4\%$ for the FFT and GP model respectively.
 
-    Next, the Mean Squared Error (MSE) was used to quantitatively compare the accuracy (lower is better) of each of the FFT and the Fourier Transform of the GP's prediction mean with respect to the analytically exact Fourier Transform.
+    Next, the Mean Squared Error (MSE) was used to compare the accuracy (lower is better) of each of the FFT and the Fourier Transform of the GP's prediction mean with respect to the analytically exact Fourier Transform.
     This algorithm finds the average of the squares of the differences between the points at each index position of two series, as shown in Equation~\ref{eq:mse}.
 
     \begin{equation}
@@ -605,7 +607,6 @@
     \noindent where $a_i$, $b_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i.
 
     The MSE for the components of each of the two numerical methods is shown in Table~\ref{tab:basic-mse}, where the error of the GP model was between $4.1\%$ and $64.0\%$ larger than that of the FFT.
-
 
     \begin{table}[h]
         \centering % This centers the table on the page
@@ -631,12 +632,6 @@
     Although these results show that the GP model performed slightly worse, since the error was of the same order of magnitude, this shows that the Fourier Transform of the mean of the GP prediction function is a valid alternative to the FFT.
 
 
-    \subsubsection{Computation Time}
-    However, one major disadvantage of this GP model is that the computation time scales poorly with large datasets, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT).
-    This means that the model handles poorly datasets consisting of more than a few thousand points, and even at this scale, fitting the GP to the time domain then converting this to the frequency domain takes several orders of magnitude longer than the FFT, which is nearly instantaneous.
-    \textcolor{red}{For example, for a dataset of xxxx points, calculating the Fourier Transform takes xxx seconds using the GP and xxx seconds using the FFT}
-    This performance is poor considering that it is not uncommon to need to work with datasets consisting of up to a million datapoints in industry, such as during a tap test for modal analysis of a turbine blade, for which the GP model in its current state would be unsuitable due to the excessive time and cost computational resources that would be required.
-
     \subsubsection{Fourier Transform of the Covariance}
     Unlike the DFT, the GP provides some uncertainty data the standard deviation of the prediction of the spectrum can be found using the GP\@.
     This is derived from the main diagonal of the covariance matrix and is always positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p.96), meaning that its phase is always 0.
@@ -658,6 +653,11 @@
     However,...
     The fact that the standard deviation frequency domain amplitude predictions are near zero for all other frequencies suggests that the Fourier Transform is defined precisely, although the accuracy depends on how well the GP fits the time domain data.}
 
+    \subsubsection{Computation Time}
+    However, one major disadvantage of this GP model is that the computation time scales poorly with large datasets, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT).
+    This means that the model handles poorly datasets consisting of more than a few thousand points, and even at this scale, fitting the GP to the time domain then converting this to the frequency domain takes several orders of magnitude longer ($0.84 \, s$) than the time the FFT ($7.5 \times 10^{-5}s$) takes run.
+    This performance is poor considering that it is not uncommon to need to work with datasets consisting of up to a million datapoints in industry, such as during a tap test for modal analysis of a turbine blade, for which the GP model in its current state would be unsuitable due to the excessive time and cost computational resources that would be required.
+
     \subsection{Robustness to Noise}
     The robustness to noise was tested (Objective~\ref{noise-resilience}) by calculating the MSE of the two methods when zero mean Gaussian noise with a standard deviation of $0.25 \, ms^{-2}$ was added to the signal.
     The components of the Fourier Transforms are shown in Figure~\ref{fig:noisy-data-freq-domain}.
@@ -674,7 +674,7 @@
         \clearpage
     }
 
-    Table~\ref{tab:response-noise} shows that the GP model performed significantly better here, with the MSE of the magnitude of the FFT being larger than that of the GP by a factor of 6.8
+    Table~\ref{tab:response-noise} shows that the GP model performed significantly better here, with the MSE of the magnitude of the FFT being larger than that of the GP by a factor of 6.8.
 
     \begin{table}[h]
         \centering % This centers the table on the page
@@ -696,7 +696,9 @@
         \label{tab:response-noise}
     \end{table}
 
-    A Fourier Transform that is more robust to noise would be more accurate and therefore would have widespread benefits in mechanical engineering because it would allow for more accurate Frequency Response Functions (FRFs) of structures from noisy real world data.
+    Furthermore, the magnitude of the peak was found more accurately by the GP model in this case, with a percentage error of $7.4\%$ versus $9.3\%$ for the FFT, with no change in the angular frequency of the peak for either method.
+
+    A Fourier Transform that is more robust to noise would be more accurate for noisy real world data and therefore would have widespread benefits in mechanical engineering because it would allow for more accurate Frequency Response Functions (FRFs) of structures.
     After the FRF of a structure, such as a wind turbine tower, is determined, it can be evaluated with the same forces that the system is expected to experience to predict the maximum amplitude of vibration expected during its lifetime.
     If this is excessive, the system is at risk of mechanical failure so the design can be changed to preventative this.
     For example, the mass could be changed to move the resonant frequency away from the expected forcing frequency, reducing the expected amplitude of oscillation.
@@ -705,35 +707,30 @@
 
     \subsection{Non-uniform Sampling of Frequency Domain}
     Since the Fourier Transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
-    Assuming the time domain GP is a good fit to the latent function, this would allow the frequency and amplitude of peaks in the spectrum to be found very precisely by having a cluster of samples around the peak of the spectrum.
-    This is not possible with the FFT because the location of the spectrum samples are determined by the input data, both of which must be evenly spaced which means that spectrum samples may fall either side of a sharp peak.
+    By taking the basic dataset and clustering an additional 100 samples of the spectrum of the GP in the interval of $1 \, rad \, s^{-1}$ containing the peak, it was able to improve the error in the calculation of the angular frequency of the peak from the same as the FFT ($0.0149 \, rad \, s^{-1}$) down to $0.0062 \, rad \, s^{-1} $.
+    If the time domain GP was an exact fit to the latent function, as the interval of angular frequency between samples around the peak tended to zero, so would this error.
+    This is not possible with the FFT because the location of the spectrum samples are determined by the time domain samples, both of which must be evenly spaced, meaning that spectrum samples could fall either side of a sharp peak.
+    This creates an uncertainty of at least $\pm$ half the sample interval.
 
-    Therefore, using the same dataset as above, \textcolor{red}{ with [N] datapoints, such clustering in the GP improved the error in wn and amplitude to be xxx and xxx respectively, compared to xxx and xxx for the FFT}
-
-    Furthermore, since the frequency interval is inversely proportional to the total time period, the difference between the amplitude and frequency of the peak calculated with the GP and FFT is more pronounced for datasets over a shorter time period.
-    \textcolor{red}{For instance, using only the first [N] points of the dataset above the error in wn and amplitude is xxx and xxx respectively, compared to xxx and xxx for the FFT, showing that the GP calculated the wn performs significantly better}
-    This means that this proposed GP model may be best suited to designs in which there is limited time for testing, such as in the aforementioned example of hypersonic wind tunnel tests of scramjets.
+    Furthermore, since the frequency interval is inversely proportional to the total time period, the difference between the error of the peak of the GP model and the FFT is more pronounced for data over a shorter time period.
+    For instance, using only the first 64 points of the same dataset gave the FFT an error in the angular frequency of the peak of $0.574 \, rad \, s^{-1}$ versus $0.036 \, rad \, s^{-1}$ for the GP model, a significant difference.
+    This means that this proposed GP model may be better suited for use cases in which there is limited time for testing, such as in the aforementioned example of hypersonic wind tunnel tests of scramjets.
 
     \subsection{Non-Uniform Sampling of the Time Domain and Overcoming Aliasing and the Nyquist Limit}
-    Similarly, the time domain input data need not be uniformly spaced in order to fit the GP.
-    This would allow the model to be used to find the Fourier Transform of datasets with missing data, which may occur, for example, if accelerometers placed on gas turbine engines during a test fail to transmit data for a period of time due to a loose connection.
-    If enough data is still present to faithfully represent the system, the GP will not be significantly affected, which would allow the test data to still be used, whereas if the standard FFT was used, the data would not be suitable and therefore the test would need to repeated, which could be highly costly.
+    Similarly, the time domain input data need not be uniformly spaced in order to fit the GP\@.
+    This would allow the model to be used to find the Fourier Transform of datasets with missing data, which may occur, for example, if an accelerometer placed on a gas turbine engine during a test failed to transmit data for a period of time due to a loose connection.
+    If enough data was still present to faithfully represent the system, the GP would not be significantly affected which would allow the test data to still be used, whereas if the standard FFT was used, the test would either need to repeated at added cost, or additional steps would be needed to preprocess the data, adding complication.
 
-    \textcolor{red}{results data mse for non-uniform and 1 datapoint missing vs orignial dataset with GP??}
+    However, more impressively, this feature allows frequencies to be detected that would be above the nyquist limit for the DFT with the same number of datapoints over the same sampling period.
+    This is because for a given time period and number of samples available, many can be bunched in a portion of the time period in order to capture the behaviour of high frequency signal components, leaving a few points over a longer period of time to capture information related to the exponential decay of the signal.
+    For example, using an SDOF system with parameters $M = 1 \, kg$; $C = 0.3 \, Nsm^{-1}$; $K = 20,000 \, Nm^{-1}$, the GP model fit to 1024 datapoints sampled randomly with a triangular distribution over a period of 32 seconds detected the peak at $141.4 \, rad \, s^{-1}$.
+    The FFT of an equivalent dataset containing the same number of datapoints sampled evenly over the same time period for the same system has a peak at $59.7 \, rad \, s^{-1}$, which is an artifact of aliasing caused by the peak being reflected at the nyquist limit of $100.5 \, rad \, s^{-1}$.
 
-    However, more impressively, this feature allows frequencies to be detected that would be above the nyquist frequency for the DFT with the same number of datapoints and the same total sampling period.
-    This is because for a given time period and number of samples available, many can be bunched in a portion of the time period in order to capture the behaviour of high frequency signal components, leaving a few points elsewhere to capture information relating to the rate exponential decay of excitation due to damping.
-    For example, if the model is tested on a dataset with \textcolor{red}{xxx datapoints sampled randomly with a triangular distribution over a period of x seconds of a SDOF system with parameters M = ; C = ; K = , the peak at xxx rad/s can clearly be seen in Figure x, which is only xxx rad/s away from the analytically correct value of xxx, whereas the peak at xxx in the FFT is an artifact caused by aliasing.}
-    This is where frequencies are reflected back at the nyquist frequency if they are larger than it.
-
-     This could be used in contexts where the identification of high frequencies as well as damping information is required, but there are tight constraints on memory such as in the aerospace industry.
-    Here, a microsatellite must monitor the heavy vibration it experiences on ascent to orbit to ensure the components onboard haven't exceeded their limits.
-    This could include Fourier analysis of accelerometer data to monitor vibration in the frequency domain.
-    However, the memory available to do this is limited because added memory adds weight, every gram of which can significantly increase fuel requirements and cost to get the satellite to orbit.
-    Therefore, this ability to detect higher frequencies than an equivalent FFT using the same amount of data and memory would make the new GP method of performing the Fourier Transform would be valuable here.
-
-    Another aliasing issue of FFT, spectral leakage, is avoided in the GP model due to the fact that the prediction functions are not assumed to be periodic, but continuous throughout the domain $(-\infty, \infty)$.
-    Therefore, windowing is not required to prevent this spectral leakage, as would be in the FFT, reducing the total number of steps required which would otherwise add computational cost and perhaps an opportunity for human bias to be introduced when choosing the type of window.
+    This feature of the GP model could be used in contexts where the identification of high frequencies as well as damping information is required, but there are tight constraints on memory such as in the aerospace industry.
+    Here, a microsatellite must monitor the heavy vibration it experiences on ascent to orbit to ensure the components onboard haven't exceeded their structural limits, which could indicate damage.
+    This would likely include Fourier analysis of accelerometer data to monitor vibration in the frequency domain.
+    However, the memory available to do this is limited because storage capacity has weight, every gram of which significantly increases the fuel requirements and cost to get the satellite to orbit.
+    Therefore, this ability to detect higher frequencies than an equivalent FFT using the same amount of data and memory would be valuable here.
 
     \section{Directions for Future Work}
 
@@ -752,15 +749,15 @@
 
     To progress this method further, one may have better performance implementing a different sparse GP approximation such as the variational free energy (VFE) approach instead, which works by approximating the posterior distribution, rather than the prior~\cite{murphy2023probabilistic}.
 
-    \subsection{and another subsection}
-    \textcolor{red}{ New kernel types; multi degree of freedom / dimension GP's!!!!; different solver types? etc.}
+%    \subsection{and another subsection}
+%    \textcolor{red}{ New kernel types; multi degree of freedom / dimension GP's!!!!; different solver types? etc.}
 
     \section{Conclusions}
-    Overall, when compared to the industry standard Fast Fourier Transform (FFT), the proposed alternative Gaussian Process (GP) model showed \textcolor{red}{better??} robustness to noise as well as several promising features that make it more versatile in the context of dynamic systems in mechanical engineering.
+    Overall, This paper proposes the use of a Gaussian Process (GP) model to perform the Fourier Transform.
+    It shows this is a valid alternative to the industry standard Fast Fourier Transform (FFT) which exhibited significantly better robustness to noise by a factor of 6.8, as well as several promising features that made it more versatile in the context of dynamic systems in mechanical engineering.
     Most notably, the fact that the time domain input data need not be evenly spaced enables the model to detect frequencies that would be above the Nyquist limit of an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
-    This gives the model potential to exceed the performance of the FFT in industrial contexts where there are constraints to the amount of data that can be collected due to cost or availability, or limited memory.
-    However, the computational speed of this GP model is currently orders of magnitude slower than the FFT, so before it can be a viable alternative to the FFT in practice, it would need to be developed to scale better to large datasets.
-    This could be done by implementing a sparse GP approximation such as the variational free energy (VFE) approach~\cite{murphy2023probabilistic}.
+    This gives the model potential to exceed the performance of the FFT in industrial contexts where data is noisy, and there are constraints to the amount of data that can be collected due to cost or availability, or limited memory.
+    However, the computational speed of this GP model is currently orders of magnitude slower than the FFT, so before it can be a viable alternative in practice, it would need development to allow it to scale better to large datasets.
 
     \FloatBarrier
 
