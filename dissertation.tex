@@ -595,7 +595,7 @@
     From observation of the magnitude plots, the GP Fourier Transform seems to more smoothly reach the peak, which resembles the shape of the analytical Fourier Transform more closely than the FFT.
     This suggests that it captures information relating to damping better, likely because the FFT's Hanning window would distort the signal's exponential decay in the time domain from the damping dissipating energy over time.
     Since the mean of the GP was sampled in the frequency domain in the same places as the FFT, the angular frequency of the peak as measured by the sample with the largest magnitude in both was identical, $10.01 \, rad \, s^{-1}$, within one sample interval of the analytical peak of $10.00 \, rad \, s^{-1}$.
-    The percentage error in the magnitude of the peaks was $22.7\%$ and $54.4\%$ for the FFT and GP model respectively.
+    The percentage error in the magnitude of the peaks was $22.7 \, \%$ and $54.4 \, \%$ for the FFT and GP model respectively.
 
     Next, the Mean Squared Error (MSE) was used to compare the accuracy (lower is better) of each of the FFT and the Fourier Transform of the GP's prediction mean with respect to the analytically exact Fourier Transform.
     This algorithm finds the average of the squares of the differences between the points at each index position of two series, as shown in Equation~\ref{eq:mse}.
@@ -606,7 +606,7 @@
 
     \noindent where $a_i$, $b_i$ are the values of vectors $\mathbf{A}$, $\mathbf{B}$ at index i.
 
-    The MSE for the components of each of the two numerical methods is shown in Table~\ref{tab:basic-mse}, where the error of the GP model was between $4.1\%$ and $64.0\%$ larger than that of the FFT.
+    The MSE for the components of each of the two numerical methods is shown in Table~\ref{tab:basic-mse}, where the error of the GP model was between $4.1 \, \%$ and $64.0 \, \%$ larger than that of the FFT.
 
     \begin{table}[h]
         \centering % This centers the table on the page
@@ -696,7 +696,7 @@
         \label{tab:response-noise}
     \end{table}
 
-    Furthermore, the magnitude of the peak was found more accurately by the GP model in this case, with a percentage error of $7.4\%$ versus $9.3\%$ for the FFT, with no change in the angular frequency of the peak for either method.
+    Furthermore, the magnitude of the peak was found more accurately by the GP model in this case, with a percentage error of $7.4 \, \%$ versus $9.3 \, \%$ for the FFT, with no change in the angular frequency of the peak for either method.
 
     A Fourier Transform that is more robust to noise would be more accurate for noisy real world data and therefore would have widespread benefits in mechanical engineering because it would allow for more accurate Frequency Response Functions (FRFs) of structures.
     After the FRF of a structure, such as a wind turbine tower, is determined, it can be evaluated with the same forces that the system is expected to experience to predict the maximum amplitude of vibration expected during its lifetime.
