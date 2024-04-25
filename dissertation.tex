@@ -424,9 +424,9 @@
     For example, since all real systems exhibit some form of damping, the magnitude of the vibrations decay over time.
     However, if data was simulated, this behaviour may have been neglected, and a stationary signal may have been used instead, therefore, the performance of the GP's ability to fit real life data could not be tested.
 
-    The test data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at 10 positions.
-    This was sampled at a rate of $16,384 Hz$ for just under 4 seconds.
-    For simplicity, only the response data at the first position was imported, and initially a small set of 100 samples was selected from the centre (to reduce computation time).
+    The test data consisted of accelerometer data from the tip of a hammer as well as a single location on a turbine blade when struck at $10$ positions.
+    This was sampled at a rate of $16,384 Hz$ for just under $4$ seconds.
+    For simplicity, only the response data at the first position was imported, and initially a small set of $100$ samples was selected from the centre (to reduce computation time).
     This time series acceleration data, as shown in the ``Force Response Over Time'' plot in Figure~\ref{fig:input-response-plot}, was used as training data to be fit by the GP\@.
 
     \begin{figure}[ht]
@@ -461,7 +461,7 @@
     \subsection{Hyperparameter Optimisation}
     An algorithm was designed to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood (NLML), for which a method was written (Appendix.~\ref{app:GPT}).
     It did this by modifying each hyperparameter randomly in turn and seeing if the NLML improved.
-    This was repeated for up to 100 iterations.
+    This was repeated for up to $100$ iterations.
 
     Imagine if the hyperparameter was only updated the new NLML was lower than the previous.
     Since the shape of a cost function can be complex and highly dimensional, the algorithm could have got stuck in what is known as a local minimum and never find the global minimum.
@@ -707,7 +707,7 @@
 
     \subsection{Non-uniform Sampling of Frequency Domain}
     Since the Fourier Transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
-    By taking the basic dataset and clustering an additional 100 samples of the spectrum of the GP in the interval of $1 \, rad \, s^{-1}$ containing the peak, it was able to improve the error in the calculation of the angular frequency of the peak from the same as the FFT ($0.0149 \, rad \, s^{-1}$) down to $0.0062 \, rad \, s^{-1} $.
+    By taking the basic dataset and clustering an additional $100$ samples of the spectrum of the GP in the interval of $1 \, rad \, s^{-1}$ containing the peak, it was able to improve the error in the calculation of the angular frequency of the peak from the same as the FFT ($0.0149 \, rad \, s^{-1}$) down to $0.0062 \, rad \, s^{-1} $.
     If the time domain GP was an exact fit to the latent function, as the interval of angular frequency between samples around the peak tended to zero, so would this error.
     This is not possible with the FFT because the location of the spectrum samples are determined by the time domain samples, both of which must be evenly spaced, meaning that spectrum samples could fall either side of a sharp peak.
     This creates an uncertainty of at least $\pm$ half the sample interval.
@@ -741,7 +741,7 @@
     One type of sparse GP approximation is the Fully Independent Training Conditional (FITC)~\cite{q-candela}.
     Successful implementation of this can be confirmed if the NLML is the same for the basic GP and its sparse approximation when the set of inducing points is exactly the same as the test dataset.
     This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L17]{$M$}{Number of inducing points in Sparse GP}
-    After this is complete, the hyperparameters could be optimised and the GP can be fit for functions containing more than 10,000 data points in a significantly reduced computation time.
+    After this is complete, the hyperparameters could be optimised and the GP can be fit for functions containing more than $10,000$ data points in a significantly reduced computation time.
 
      This was originally an objective to complete before extending the model to the frequency domain in Objective~\ref{item:FT}.
     It was attempted extensively, but an implementation that was numerically stable enough to produce NLML values consistent with the basic GP could not be complete, and thus it failed to converge to fit the test data.
