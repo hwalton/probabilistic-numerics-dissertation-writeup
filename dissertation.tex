@@ -572,7 +572,7 @@
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1.0\linewidth]{figures/basic-data-time-domain/basic-data-time-domain.png}
-        \caption{The basic training dataset of time domain acceleration of a simulated SDOF system consisting of 1024 datapoints at a sample rate of $32 \, Hz$ using system parameters $M = 1 \, kg$; $C = 0.3 \, Nsm^{-1}$; $K = 100 \, Nm^{-1}$ with no noise added, and the time domain prediction functions of the GP model fit to this data.}
+        \caption{The basic training dataset of time domain acceleration of a simulated SDOF system consisting of $1024$ datapoints at a sample rate of $32 \, Hz$ using system parameters $M = 1 \, kg$; $C = 0.3 \, Nsm^{-1}$; $K = 100 \, Nm^{-1}$ with no noise added, and the time domain prediction functions of the GP model fit to this data.}
         \label{fig:basic-data-time-domain}
     \end{figure}
 
@@ -723,7 +723,7 @@
 
     However, more impressively, this feature allows frequencies to be detected that would be above the nyquist limit for the DFT with the same number of datapoints over the same sampling period.
     This is because for a given time period and number of samples available, many can be bunched in a portion of the time period in order to capture the behaviour of high frequency signal components, leaving a few points over a longer period of time to capture information related to the exponential decay of the signal.
-    For example, using an SDOF system with parameters $M = 1 \, kg$; $C = 0.3 \, Nsm^{-1}$; $K = 20,000 \, Nm^{-1}$, the GP model fit to 1024 datapoints sampled randomly with a triangular distribution over a period of 32 seconds detected the peak at $141.4 \, rad \, s^{-1}$.
+    For example, using an SDOF system with parameters $M = 1 \, kg$; $C = 0.3 \, Nsm^{-1}$; $K = 20,000 \, Nm^{-1}$, the GP model fit to $1024$ datapoints sampled randomly with a triangular distribution over a period of 32 seconds detected the peak at $141.4 \, rad \, s^{-1}$.
     The FFT of an equivalent dataset containing the same number of datapoints sampled evenly over the same time period for the same system has a peak at $59.7 \, rad \, s^{-1}$, which is an artifact of aliasing caused by the peak being reflected at the nyquist limit of $100.5 \, rad \, s^{-1}$.
 
     This feature of the GP model could be used in contexts where the identification of high frequencies as well as damping information is required, but there are tight constraints on memory such as in the aerospace industry.
