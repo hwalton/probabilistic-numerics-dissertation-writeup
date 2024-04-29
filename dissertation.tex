@@ -738,6 +738,31 @@
     However, the memory available to do this is limited because storage capacity has weight, every gram of which significantly increases the fuel requirements and cost to get the satellite to orbit.
     Therefore, this ability to detect higher frequencies than an equivalent FFT using the same amount of data and memory would be valuable here.
 
+    \subsection{Fourier Transform of the Covariance}
+    Unlike the FFT, the spectrum prediction of the GP model is a probability distribution, which provides some uncertainty data in its standard deviation.
+    This allows one to convert to the frequency domain information about the uncertainty of vibrations, as shown in Figure~\ref{fig:stdv-plot}.
+    Here, the standard deviation is highest around $0 \, rad \, s^{-1}$, and tapers off for higher frequencies.
+    This makes intuitive sense because there are fewer cycles of the lower frequency components in a given time period, so there is less information available to use to detect them.
+
+    \begin{figure}[!htb]
+        \centering
+        \includegraphics[width=\linewidth]{figures/stdv-plot/stdv-plot.png}
+        \caption{The real (a) and imaginary (b) components of the frequency domain prediction function of the GP including the standard deviation for the noisy dataset.}
+        \label{fig:stdv-plot}
+    \end{figure}
+
+    In the automotive industry, a piston connecting (``con'') rod in an internal combustion engine undergoes heavy vibration of very many cycles (twice for each revolution of a four-stroke engine), so fatigue analysis is crucial to ensure that it does not fail from crack formation and propagation before the end of the design life of the vehicle.
+    Since they are typically made of a ferrous alloy such as forged steel, they have a fatigue limit~\cite{RoymechFatigue}, which is a distinct stress level for a given frequency below which failure from fatigue will not occur - even from an infinite number of loading cycles~\cite{BeerJohnston1992}.
+    This stress level can be calculated from experimental acceleration data, and therefore it can be shown that the stress on the con rod is below the fatigue limit by showing that the magnitude of acceleration across the range of frequencies is below its corresponding limit.
+    Testing this would be valuable because one could show that the con rod will not fail from fatigue if the test passes.
+
+    However, if the FFT was used, even if the nominal value calculated was below its limit, the uncertainty interval would be unknown and so it would still be unclear whether the upper bound of the range of possible values is above the fatigue limit.
+    Therefore, one could not confidently conclude that the acceleration will be below the fatigue limit without a conservative factor of safety.
+    In contrast, ``rather than relying on large factors of safety to account for uncertainty''~\cite{Rogers2023} which could add unnecessary weight to overly strengthen the component, the uncertainty information is encoded in the GP model's standard deviation of the posterior distribution.
+    Therefore, it would be possible to calculate the probability that the acceleration falls over the limit.
+    If this chance is sufficiently low, one can conclude that the component is below the fatigue limit without the need for a conservative safety factor, increasing the performance of the engine.
+
+
     \subsection{Computation Time}
     However, one major disadvantage of this GP model is that the computation time scales poorly with large datasets, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L24]{$O()$}{Big O notation, used to describe the complexity - or ``Order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT).
     This means that the model handles poorly datasets consisting of more than a few thousand points, and even at this scale, fitting the GP to the time domain then converting this to the frequency domain takes several orders of magnitude longer ($0.84 \, s$) than the time the FFT ($7.5 \times 10^{-5} \, s$) takes run.
@@ -751,31 +776,6 @@
     To also capture the exponential decay over time, a ``compound'' kernel could be formed by multiplying it with the squared exponential kernel.
     Although the  Fourier Transform of the GP model's prediction mean showed good robustness to noise versus the FFT, if this compound kernel eliminated overfitting, this could improve the robustness to noise of the Fourier Transform of the prediction mean even further.
     However, if the kernel is too complicated, it may become intractable to analytically perform the Fourier Transform of the kernel, which is required to produce the Fourier Transform of the prediction mean.
-
-    \subsection{Fourier Transform of the Covariance}
-    Unlike the FFT, the spectrum prediction of the GP model is a probability distribution, which provides some uncertainty data in its standard deviation.
-%    and is always positive and real (see Mercer's theorem~\cite{rasmussen2006gaussian}, p.96), meaning that its phase is always zero.
-%    Note that since each amplitude prediction is a Gaussian distribution, which extends infinitely in both directions, some portion of the distribution will always fall below zero.
-%    This is unusual because amplitudes are usually positive only, but this portion of the distribution can be interpreted as simply a positive amplitude of the same magnitude but the opposite phase.
-    This allows one to convert to the frequency domain information about the uncertainty of the magnitude of vibrations, provided that the GP in the time domain fits the noise in the training data.
-
-    In the automotive industry, a piston connecting (``con'') rod in an internal combustion engine undergoes heavy vibration of very many cycles (twice for each revolution of a four-stroke engine), so fatigue analysis is crucial to ensure that it does not fail from crack formation and propagation before the end of the design life of the vehicle.
-    Since they are typically made of a ferrous alloy such as forged steel, they have a fatigue limit~\cite{RoymechFatigue}, which is a distinct stress level for a given frequency below which failure from fatigue will not occur - even from an infinite number of loading cycles~\cite{BeerJohnston1992}.
-    This stress level can be calculated from experimental acceleration data, and therefore it can be shown that the stress on the con rod is below the fatigue limit by showing that the magnitude of acceleration across the range of frequencies is below its corresponding limit.
-    Testing this would be valuable because one could show that the con rod will not fail form fatigue if the test passes.
-
-    However, if the FFT was used instead, even if the nominal calculated value was below its limit, the uncertainty interval would be unknown and so it would be unclear whether or not the upper bound of the range of possible values is above the fatigue limit.
-    Therefore, one could not confidently conclude that the acceleration will be below the fatigue limit without a conservative factor of safety, which could add unnecessary weight used to make the con rod stronger than it needs to be.
-    In contrast, since the GP provides the acceleration at a given frequency as a Gaussian distribution, the uncertainty information is encoded in standard deviation of the distribution.
-    Therefore, it would be possible to calculate the probability that the acceleration falls over the limit and if this chance is sufficiently low, one can conclude that the component is below the fatigue limit without the need for a conservative safety factor, increasing the performance of the engine.
-
-    \begin{figure}[h]
-        \clearpage
-        \centering
-        \includegraphics[width=1.0\linewidth]{figures/stdv-plot/stdv-plot.png}
-        \caption{The standard deviation of the prediction function of the GP in the frquency domain for noisy data.}
-        \label{fig:stdv-plot}
-    \end{figure}
 
     \subsection{Scaling to large data}
     Although this new Gaussian Process (GP) method of performing the Fourier Transform is promising, the fact that it scales to large datasets so poorly means that it is impractical in its current state.
