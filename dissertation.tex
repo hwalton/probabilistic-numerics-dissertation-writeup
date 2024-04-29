@@ -195,9 +195,9 @@
     ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties, are predicted from the system parameters using physical laws.
     These properties include the resonant frequencies which are the forcing frequencies that produce a peak in amplitude of excitation, and the damping ratios which compare the damping coefficient to that of critical damping at each resonant frequency.
 
-    \nomenclature[L]{$m$}{Mass}
-    \nomenclature[L]{$c$}{Damping Coefficient}
-    \nomenclature[L]{$k$}{stiffness}
+    \nomenclature[L22]{$m$}{Mass}
+    \nomenclature[L03]{$c$}{Damping Coefficient}
+    \nomenclature[L181]{$k$}{stiffness}
 
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
@@ -248,16 +248,16 @@
         \caption{The magnitude and phase of $H(\xi)$, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass $m$ [$kg$], damping coefficient $c$ [$N s m^{-1}$] and stiffness $k$ [$N m^{-1}$] affects the system parameters resonant frequency $\xi_r$ [$rad \, s^{-1}$] and damping ratio $\zeta$ [$-$].}
         \label{fig:frequency-response-function}
     \end{figure}
-    \nomenclature[G]{$\xi_{r}$}{Resonant Frequency}
-    \nomenclature[G]{$\zeta$}{Damping Ratio}
+    \nomenclature[G12]{$\xi_{r}$}{Resonant Frequency}
+    \nomenclature[G05]{$\zeta$}{Damping Ratio}
 
-    The decomposition of the input and response functions from the time domain to the frequency domain uses a linear operator called the Fourier Transform, $F(\xi)$, as defined in Equation~\ref{eq:ft}
+    The decomposition of the input and response functions from the time domain to the frequency domain uses a linear operator called the Fourier Transform, $\mathcal{F}(\xi)$, as defined in Equation~\ref{eq:ft}
 
     \begin{equation}
         \mathcal{F}[f](\xi) = \frac{1}{2 \pi} \int_{-\infty}^{\infty} f(t) e^{-i \xi t} \, dt\label{eq:ft}
     \end{equation}
-    \nomenclature[L05]{$\mathcal{F}[f](\xi)$}{Fourier Transform of $f(t)$}
-    \nomenclature[G08]{$\xi$}{Angular frequency}
+    \nomenclature[L09]{$\mathcal{F}_p[f](\xi)$}{Fourier Transform of $f(t)$, with respect to p}
+    \nomenclature[G10]{$\xi$}{Angular frequency}
 
 
     \noindent where $\xi$ is the angular frequency [$rad \, s^{-1}$] and $f(t)$ is the time domain latent function being operated on.
@@ -268,7 +268,7 @@
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the Discrete Fourier Transform revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory~\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
     Firstly, the domain has both positive frequencies and negative frequencies, resulting in symmetry about zero, where the energy of the system evenly.
-    Secondly, the Fast Fourier Transform (FFT) assumes the input signal is finite in length and periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen total time period~\cite{MathStackExchange2023}.\nomenclature[L04]{FFT}{Fast Fourier Transform}
+    Secondly, the Fast Fourier Transform (FFT) assumes the input signal is finite in length and periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen total time period~\cite{MathStackExchange2023}.\nomenclature[L08]{FFT}{Fast Fourier Transform}
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby, and is typically mitigated by using a window such as a Hanning window to decrease the magnitude of the time domain signal at either end of the data to smoothly bring the data to zero at the boundary between the end and start, thus minimizing and abrupt changes that could lead to distortion of the spectrum.
     Also, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
     Similarly, since the time domain and resulting frequency domain data is discrete, the basic algorithm can exhibit large variability in the amplitude and frequency of peaks depending on if the sampled frequencies fall exactly on the peak or either side of it, which in turn can affect modal properties and parameters calculated downstream of this data in the context of dynamics.
@@ -291,7 +291,7 @@
     The uncertainty of outputs is modelled with a probability distribution as opposed to the error bounds as in traditional numerical methods, which may improve robustness to noise, among other things.
     This paper does this through the implementation of a promising type of machine learning model called a Gaussian Process (GP) to find the Fourier Transform of a dynamic system.
 
-    A GP uses noisy, discrete sampled data to model the probability distribution of a continuous ``latent'' function, $f(x)$, that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L06]{$f(x)$}{Latent function of the variable $x$}\nomenclature[L08]{GP}{Gaussian Process}
+    A GP uses noisy, discrete sampled data to model the probability distribution of a continuous ``latent'' function, $f(x)$, that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L06]{$f(x)$}{Latent function of the variable $x$}\nomenclature[L10]{GP}{Gaussian Process}
     In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
     These variables are outputs of the latent function at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
@@ -320,34 +320,34 @@
         \right)\label{eq:joint-distribution}
     \end{equation}
 
-    \nomenclature[L22]{$y_j$}{Noisy observed output based on the latent function, $f(x)$}
-    \nomenclature[L21]{$\mathbf{y}$}{A vector of $y_j$ values from a set of training points}
-    \nomenclature[L07]{$\mathbf{f}_*$}{is a vector of function values at a set of test points $\mathbf{X}_*$}
-    \nomenclature[L09]{$\mathbf{I}$}{The identity matrix}
-    \nomenclature[G01]{$\epsilon_j$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
-    \nomenclature[L23]{$\boldsymbol{X}$}{A vector of training point inputs}
-    \nomenclature[L24]{$\boldsymbol{X}_*$}{A vector of test point inputs}
-    \nomenclature[G07]{$\sigma^2_y$}{Variance of observation noise}
-    \nomenclature[G03]{$\boldsymbol{\mu}_X$  $\boldsymbol{\mu}_*$}{Vectors containing the mean of the distribution of values of the latent function, at the training points, $\mathbf{X}$, and test points $\mathbf{X}_*$ respectively}
-    \nomenclature[L10]{$\mathbf{K}$}{A covariance matrix of the kernel function, $k(a,b)$, evaluated for each pair of elements a, b in vectors $\mathbf{A}$, $\mathbf{B}$}
-    \nomenclature[L]{$_{X,X}$  $_{X,*}$  $_{*,*}$}{Subscripts that denote that the matrix is formed from the function evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively}
+    \nomenclature[L27]{$y_j$}{Noisy observed output based on the latent function, $f(x)$}
+    \nomenclature[L26]{$\mathbf{y}$}{A vector of $y_j$ values from a set of training points}
+    \nomenclature[L07]{$\mathbf{f}_*$}{A vector of latent function values at a set of test points $\mathbf{X}_*$}
+    \nomenclature[L11]{$\mathbf{I}$}{The identity matrix}
+    \nomenclature[G02]{$\epsilon_j$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
+    \nomenclature[L241]{$\boldsymbol{X}$}{A vector of training point inputs}
+    \nomenclature[L242]{$\boldsymbol{X}_*$}{A vector of test point inputs}
+    \nomenclature[G14]{$\sigma^2_y$}{Variance of observation noise}
+    \nomenclature[G07]{$\boldsymbol{\mu}_X$  $\boldsymbol{\mu}_*$}{Vectors containing the mean of the distribution of values of the latent function, at the training points, $\mathbf{X}$, and test points $\mathbf{X}_*$ respectively}
+    \nomenclature[L12]{$\mathbf{K}_{X,X}$}{A covariance matrix defined by $k(\mathbf{X},\mathbf{X})$}
+    \nomenclature[L13]{$\mathbf{K}_{X,*}$}{A covariance matrix defined by $k(\mathbf{X},\mathbf{X}_*)$}
+    \nomenclature[L14]{$\mathbf{K}_{*,*}$}{A covariance matrix defined by $k(\mathbf{X}_*,\mathbf{X}_*)$}
 
-    \noindent where $\epsilon_j$ is the observational noise; $\mathbf{y}$ is a vector of $y_j$ values from a set of training points; $\boldsymbol{\mu}_X$ and $\boldsymbol{\mu}_*$ are a vectors containing the mean of the distribution of values of the latent function, at the training and test points, $\mathbf{X}$ and  $\mathbf{X}_*$ respectively; $\mathbf{f}_*$ is a vector of function values at a set of test points $\mathbf{X}_*$; $\mathbf{I}$ is the identity matrix and $\mathbf{K}$ is a covariance matrix, based on the ``kernel'' function, $k(a,b)$.
-    The subscripts $_{X,X}$; $_{X,*}$ and $_{*,*}$ denote that a matrix is formed from the function evaluated for each pair elements in the vectors $(\mathbf{X},\mathbf{X})$, $(\mathbf{X},\mathbf{X}_*)$ and $(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
+    \noindent where $\epsilon_j$ is the observational noise; $\mathbf{y}$ is a vector of $y_j$ values from a set of training points; $\boldsymbol{\mu}_X$ and $\boldsymbol{\mu}_*$ are a vectors containing the mean of the distribution of values of the latent function, at the training and test points, $\mathbf{X}$ and  $\mathbf{X}_*$ respectively; $\mathbf{f}_*$ is a vector of function values at a set of test points $\mathbf{X}_*$; $\mathbf{I}$ is the identity matrix and covariance matrices $\mathbf{K}_{X,X}$, $\mathbf{K}_{X,*}$ and $\mathbf{K}_{*,*}$ are defined by $k(\mathbf{X},\mathbf{X})$, $k(\mathbf{X},\mathbf{X}_*)$ and $k(\mathbf{X}_*,\mathbf{X}_*)$ respectively.
     Note that block matrix notation is used where matrices are conjoined to form a larger block matrix.
 
     The kernel is type of function that measures the similarity between each pair of inputs based on a set of hyperparameters and is chosen to reflect any prior knowledge about the problem domain.
 
-    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}\nomenclature[L19]{NLML}{Negative Log Marginal Likelihood}
+    These hyperparameters need to be optimised by minimizing the Negative Log Marginal Likelihood (NLML), as defined~\cite{murphy2023probabilistic} in Equation~\ref{eq:NLML}\nomenclature[L231]{NLML}{Negative Log Marginal Likelihood}
 
     \begin{equation}
         -\log p(\mathbf{D}|\boldsymbol{\theta}) = \frac{1}{2} (\mathbf{y} - \boldsymbol{\mu}_X)^T \mathbf{K}_{\sigma}^{-1} (\mathbf{y} - \boldsymbol{\mu}_X) + \frac{1}{2} \log |\mathbf{K}_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
     \end{equation}
 
-    \nomenclature[L03]{$\mathbf{D}$}{Training data}
-    \nomenclature[G02]{$\boldsymbol{\theta}$}{Set of hyperparameters}
-    \nomenclature[L14]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
-    \nomenclature[L18]{$N$}{Number of training or testing points}
+    \nomenclature[L04]{$\mathbf{D}$}{Training data}
+    \nomenclature[G06]{$\boldsymbol{\theta}$}{Set of hyperparameters}
+    \nomenclature[L15]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
+    \nomenclature[L23]{$N$}{Number of training or testing points}
 
     \noindent where $\mathbf{D}$ is the training data; $N$ is the number of training points; $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
     This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
@@ -369,8 +369,8 @@
         \boldsymbol{\Sigma}_{*\vert \mathbf{X}} = \mathbf{K}_{*,*} - \mathbf{K}_{X,*}^T (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} \mathbf{K}_{X,*}\label{eq:18.53}
     \end{equation}
 
-    \nomenclature[G04]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data, $\mathbf{X}$}
-    \nomenclature[G05]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data, $\mathbf{X}$}
+    \nomenclature[G08]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data, $\mathbf{X}$}
+    \nomenclature[G15]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data, $\mathbf{X}$}
 
     Note that this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
     It is also defined in the continuous domain $(-\infty, \infty)$, so the Fourier Transform can be taken analytically without needing to resort to the discrete FFT\@.
@@ -379,32 +379,36 @@
     \begin{equation}
         \left\{
             \begin{array}{c}
-                \mathbf{y}(t) \\
-                \mathbf{g}(\xi)
+                \mathbf{y} \\
+                \mathbf{F}_*
             \end{array}
             \right\}
         \sim \mathcal{N} \left(
         \left\{
         \begin{array}{c}
             \boldsymbol{\mu}_X \\
-            \boldsymbol{\mathcal{F}}[{\mu}]_*
+            \boldsymbol{M}_*
         \end{array}
         \right\},
         \left[
             \begin{array}{cc}
-                \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I} & \boldsymbol{\mathcal{F}}_{t} [k(t, t_k)]_{X,*} \\
-                \boldsymbol{\mathcal{F}}_{t} [k(t, t_k)]_{X,*}^T & \boldsymbol{\mathcal{F}}_{t1} [\mathcal{F}_{t2} [k(t_1, t_2)]]_{*,*}
+                \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I} & \boldsymbol{\mathcal{K}}_{X,\xi} \\
+                \boldsymbol{\mathcal{K}}_{X,\xi}^T & \boldsymbol{\mathcal{K}}_{\xi,\xi}
             \end{array}
             \right]
         \right)\label{eq:linear-trans}
     \end{equation}
-    \nomenclature[L]{$t_k$}{The $k^{th}$ element in the vector of training points $\mathbf{X}$}
-    \nomenclature[G]{$\mu(t)$}{The mean function of the Gaussian Process in the time domain}
-    \nomenclature[L]{$\boldsymbol{\mathcal{F}}[\mu]_*$}{A vector of the Fourier Transform of the mean function, evaluated for vector of test points $X_*$}
-    \nomenclature[L]{$\mathbf{\mathcal{F}}_*$  $\mathbf{\mathcal{F}}_{*1}$  $\mathbf{\mathcal{F}}_{*2}$}{Matrices of Fourier Transforms (with respect to $t$, $t_1$ and $t_2$ respectively}
-    \nomenclature[L]{$t_1$ $t_2$}{Independent elements of vector $\mathbf{X_{*}}$}
 
-    \noindent where $t_k$ is the $k^{th}$ element in the vector of training points $\mathbf{X}$; $t$ is an element in the vector of test points, $\mathbf{X}_*$; $\mu = \mu(t)$ is the time domain mean function; $\boldsymbol{\mathcal{F}}[\mu]_*$ is a vector of the Fourier Transform of the mean function, evaluated for vector of test points $X_*$; $\boldsymbol{\mathcal{F}}_{t}$  $\boldsymbol{\mathcal{F}}_{t1}$ and $\boldsymbol{\mathcal{F}}_{t2}$ are matrices of Fourier Transforms with respect to $t$  $t_1$ and $t_2$ respectively, where $t_1$ and $t_2$ are independent elements of vector $\mathbf{X_{*}}$.
+    \nomenclature[L05]{$\boldsymbol{F}_*$}{A vector of latent function values in the frequency domain at a set of test points $\mathbf{\xi}$}
+    \nomenclature[G09]{$\boldsymbol{M}_*$}{The mean of the frequency domain prediction function}
+    \nomenclature[L18]{$\mathcal{K}(\xi,0)$}{Fourier Transform of the (Squared Exponential) Kernel function evaluated at $\xi$}
+    \nomenclature[L16]{$\mathbf{\mathcal{K}}_{X,\xi}$}{A covariance matrix with $jk^{th}$ element defined by $\mathcal{F}_{\xi_k}[k(t_j, \xi_k)]$}
+    \nomenclature[L17]{$\mathbf{\mathcal{K}}_{\xi,\xi}$}{A covariance matrix with $jk^{th}$ element defined by $\mathcal{F}_{\xi_j}[\mathcal{F}_{\xi_k}[k(\xi_j, \xi_k)]]$}
+    \nomenclature[G11]{$\xi_j$  $\xi_k$}{The $j^{th}$ and $k^{th}$ elements in $\boldsymbol{\xi}$}
+    \nomenclature[G091]{$\boldsymbol{\xi}$}{the vector of frequency domain test points $\boldsymbol{\xi}$}
+    \nomenclature[L25]{$t_j$  $t_k$}{The $j^{th}$ and $k^{th}$ elements in the vector of training points $\mathbf{X}$}
+
+    \noindent where $\boldsymbol{F}_*$ is the frequency domain prediction of the latent function; $\boldsymbol{M}_*$ is the mean of the frequency domain prediction function; the matrix element $[\mathcal{K}_{x,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_k}[k(t_j, \xi_k)]$ and the matrix element $[\mathcal{K}_{\xi,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_j}[\mathcal{F}_{\xi_k}[k(\xi_j, \xi_k)]]$; $t_j$ is the $j^{th}$ element in the vector of training points $\mathbf{X}$; and $\xi_j$ and $\xi_k$ are the $j^{th}$ and $k^{th}$ elements in the vector of frequency domain test points $\boldsymbol{\xi}$.
 
     Like before, this distribution can be conditioned to find the conditional mean and covariance of the Fourier Transform at a specific set of desired frequencies, given the training data, $\mathbf{X}$.
 
@@ -475,11 +479,11 @@
     \begin{equation}
         k(a,b) = \sigma^2 \exp\left(-\frac{(a - b)^2}{2l^2}\right) \label{eq:se-kernel}
     \end{equation}
-    \nomenclature[L15]{$k(a,b)$}{Kernel function, evaluating the similarity of points $a$ and $b$}
+    \nomenclature[L19]{$k(a,b)$}{Kernel function, evaluating the similarity of $a$ and $b$}
     \nomenclature[L02]{$a, b$}{Elements of vectors $\mathbf{A}, \mathbf{B}$ respectively}
     \nomenclature[L01]{$\mathbf{A}, \mathbf{B}$}{Vectors with elements $a, b$ - subscript indicates index of element}
-    \nomenclature[G06]{$\sigma^2$}{The variance hyperparameter of the squared exponential kernel}
-    \nomenclature[L16]{$l$}{Length scale hyperparameter of the squared exponential kernel}
+    \nomenclature[G13]{$\sigma^2$}{The variance hyperparameter of the squared exponential kernel}
+    \nomenclature[L20]{$l$}{Length scale hyperparameter of the squared exponential kernel}
 
     \noindent where $k(a,b)$ is the kernel function evaluated at elements $a_i$, $b_j$ of vectors $\mathbf{A}$, $\mathbf{B}$ respectively and $\sigma^2$ is the variance hyperparameter and $l$ is the length scale parameter.
 
@@ -504,7 +508,7 @@
 
     \subsection{Predict Function}
     The predict function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:basic-data-time-domain} respectively.
-    The mean of each prediction point is calculated using Equation~\ref{eq:18.52} directly, whereas the standard deviation of each point uses only the main diagonal of the covariance matrix resulting from Equation~\ref{eq:18.53}, which is square rooted in order to find the standard deviation.
+    The mean of each prediction point is calculated using Equation~\ref{eq:18.52} directly, whereas the standard deviation of each point uses only square root of the main diagonal of the covariance matrix resulting from Equation~\ref{eq:18.53}.
     In combination, this predict function defines the probability distribution of the value of the latent function at any point, given the training data.
     Hence, when zero mean Gaussian noise with a standard deviation of $25 \, ms^{-2}$ was added to the training data, the standard deviation of the prediction became larger to take account for the uncertainty created by this noise, as shown in Figure~\ref{fig:noisy-data-time-domain}.
 
@@ -534,7 +538,6 @@
     \begin{equation}
         \mathcal{K}(\xi,0) = \frac{\sigma^2 l}{\sqrt{2 \pi}} \exp\left(-\frac{l^2 \xi^2}{2}\right) \label{eq:se-kernel-ft}
     \end{equation}
-    \nomenclature[L165]{$\mathcal{K}(\xi,0)$}{Fourier Transform of the Squared Exponential Kernel function evaluated at $\xi$}
 
     \noindent where $\xi$ is the frequency and $\mathcal{K}(\xi,0)$ is the Fourier Transform of the Squared Exponential Kernel function evaluated at $\xi$.
 
@@ -549,7 +552,7 @@
     \begin{equation}
         w_k = \sum_{j} a_{kj} \, y_j \label{eq:w_k}
     \end{equation}
-    \nomenclature[L]{$\mu(t)$}{The mean function}
+    \nomenclature[G065]{$\mu(t)$}{The mean function}
 
     \noindent where $a_{kj}$ is an element in matrix $\mathbf{A}$ defined in Equation~\ref{eq:A},
 
@@ -568,34 +571,32 @@
     The same steps can be used to derive the equation for the Fourier Transform of the function for the main diagonal of the Covariance Matrix when written in the form shown in Equation~\ref{eq:var-sum-time-domain}
 
     \begin{equation}
-        \Sigma(t, t) = k(t,t) - \sum_k v_k \, k(t,t_k) \label{eq:var-sum-time-domain}
+        \Sigma(t) = k(t,t) - \sum_k v_k \, k(t,t_k) \label{eq:var-sum-time-domain}
     \end{equation}
-    \nomenclature[L]{$\Sigma(t, t)$}{The covariance function of the Gaussian Process in the time domain}
+    \nomenclature[G145]{$\Sigma(t, t)$}{The covariance function of the Gaussian Process in the time domain}
     \noindent where $v_k$ is defined in Equation~\ref{eq:v_k}
 
     \begin{equation}
         v_k = \sum_j a_{kj} \, k(t,t_j) \label{eq:v_k}
     \end{equation}
-    \nomenclature[L]{$t_j$}{The $j^{th}$ element in the vector of training points $\mathbf{X}$}
 
     \noindent where $t_j$ is the $j^{th}$ element in the vector of training points $\mathbf{X}$.
 
-    The resulting Fourier Transform can be written as shown in Equation~\ref{eq:var-sum-freq-domain}.
+    The resulting Fourier Transform can be written as shown in Equation~\ref{eq:var-sum-freq-domain}
 
 %    \begin{equation}
 %        \mathcal{F}[\Sigma](\xi, \xi) = \frac{1}{2 \pi} e^{- i \xi^2} k(- \xi,0)  - \sum_k \sum_j a_{kj} \, e^{-i \xi (t_j - t_k)} \mathcal{K}(\xi,0)^2 \label{eq:var-sum-freq-domain}
 %    \end{equation}
 
     \begin{equation}
-        \mathcal{F}[\Sigma](\xi, \xi) = \mathcal{K}(\xi,0) \delta(\xi - \xi)  - \sum_k \sum_j a_{kj} \, e^{-i \xi (t_j - t_k)} \mathcal{K}(\xi,0)^2 \label{eq:var-sum-freq-domain}
+        \mathcal{F}[\Sigma](\xi, \xi) = \mathcal{K}(\xi,0) \delta(\xi - \xi)  - \sum_k \sum_j a_{kj} \, e^{-i \xi (t_j + t_k)} \mathcal{K}(\xi,0)^2 \label{eq:var-sum-freq-domain}
     \end{equation}
+    \nomenclature[G01]{$\delta$}{The Dirac delta function}
 
-%    Note that $k(- \xi, 0)$ is the original time domain kernel since the Fourier Transform applied to a function twice is equivalent to the original function reflected about zero and scaled by dividing by $2 \pi$.
+    \noindent where $\delta$ is the Dirac delta function, which ensures that the two inputs are equal.
 
-    Only the Fourier Transform of the main diagonal of the covariance matrix was computed because hyperparameter training (which would require the full matrix) was completed in the time domain already, and only the diagonal is required to plot the standard deviation of the output predictions (which is the square root of the covariance).
+    Only the main diagonal was computed because this is all that is required to plot the standard deviation of the output predictions (which is the square root of the covariance), and because hyperparameter training (which would require the full matrix) was completed in the time domain already.
     This decreased the compute requirements significantly, from $O(N^2)$ to $O(N)$, where N is the number of frequency predictions required.
-
-
 
     \section{Results and discussion}
     After this Gaussian Process Model was complete, it could then be setup and used in a variety of test cases to explore its advantages and disadvantages versus the Fast Fourier Transform.
@@ -738,7 +739,7 @@
     Therefore, this ability to detect higher frequencies than an equivalent FFT using the same amount of data and memory would be valuable here.
 
     \subsection{Computation Time}
-    However, one major disadvantage of this GP model is that the computation time scales poorly with large datasets, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L20]{$O()$}{Big O notation, used to describe the complexity - or ``Order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT).
+    However, one major disadvantage of this GP model is that the computation time scales poorly with large datasets, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L24]{$O()$}{Big O notation, used to describe the complexity - or ``Order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT).
     This means that the model handles poorly datasets consisting of more than a few thousand points, and even at this scale, fitting the GP to the time domain then converting this to the frequency domain takes several orders of magnitude longer ($0.84 \, s$) than the time the FFT ($7.5 \times 10^{-5} \, s$) takes run.
     This performance is poor considering that it is not uncommon to need to work with datasets consisting of up to a million datapoints in industry, such as during a tap test for modal analysis of a turbine blade, for which the GP model in its current state would be unsuitable due to the excessive time and cost computational resources that would be required.
 
@@ -782,7 +783,7 @@
 
     One type of sparse GP approximation is the Fully Independent Training Conditional (FITC)~\cite{q-candela}.
     Successful implementation of this can be confirmed if the NLML is the same for the basic GP and its sparse approximation when the set of inducing points is exactly the same as the test dataset.
-    This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L17]{$M$}{Number of inducing points in Sparse GP}
+    This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, evenly spaced, and $N \gg M$. \nomenclature[L21]{$M$}{Number of inducing points in Sparse GP}
     After this is complete, the hyperparameters could be optimised and the GP can be fit for functions containing more than $10,000$ data points in a significantly reduced computation time.
 
      This was originally an objective to complete before extending the model to the frequency domain in Objective~\ref{item:FT}.
