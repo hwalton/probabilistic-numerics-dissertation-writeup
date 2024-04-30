@@ -131,12 +131,16 @@
     \thispagestyle{empty}
     \includepdf[pages=1, frame, scale=1.09, pagecommand={}, offset=0 -35]{figures/titlepage.pdf}
 
-    \section{Summary}
-    This paper proposed the use of a Gaussian Process (GP) model to perform the Fourier transform.
-    It showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error (MSE) in magnitude versus the analytical Fourier transform by a factor of $11.64$.
-    Furthermore, it had several promising features that made it more versatile in the context of dynamic systems in mechanical engineering.
-    Most notably, the fact that the time domain input data need not be evenly spaced enabled the model to detect frequencies that would be above the Nyquist limit of an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
-    This gives the model potential to exceed the performance of the FFT in industrial contexts where data is noisy, and there are constraints to the amount of data that can be collected due to cost, availability, or limited memory.
+    \section*{Summary}
+    In mechanical engineering, the field of dynamics studies how systems, like structures and fluids, respond and evolve over time under varying forces.
+    Being able to characterise these systems by identifying their dynamic properties and parameters helps to design structures that last longer before failing from fatigue, and that are less likely to fail structurally from excessive excitation under external forces.
+    The identification of dynamic systems often uses the ``Frequency Response Function'', which relies on the ``Fourier transform'' to convert data from a function of time to a function of frequency.
+    This paper explores a new paradigm of ``probabilistic numerics'' over traditional numerical methods that allowed the Fourier transform to be performed through the use of a Gaussian Process (GP) machine learning model.
+    This model showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error in magnitude versus the true analytical Fourier transform by a factor of $11.64$.
+    Therefore, it could allow dynamic systems to be identified more accurately in across industry where data is noisy, from aviation to renewable power generation.
+    Furthermore, the model had several promising features that made it more versatile in this context.
+    Most notably, the fact that the time domain input data need not be evenly spaced enabled it to detect frequencies that would be above the Nyquist limit of what would be detectable by an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
+    This makes the model most suitable in industrial contexts where there are constraints to the amount of data that can be collected due to cost, availability, or limited memory.
     However, the computational speed of this GP model is currently orders of magnitude slower than the FFT, so before it can be a viable alternative in practice, it would need development to allow it to scale better to large datasets.
 
     \printnomenclature
@@ -353,7 +357,7 @@
     Optimisation in this manor works by identifying the hyperparameter values that are most likely to produce the observed training data.
 
     To predict the latent function at one or multiple points, the ``posterior'' probability distribution of the function is determined by updating the initial prior assumptions using the training data.
-    This process is called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, as shown in Equation~\ref{eq:18.51}, where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the conditional mean and covariance of the GP, given the training data, $\mathbf{X}$ as shown in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
+    This process is called conditioning the joint Gaussian prior distribution on the observations~\cite{rasmussen2006gaussian}, as shown in Equation~\ref{eq:18.51}, where $\boldsymbol{\mu}_{*\vert \mathbf{X}}$ and $\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$ are the posterior mean and covariance of the GP, given the training data, $\mathbf{X}$ as shown in Equation~\ref{eq:18.52} and Equation~\ref{eq:18.53} respectively.
 
     \begin{equation}
         p(\mathbf{f}^* \vert \mathbf{D}, \mathbf{X}^*) = \mathcal{N}(\mathbf{f}^* \vert \boldsymbol{\mu}_{*\vert \mathbf{X}}, \boldsymbol{\Sigma}_{*\vert \mathbf{X}})\label{eq:18.51}
@@ -367,8 +371,8 @@
         \boldsymbol{\Sigma}_{*\vert \mathbf{X}} = \mathbf{K}_{*,*} - \mathbf{K}_{X,*}^T (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} \mathbf{K}_{X,*}\label{eq:18.53}
     \end{equation}
 
-    \nomenclature[G08]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Conditional mean of the Gaussian Process, given the training data, $\mathbf{X}$}
-    \nomenclature[G15]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Conditional covariance of the Gaussian Process, given the training data, $\mathbf{X}$}
+    \nomenclature[G08]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Posterior mean of the Gaussian Process, given the training data, $\mathbf{X}$}
+    \nomenclature[G15]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Posterior covariance of the Gaussian Process, given the training data, $\mathbf{X}$}
 
     Note that this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
     It is also defined in the continuous domain $(-\infty, \infty)$, so the Fourier transform can be taken analytically without needing to resort to the discrete FFT\@.
@@ -408,7 +412,7 @@
 
     \noindent where $\boldsymbol{F}_*$ is the frequency domain prediction of the latent function; $\boldsymbol{M}_*$ is the vector containing the prior mean of the frequency domain values of the latent function at test points, $\mathbf{\xi}$; the matrix element $[\mathcal{K}_{x,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_k}[k(t_j, \xi_k)]$ and the matrix element $[\mathcal{K}_{\xi,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_j}[\mathcal{F}_{\xi_k}[k(\xi_j, \xi_k)]]$; $t_j$ is the $j^{th}$ element in the vector of training points $\mathbf{X}$; and $\xi_j$ and $\xi_k$ are the $j^{th}$ and $k^{th}$ elements of $\boldsymbol{\xi}$.
 
-    Like before, this distribution can be conditioned to find the conditional mean and covariance of the Fourier transform at a specific set of desired frequencies, $\mathbf{\xi}$, given the training data, $\mathbf{X}$.
+    Like before, this distribution can be conditioned to find the posterior mean and covariance of the Fourier transform at a specific set of desired frequencies, $\mathbf{\xi}$, given the training data, $\mathbf{X}$.
 
     Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing linear operations on the data.
     Furthermore, the noise term  $\epsilon_j \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
@@ -595,7 +599,7 @@
     Only the main diagonal was computed because this is all that is required to plot the standard deviation of the output predictions (which is the square root of the covariance), and because hyperparameter training (which would require the full matrix) was completed in the time domain already.
     This decreased the compute requirements significantly, from $O(N^2)$ to $O(N)$, where N is the number of frequency predictions required.
 
-    \section{Results and discussion}
+    \section{Results and Discussion}
     After this Gaussian Process Model was complete, it could then be set up and used in a variety of test cases to explore its advantages and disadvantages versus the Fast Fourier Transform.
     The dataset used the same model as in Figure~\ref{fig:basic-data-time-domain}, but the number of datapoints was extended to 1024 (at the same sample rate of $32 \, Hz$) to provide more information, allowing for more accurate results.
 
@@ -735,8 +739,8 @@
     However, the memory available to do this is limited because storage capacity has weight, every gram of which significantly increases the fuel requirements and cost to get the satellite to orbit.
     Therefore, this ability to detect higher frequencies than an equivalent FFT using the same amount of data and memory would be valuable here.
 
-    \subsection{Fourier Transform of the Covariance}
-    The spectrum prediction of the GP model at a given angular frequency is a Gaussian distribution, with a standard deviation around the mean as shown in Figure~\ref{fig:stdv-plot}.
+    \subsection{The Posterior Covariance of the Fourier Transform}
+    The spectrum prediction of the GP model at a given angular frequency is a Gaussian distribution, with a standard deviation around the mean derived from the posterior covariance of the GP's Fourier Transform as shown in Figure~\ref{fig:stdv-plot}.
     Here, the standard deviation is largest around $0 \, rad \, s^{-1}$, and tapers off for higher frequencies.
     This makes intuitive sense because there are fewer cycles of the lower frequency components in a given time period, so there is less information available to use to detect them.
 
@@ -767,7 +771,7 @@
     Although the posterior mean of the GP's Fourier transform showed good robustness to noise versus the FFT, if this compound kernel eliminated overfitting, this could significantly improve the robustness to noise of the posterior mean of the Fourier transform further.
     However, if the kernel is too complicated, the required analytical Fourier Transform of the kernel may become intractable.
 
-    \subsection{Computation Time and Scaling to large data}
+    \subsection{Computation Time and Scaling to Large Data}
     Although this new Gaussian Process (GP) method of performing the Fourier transform is promising, one major disadvantage of this GP model is it struggles to scale large datasets due to the long computation time, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L24]{$O()$}{Big O notation, used to describe the complexity - or ``Order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT)~\cite{murphy2023probabilistic}.
     This means that the model handles poorly datasets consisting of more than a few thousand points, and even at this scale, fitting the GP to the time domain then converting this to the frequency domain takes several orders of magnitude longer ($0.84 \, s$) than the time the FFT ($7.5 \times 10^{-5} \, s$) takes to run.
     This performance is poor considering that it is not uncommon to need to work with datasets consisting of up to a million datapoints in industry, such as during a tap test for modal analysis of a turbine blade, for which the GP model in its current state would be impractical due to the excessive time and cost computational resources that would be required.
@@ -784,12 +788,17 @@
 %    \subsection{and another subsection}
 %    \textcolor{red}{ New kernel types; multi degree of freedom / dimension GP's!!!!; different solver types? etc.}
 
-    \section{Conclusions}
-    Overall, this paper proposed the use of a Gaussian Process (GP) model to perform the Fourier transform.
-    It showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error (MSE) in magnitude versus the analytical Fourier transform by a factor of $11.64$.
-    Furthermore, it had several promising features that made it more versatile in the context of dynamic systems in mechanical engineering.
-    Most notably, the fact that the time domain input data need not be evenly spaced enabled the model to detect frequencies that would be above the Nyquist limit of an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
-    This gives the model potential to exceed the performance of the FFT in industrial contexts where data is noisy, and there are constraints to the amount of data that can be collected due to cost, availability, or limited memory.
+    \section{Conclusion}
+    Overall, this paper explores a new paradigm of ``probabilistic numerics'' over traditional numerical methods that allowed the Fourier transform to be performed through the use of a Gaussian Process (GP) machine learning model.
+    This model showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error in magnitude versus the true analytical Fourier transform by a factor of $11.64$.
+    The identification of dynamic systems often uses the ``Frequency Response Function'', which relies on the ``Fourier transform'' to convert data from a function of time to a function of frequency.
+    Therefore, the model could allow dynamic systems to be identified more accurately in across industry where data is noisy, from aviation to renewable power generation.
+    This would help to design structures that last longer before failing from fatigue, and that are less likely to fail structurally from excessive excitation under external forces.
+
+    Furthermore, the model had several promising features that made it more versatile in this context.
+    Most notably, the fact that the time domain input data need not be evenly spaced enabled it to detect frequencies that would be above the Nyquist limit of an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
+    This makes the model most suitable in industrial contexts where there are constraints to the amount of data that can be collected due to cost, availability, or limited memory.
+
     However, the computational speed of this GP model is currently orders of magnitude slower than the FFT, so before it can be a viable alternative in practice, it would need development to allow it to scale better to large datasets.
 
     \FloatBarrier

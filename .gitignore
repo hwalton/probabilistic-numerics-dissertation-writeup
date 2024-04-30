@@ -16,4 +16,5 @@ git.sh
 *.toc
 *.out
 figures/to-be-used
+figures/~$*
 
