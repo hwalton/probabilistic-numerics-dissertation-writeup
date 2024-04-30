@@ -10,6 +10,12 @@
 \usepackage{setspace}
 \setstretch{1.15}
 
+% Set paragraph indentation to zero
+\setlength{\parindent}{0pt}
+
+% Add some space between paragraphs
+\setlength{\parskip}{0.5em} % Adjust the amount of space to your liking
+
 \usepackage{pdflscape}
 
 \usepackage{longtable}
@@ -26,7 +32,8 @@
     format=plain,
     labelfont=bf,
     textfont=bf,
-    labelsep=period
+    labelsep=period,
+    justification=centering
 }
 
 \captionsetup[table]{
@@ -34,7 +41,8 @@
     format=plain,
     labelfont=bf,
     textfont=bf,
-    labelsep=period
+    labelsep=period,
+    justification=centering
 }
 
 \DeclareCaptionFont{bf}{\captionfonts}
@@ -45,7 +53,7 @@
 \addbibresource{references.bib}
 
 \usepackage{geometry}
-\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.7cm, right=2.7cm}
 
 \usepackage{pdfpages}
 
@@ -83,6 +91,12 @@
 \captionsetup[lstlisting]{font=bf}
 
 \usepackage{amsmath} % For mathematical features
+
+% Allow changes to internal LaTeX commands
+\makeatletter
+% Redefine the tag form to be bold and without parentheses
+\renewcommand{\tagform@}[1]{\textbf{#1}}
+\makeatother
 
 \renewcommand{\theequation}{\thesection.\arabic{equation}}
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
@@ -669,7 +683,6 @@
     The components of the Fourier transforms are shown in Figure~\ref{fig:noisy-data-freq-domain}.
 
     \afterpage{
-        \clearpage
         \begin{landscape}
             \begin{figure}[p]
                 \centering
@@ -678,12 +691,11 @@
                 \label{fig:noisy-data-freq-domain}
             \end{figure}
         \end{landscape}
-        \clearpage
     }
 
     Table~\ref{tab:response-noise} shows that the GP model performed significantly better here, with the error of the magnitude, and real and imaginary parts of the GP model's Fourier transform being $9.66$, $6.48$ and $11.64$ times smaller than the FFT respectively.
 
-    \begin{table}[h]
+    \begin{table}[ht!]
         \centering % This centers the table on the page
         \setlength{\arrayrulewidth}{1pt} % Sets the thickness of the table borders
         \begin{tabular}{|c|c|c|} % 'c' for centered columns, '|' for vertical lines between columns
