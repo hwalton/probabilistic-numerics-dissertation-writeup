@@ -1,7 +1,10 @@
 \appendix
+
 \section*{Appendices}
 \addcontentsline{toc}{section}{Appendices}
 \renewcommand{\thelstlisting}{\thesection.\arabic{lstlisting}}
+\renewcommand{\thesection}{\Alph{section}.\arabic{section}}
+\addtocontents{toc}{\protect\setlength{\cftsecnumwidth}{2em}}
 \setcounter{lstlisting}{0}
 \section{The Use of Generative AI (ChatGPT)}
 \label{app:GPT}

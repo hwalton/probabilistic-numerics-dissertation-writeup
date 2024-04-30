@@ -5,6 +5,9 @@
 \usepackage{xcolor}
 \usepackage{mathrsfs}
 
+\usepackage{tocloft}  % Include this package to customize the ToC
+\usepackage[titletoc]{appendix} % Helps manage appendices
+
 \setmainfont{Times New Roman} % Times New Roman, Arial, Calibri
 
 \usepackage{setspace}
@@ -26,13 +29,15 @@
 % Define a command to set the font size and make it bold
 \newcommand{\captionfonts}{\fontsize{10pt}{12pt}\selectfont\bfseries}
 
+\DeclareCaptionLabelSeparator{dash}{ - }
+
 % Apply the custom font command to the captions
 \captionsetup[figure]{
     font=small,
     format=plain,
     labelfont=bf,
     textfont=bf,
-    labelsep=period,
+    labelsep=dash,
     justification=centering
 }
 
@@ -41,7 +46,7 @@
     format=plain,
     labelfont=bf,
     textfont=bf,
-    labelsep=period,
+    labelsep=dash,
     justification=centering
 }
 
@@ -88,7 +93,10 @@
 \usepackage{array} % For better column formatting
 
 \lstset{style=mystyle, language=Python}
-\captionsetup[lstlisting]{font=bf}
+\captionsetup[lstlisting]{
+    labelsep=dash,
+    font=bf
+}
 
 \usepackage{amsmath} % For mathematical features
 
@@ -311,7 +319,7 @@
     In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
     These variables are outputs of the latent function at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
-    Assuming a mean of the latent function of zero, and a noisy observed force, $y_j = f(x_j)+\epsilon_j$, where $\epsilon_j \sim \mathcal{N}(0, \sigma^2_y)$, this joint distribution of the observed data and the latent, noise-free function at the test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
+    Assuming a mean of the latent function of zero, and a noisy observed force, $y_j = f(x_j) \, +\, \epsilon_j$, where $\epsilon_j \sim \mathcal{N}(0, \sigma^2_y)$, this joint distribution of the observed data and the latent, noise-free function at the test points is given~\cite{murphy2023probabilistic} by Equation~\ref{eq:joint-distribution}
 
     \begin{equation}
         \left\{
