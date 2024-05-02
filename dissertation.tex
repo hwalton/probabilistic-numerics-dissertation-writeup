@@ -157,8 +157,8 @@
     In mechanical engineering, the field of dynamics studies how systems, like structures and fluids, respond and evolve over time under varying forces.
     Being able to characterise these systems by identifying their dynamic properties and parameters helps to design structures that last longer before failing from fatigue, and that are less likely to fail structurally from excessive excitation under external forces.
     The identification of dynamic systems often uses the ``Frequency Response Function'', which relies on the ``Fourier transform'' to convert data from a function of time to a function of frequency.
-    This paper explores a new paradigm of ``probabilistic numerics'' over traditional numerical methods that allowed the Fourier transform to be performed through the use of a Gaussian Process (GP) machine learning model.
-    This model showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error in magnitude versus the true analytical Fourier transform by a factor of $11.64$.
+    This paper explores a new paradigm of ``probabilistic numerics'' over traditional numerical methods that allows the Fourier transform to be performed through the use of a Gaussian Process (GP) machine learning model.
+    The model showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error in magnitude versus the true analytical Fourier transform by a factor of $9.66$.
     Therefore, it could allow dynamic systems to be identified more accurately in across industry where data is noisy, from aviation to renewable power generation.
     Furthermore, the model had several promising features that made it more versatile in this context.
     Most notably, the fact that the time domain input data need not be evenly spaced enabled it to detect frequencies that would be above the Nyquist limit of what would be detectable by an equivalent FFT of the same number of datapoints sampled evenly across the same time period.
@@ -220,11 +220,11 @@
 
     So, dynamic systems have parameters such as mass ($m$), damping coefficient ($c$) and stiffness ($k$) which are fundamental characteristics of the system.
     ``Forwards modelling'' is when the observable behaviour of the system, known as the system properties, are predicted from the system parameters using physical laws.
-    These properties include the resonant frequencies which are the forcing frequencies that produce a peak in amplitude of excitation, the mode shapes when this is extended into systems with multiple degrees of freedom, and the damping ratios which compare the damping coefficient to that of critical damping at each resonant frequency.
+    These properties include the resonant frequencies which are the forcing frequencies that produce a peak in amplitude of excitation, the mode shapes which are the shapes of oscillations at peaks in systems with multiple degrees of freedom, and the damping ratios which compare the damping coefficient to that of critical damping at each resonant frequency.
 
-    \nomenclature[L22]{$m$}{Mass}
-    \nomenclature[L03]{$c$}{Damping Coefficient}
-    \nomenclature[L181]{$k$}{stiffness}
+    \nomenclature[L22]{$m$}{The mass}
+    \nomenclature[L03]{$c$}{The damping coefficient}
+    \nomenclature[L181]{$k$}{The stiffness}
 
     Often a distinction is made between linear and nonlinear systems.
     Only linear systems comply with the principle of superposition, which states that ``when two or more waves simultaneously pass through a point, the disturbance at the point is given by the sum of the disturbances each wave would produce in absence of the other waves''~\cite{StudyComSuperposition}.
@@ -247,14 +247,13 @@
     This noise and lack of uniqueness is reflected in the outputted system properties and parameters as uncertainty.
 
     Time passes continuously forever, and the governing equations of dynamic systems are defined mathematically in the continuous domain.
-    In theory, these could be solved ``analytically'' to give an exact mathematical solution in the continuous domain.
-    But in practice, data sampled from the real world is usually discrete, meaning that it is defined by a finite set of points separated by finite time intervals.
+    In theory, these could be solved ``analytically'' to give an exact mathematical solution in the continuous domain, but in practice, data sampled from the real world is usually discrete, meaning that it is defined by a finite set of points separated by finite time intervals.
     In addition, many sets of governing equations are currently too complex to solve analytically for systems that are not highly idealised.
     This is why when modelling, problems are classically solved using ``numerical methods'', which are discrete approximations of analytical solutions of the governing equations.
     Here, uncertainty of values is often quantified using error bounds derived from sensitivity analysis.
     For instance, the error bound of a stiffness could be represented as $0.1 \pm 0.02 \, Nm^{-1}$, indicating the expected range of the true value.
     This process involves estimating the uncertainty of input data, usually from the measuring equipment's resolution or variability in sample data.
-    From these estimates, upper and lower bounds of the output parameters can be calculated.
+    From these estimates, the upper and lower bounds of the output parameters can be calculated using the upper and lower bounds of the input parameters to give the uncertainty.
     However, this is not straightforward and typically requires additional techniques and considerations beyond the core algorithm.
 
 
@@ -271,11 +270,11 @@
     \begin{figure}[ht]
         \centering
         \includegraphics[width=0.8\linewidth]{figures/frequency-response-function/frequency-response-function_.png}
-        \caption{The magnitude and phase of $H(\xi)$, a frequency response function of a single-degree-of-freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass $m$ [$kg$], damping coefficient $c$ [$N s m^{-1}$] and stiffness $k$ [$N m^{-1}$] affects the system parameters resonant frequency $\xi_r$ [$rad \, s^{-1}$] and damping ratio $\zeta$ [$-$].}
+        \caption{The magnitude and phase of $H(\xi)$, a frequency response function of a single degree of freedom (SDOF) system for an acceleration measured in response to an input force, showing how changing its system parameters mass $m$ [$kg$], damping coefficient $c$ [$N s m^{-1}$] and stiffness $k$ [$N m^{-1}$] affects the system parameters resonant frequency $\xi_r$ [$rad \, s^{-1}$] and damping ratio $\zeta$ [$-$].}
         \label{fig:frequency-response-function}
     \end{figure}
-    \nomenclature[G12]{$\xi_{r}$}{Resonant Frequency}
-    \nomenclature[G05]{$\zeta$}{Damping Ratio}
+    \nomenclature[G12]{$\xi_{r}$}{The resonant frequency}
+    \nomenclature[G05]{$\zeta$}{The damping ratio}
 
     The Fourier transform, $\mathcal{F}(\xi)$, is defined in Equation~\ref{eq:ft}
 
@@ -283,7 +282,7 @@
         \mathcal{F}[f](\xi) = \frac{1}{2 \pi} \int_{-\infty}^{\infty} f(t) e^{-i \xi t} \, dt\label{eq:ft}
     \end{equation}
     \nomenclature[L09]{$\mathcal{F}_p[f](\xi)$}{Fourier transform of $f(t)$, with respect to p}
-    \nomenclature[G10]{$\xi$}{Angular frequency}
+    \nomenclature[G10]{$\xi$}{The angular frequency}
 
 
     \noindent where $\xi$ is the angular frequency [$rad \, s^{-1}$] and $f(t)$ is the time domain latent function being operated on.
@@ -293,18 +292,19 @@
 
     \subsection{The Fast Fourier Transform Algorithm}
     Although discovering this fast way to compute the DFT revolutionised many engineering disciplines such as structural health monitoring, image compression, signal processing, and control theory~\cite{Byjus2023}, its implementation has a number of challenges that have to be carefully handled.
-    Firstly, the domain has both positive frequencies and negative frequencies, resulting in symmetry where the energy of the system is split evenly about zero.
+    Firstly, the frequency domain is both positive and negative, resulting in symmetry where the energy of the system is split evenly about zero.
     Secondly, the FFT assumes the input signal is finite in length and periodic, which can lead to a phenomenon called spectral leakage if the signal is not an exact multiple of the chosen total time period~\cite{MathStackExchange2023}.\nomenclature[L08]{FFT}{Fast Fourier Transform}
     This can cause sharp resonance peaks to be smoothed out in the output because energy that should be concentrated at a peak frequency is spread across a range of frequencies nearby, and is typically mitigated by using a window such as a Hanning window to decrease the magnitude of the time domain signal at either end to smoothly bring it to zero at the boundary between the end and start, thus minimizing and abrupt changes that could lead to distortion of the spectrum.
     Also, the FFT can be highly sensitive to noise in the data, meaning a small amount of noise can create large fluctuations in the shape of the frequency spectrum, masking the true underlying frequencies and modal properties~\cite{MathStackExchange2023}.
     Similarly, since the time domain and resulting frequency domain data is discrete, the basic algorithm can exhibit large variability in the amplitude and frequency of peaks depending on if the sampled frequencies fall exactly on the peak or either side of it, which in turn can affect modal properties and parameters calculated downstream of this data in the context of dynamics.
-    Finally, there is a highest ``Nyquist'' frequency that is half the sampling frequency, for which any higher frequencies present in the time domain signal will cause aliasing, where frequencies that are too high are reflected back at this frequency.
+    Finally, there is a highest ``Nyquist'' frequency that is half the sampling frequency, for which any higher frequencies present in the time domain signal will cause aliasing.
+    This is where frequencies that are too high are reflected back at this Nyquist frequency.
 
     However, over time this spectra will need to be measured more accurately and at higher frequencies in the engineering industry.
     For example, as scramjet engines are developed in the aerospace industry for faster hypersonic aircraft, the vibration endured will be stronger and at higher frequencies than in engines available today.
-    This can lead to failure of components from fatigue, so being able to accurately measure the FFT spectra at these higher frequencies allows engineers to design effective damping systems and structures that can withstand the stresses over the lifespan of the vehicle while minimising weight of material.
+    This can lead to failure of components from fatigue, so being able to accurately measure the FFT spectra at these higher frequencies allows engineers to design effective structures that can survive the design life of the vehicle while minimising weight of material.
 
-    Currently, if spectra from the FFT need to measure more accurately and at higher frequencies, this is done by simply collecting more and more data, but this is not always feasible since there are limits to the available resources such as time, energy and capital required to collect this data.
+    Currently, if spectra from the FFT need to be more accurate and be measured at higher frequencies, this is done by simply collecting more and more data, but this is not always feasible since there are limits to the available resources such as time, energy and capital required to collect this data.
     For the scramjet engine, hypersonic wind tunnel tests only last on the order of milliseconds~\cite{Mec463} to reduce the cost of energy used and to prevent damage to the engine from the resulting high temperatures.
     This provides very little time for vibration data to be collected.
     Similarly, if measurement instruments with higher sampling frequencies are required to bring the limiting Nyquist frequency above the high frequency vibrations, the cost of this equipment and the computation required to process the data will increase.
@@ -315,7 +315,7 @@
     The uncertainty of outputs is modelled with a probability distribution as opposed to the error bounds as in traditional numerical methods, which may improve robustness to noise, among other things.
     This paper does this through the implementation of a promising type of machine learning model called a Gaussian Process (GP) to compute the Fourier transform.
 
-    A GP uses noisy, discrete sampled data to model the probability distribution of a continuous ``latent'' function, $f(x)$, that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L06]{$f(x)$}{Latent function of the variable $x$}\nomenclature[L10]{GP}{Gaussian Process}
+    A GP uses noisy, discrete sampled data to model the probability distribution of a continuous ``latent'' function, $f(x)$, that represents the underlying relationship between an input, $x$, and an output, $f(x)$.\nomenclature[L06]{$f(x)$}{The latent function of the variable $x$}\nomenclature[L10]{GP}{Gaussian Process}
     In essence, it is ``a collection of random variables, any finite number of which have a joint Gaussian distribution''~\cite{rasmussen2006gaussian} which describes how the probability distribution of each variable depends on the other variables.
     These variables are outputs of the latent function at a specific input point and include both the training data (noisy observed samples at points in time), and the prediction points at which the true value is unknown.
 
@@ -344,14 +344,14 @@
         \right)\label{eq:joint-distribution}
     \end{equation}
 
-    \nomenclature[L27]{$y_j$}{Noisy observed output based on the latent function, $f(x)$}
-    \nomenclature[L26]{$\mathbf{y}$}{A vector of $y_j$ values from a set of training points}
-    \nomenclature[L07]{$\mathbf{f}_*$}{A vector of latent function values at a set of test points $\mathbf{X}_*$}
+    \nomenclature[L27]{$y_j$}{The noisy observed output based on the latent function, $f(x)$}
+    \nomenclature[L26]{$\mathbf{y}$}{The vector of $y_j$ values from the set of training points}
+    \nomenclature[L07]{$\mathbf{f}_*$}{The vector of latent function values at a set of test points $\mathbf{X}_*$}
     \nomenclature[L11]{$\mathbf{I}$}{The identity matrix}
-    \nomenclature[G02]{$\epsilon_j$}{Noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
+    \nomenclature[G02]{$\epsilon_j$}{The noise in observation, normally distributed with a mean of zero and a variance of $\sigma^2_y$}
     \nomenclature[L241]{$\boldsymbol{X}$}{A vector of training point inputs}
     \nomenclature[L242]{$\boldsymbol{X}_*$}{A vector of test point inputs}
-    \nomenclature[G14]{$\sigma^2_y$}{Variance of observation noise}
+    \nomenclature[G14]{$\sigma^2_y$}{The variance of observation noise}
     \nomenclature[G07]{$\boldsymbol{\mu}_X$  $\boldsymbol{\mu}_*$}{Vectors containing the prior mean of the distribution of values of the latent function, at the training points, $\mathbf{X}$, and test points $\mathbf{X}_*$ respectively}
     \nomenclature[L12]{$\mathbf{K}_{X,X}$}{A covariance matrix defined by $k(\mathbf{X},\mathbf{X})$}
     \nomenclature[L13]{$\mathbf{K}_{X,*}$}{A covariance matrix defined by $k(\mathbf{X},\mathbf{X}_*)$}
@@ -368,13 +368,14 @@
         -\log p(\mathbf{D}|\boldsymbol{\theta}) = \frac{1}{2} (\mathbf{y} - \boldsymbol{\mu}_X)^T \mathbf{K}_{\sigma}^{-1} (\mathbf{y} - \boldsymbol{\mu}_X) + \frac{1}{2} \log |\mathbf{K}_{\sigma}| + \frac{N}{2} \log(2\pi)\label{eq:NLML}
     \end{equation}
 
-    \nomenclature[L04]{$\mathbf{D}$}{Training data}
-    \nomenclature[G06]{$\boldsymbol{\theta}$}{Set of hyperparameters}
-    \nomenclature[L15]{$\mathbf{K}_{\sigma}$}{Covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
-    \nomenclature[L23]{$N$}{Number of training or testing points}
+    \nomenclature[L04]{$\mathbf{D}$}{The training data}
+    \nomenclature[G06]{$\boldsymbol{\theta}$}{The set of hyperparameters}
+    \nomenclature[L15]{$\mathbf{K}_{\sigma}$}{A covariance matrix with noise term, $\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$}
+    \nomenclature[L23]{$N$}{The number of training or test points}
 
     \noindent where $\mathbf{D}$ is the training data; $N$ is the number of training points; $\boldsymbol{\theta}$ is the set of hyperparameters and $\mathbf{K}_{\sigma} = \mathbf{K}_{X,X} + \sigma^2_y \mathbf{I}$ is the covariance matrix with the noise term.
-    This measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
+
+    The NLML measures how well the model explains the observed data for a given set of hyperparameters while penalizing complexity to avoid overfitting, which is when the model fits the training data so well that it generalises poorly to new test data.
     This can happen when the model has not only learnt the underlying function but also its associated noise, which will not be consistent between datasets due to its random nature.
     Optimisation in this manor works by identifying the hyperparameter values that are most likely to produce the observed training data.
 
@@ -393,8 +394,8 @@
         \boldsymbol{\Sigma}_{*\vert \mathbf{X}} = \mathbf{K}_{*,*} - \mathbf{K}_{X,*}^T (\mathbf{K}_{X,X} + \sigma^2_y \mathbf{I})^{-1} \mathbf{K}_{X,*}\label{eq:18.53}
     \end{equation}
 
-    \nomenclature[G08]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{Posterior mean of the Gaussian Process, given the training data, $\mathbf{X}$}
-    \nomenclature[G15]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{Posterior covariance of the Gaussian Process, given the training data, $\mathbf{X}$}
+    \nomenclature[G08]{$\boldsymbol{\mu}_{*\vert \mathbf{X}}$}{The posterior mean of the Gaussian Process, given the training data, $\mathbf{X}$}
+    \nomenclature[G15]{$\boldsymbol{\Sigma}_{*\vert \mathbf{X}}$}{The posterior covariance of the Gaussian Process, given the training data, $\mathbf{X}$}
 
     Note that this GP is closed under the action of linear operators which means that it can be described using only a combination of operations that comply with the principle of superposition.
     It is also defined in the continuous domain $(-\infty, \infty)$, so the Fourier transform can be taken analytically without needing to resort to the discrete FFT\@.
@@ -423,18 +424,16 @@
         \right)\label{eq:linear-trans}
     \end{equation}
 
-    \nomenclature[L05]{$\boldsymbol{F}_*$}{A vector of latent function values in the frequency domain at a set of test points $\mathbf{\xi}$}
-    \nomenclature[G09]{$\boldsymbol{M}_*$}{he vector containing the prior mean of the frequency domain values of the latent function at test points, $\mathbf{\xi}$}
-    \nomenclature[L18]{$\mathcal{K}(\xi,0)$}{Fourier transform of the (Squared Exponential) kernel function evaluated at $\xi$}
+    \nomenclature[L05]{$\boldsymbol{F}_*$}{The vector of latent function values in the frequency domain at a set of test points $\mathbf{\xi}$}
+    \nomenclature[G09]{$\boldsymbol{M}_*$}{The vector containing the prior mean of the frequency domain values of the latent function at test points, $\mathbf{\xi}$}
+    \nomenclature[L18]{$\mathcal{K}(\xi,0)$}{The Fourier transform of the (Squared Exponential) kernel function evaluated at $\xi$}
     \nomenclature[L16]{$\mathbf{\mathcal{K}}_{X,\xi}$}{A covariance matrix with $jk^{th}$ element defined by $\mathcal{F}_{\xi_k}[k(t_j, \xi_k)]$}
     \nomenclature[L17]{$\mathbf{\mathcal{K}}_{\xi,\xi}$}{A covariance matrix with $jk^{th}$ element defined by $\mathcal{F}_{\xi_j}[\mathcal{F}_{\xi_k}[k(\xi_j, \xi_k)]]$}
     \nomenclature[G11]{$\xi_j$  $\xi_k$}{The $j^{th}$ and $k^{th}$ elements in $\boldsymbol{\xi}$}
-    \nomenclature[G091]{$\boldsymbol{\xi}$}{the vector of frequency domain test points $\boldsymbol{\xi}$}
+    \nomenclature[G091]{$\boldsymbol{\xi}$}{The vector of frequency domain test points $\boldsymbol{\xi}$}
     \nomenclature[L25]{$t_j$  $t_k$}{The $j^{th}$ and $k^{th}$ elements in the vector of training points $\mathbf{X}$}
 
-    \noindent where $\boldsymbol{F}_*$ is the frequency domain prediction of the latent function; $\boldsymbol{M}_*$ is the vector containing the prior mean of the frequency domain values of the latent function at test points, $\mathbf{\xi}$; the matrix element $[\mathcal{K}_{x,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_k}[k(t_j, \xi_k)]$ and the matrix element $[\mathcal{K}_{\xi,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_j}[\mathcal{F}_{\xi_k}[k(\xi_j, \xi_k)]]$; $t_j$ is the $j^{th}$ element in the vector of training points $\mathbf{X}$; and $\xi_j$ and $\xi_k$ are the $j^{th}$ and $k^{th}$ elements of $\boldsymbol{\xi}$.
-
-    Like before, this distribution can be conditioned to find the posterior mean and covariance of the Fourier transform at a specific set of desired frequencies, $\mathbf{\xi}$, given the training data, $\mathbf{X}$.
+    \noindent where $\boldsymbol{F}_*$ is the frequency domain prediction of the latent function; $\boldsymbol{M}_*$ is the vector containing the prior mean of the frequency domain values of the latent function at test points, $\mathbf{\xi}$; the matrix element $[\mathcal{K}_{x,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_k}[k(t_j, \xi_k)]$; the matrix element $[\mathcal{K}_{\xi,\xi}]_{jk}$ denotes $\mathcal{F}_{\xi_j}[\mathcal{F}_{\xi_k}[k(\xi_j, \xi_k)]]$; $t_j$ is the $j^{th}$ element in the vector of training points $\mathbf{X}$; and $\xi_j$ and $\xi_k$ are the $j^{th}$ and $k^{th}$ elements of $\boldsymbol{\xi}$. Like before, this distribution can be conditioned to find the posterior mean and covariance of the Fourier transform at a specific set of desired frequencies, $\mathbf{\xi}$, given the training data, $\mathbf{X}$.
 
     Modelling signals in this way provides an inherent mechanism to account for uncertainty and allows this information to be preserved naturally in the covariance matrix when performing linear operations on the data.
     Furthermore, the noise term  $\epsilon_j \sim \mathcal{N}(0, \sigma^2_y)$ explicitly models the observational noise, giving the GP a way to distinguish between the signal and noise components.
@@ -442,7 +441,7 @@
 
     \section{Aims and Objectives}
     \subsection{Aim}
-    The main aim of this paper is to improve identification of properties of a dynamic system from noisy of time series data by improving noise resilience of the Fourier transform used to convert data to the frequency domain.
+    The main aim of this paper is to improve the noise resilience of the Fourier transform used to convert data to the frequency domain.
 
     \subsection{Objectives}
     This overarching aim can be broken down into four objectives:
@@ -502,11 +501,11 @@
     \begin{equation}
         k(a,b) = \sigma^2 \exp\left(-\frac{(a - b)^2}{2l^2}\right) \label{eq:se-kernel}
     \end{equation}
-    \nomenclature[L19]{$k(a,b)$}{Kernel function, evaluating the similarity of $a$ and $b$}
+    \nomenclature[L19]{$k(a,b)$}{The kernel function, evaluating the similarity of $a$ and $b$}
     \nomenclature[L02]{$a, b$}{Elements of vectors $\mathbf{A}, \mathbf{B}$ respectively}
     \nomenclature[L01]{$\mathbf{A}, \mathbf{B}$}{Vectors with elements $a, b$ - subscript indicates index of element}
     \nomenclature[G13]{$\sigma^2$}{The variance hyperparameter of the Squared Exponential Kernel}
-    \nomenclature[L20]{$l$}{Length scale hyperparameter of the Squared Exponential Kernel}
+    \nomenclature[L20]{$l$}{The length scale hyperparameter of the Squared Exponential Kernel}
 
     \noindent where $k(a,b)$ is the kernel function evaluated at elements $a_i$, $b_j$ of vectors $\mathbf{A}$, $\mathbf{B}$ respectively; $\sigma^2$ is the variance hyperparameter and $l$ is the length scale parameter.
 
@@ -515,7 +514,7 @@
 %    Finally, length hyperparameter, $l$, determines how smooth or wiggly the function is, i.e., how fast the function can change direction.
 
     \subsection{Hyperparameter Optimisation}
-    An algorithm was designed to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood (NLML), for which a method was written (Appendix.~\ref{app:GPT}).
+    An algorithm was designed to optimise the hyperparameters of the kernel by minimising the Negative Log Marginal Likelihood (NLML), for which a method was written (see Appendix.~\ref{app:GPT}).
     It did this by modifying each hyperparameter randomly in turn and seeing if the NLML improved.
     This was repeated for up to $100$ iterations.
 
@@ -529,7 +528,7 @@
     When the last iteration was complete, the lowest NLML of all the combinations hyperparameters was selected.
     This allowed the algorithm to explore after reaching a minimum to potentially find another part of the NLML function that was lower.
 
-    \subsection{Prediction Function}
+    \subsection{The Prediction Function}
     The prediction function was constructed, which accurately calculated the mean and standard deviation of the latent function as shown by the ``Prediction Mean'' and ``Prediction Std Dev'' plots in Figure~\ref{fig:basic-data-time-domain} respectively.
     The mean of each prediction point is calculated using Equation~\ref{eq:18.52} directly, whereas the standard deviation of each point uses only square root of the main diagonal of the covariance matrix resulting from Equation~\ref{eq:18.53}.
     In combination, this prediction function defines the probability distribution of the value of the latent function at any point, given the training data.
@@ -625,7 +624,7 @@
     After this Gaussian Process Model was complete, it could then be set up and used in a variety of test cases to explore its advantages and disadvantages versus the Fast Fourier Transform.
     The dataset used the same model as in Figure~\ref{fig:basic-data-time-domain}, but the number of datapoints was extended to 1024 (at the same sample rate of $32 \, Hz$) to provide more information, allowing for more accurate results.
 
-    \subsection{Basic Dataset}
+    \subsection{The Basic Dataset}
     \subsubsection{Accuracy of the Fourier Transform} \label{Acc}
     Initially, no noise was added in order to verify the new approach of computing the Fourier transform.
     Since the dataset was simulated using known parameters, the exact Fourier transform of the latent function could be calculated analytically.
@@ -725,7 +724,7 @@
 
     Since real world data always contains noise, this Fourier transform that is more robust to noise would have widespread benefits in mechanical engineering because it would allow for more accurate Frequency Response Functions (FRFs) of structures, and therefore more accurate identification of system properties.
     After the FRF of a structure such as a wind turbine tower is determined, it can be evaluated with the same forces that the system is expected to experience to predict the maximum amplitude of vibration expected during its lifetime.
-    If this is excessive, the system is at risk of mechanical failure or high cycle fatigue so the design can be changed to prevent this.
+    If this is excessive, the system is at risk of mechanical failure or high cycle fatigue, so the design must be changed to prevent this.
     For example, the mass could be changed to move the resonant frequency (indicated by the angular frequency of a peak) away from the expected forcing frequency, reducing the expected amplitude of oscillation.
     Alternately, damping could be added to smooth out the resonance peak, reducing its amplitude.
     Therefore, being able to more accurately determine the FRF and the properties of its peaks through this new GP method would be beneficial in the design process because one would be able to more accurately determine how the design needs to change to reduce the risk of failure to acceptable levels.
@@ -733,12 +732,13 @@
     \subsection{Non-Uniform Sampling of Frequency Domain}
     Since the Fourier transform is a continuous function, it can be sampled at any set of points in the domain $(-\infty, \infty)$.
      So, taking the basic dataset and clustering an additional $100$ samples of the spectrum of the GP in the interval of $1 \, rad \, s^{-1}$ containing the peak was able to improve the error in the calculation of the angular frequency of the peak from the same as the FFT ($0.0149 \, rad \, s^{-1}$) down to $0.0039 \, rad \, s^{-1} $.
-    However, the error in the magnitude of the peak ($54.2 \, \%$) was still larger than that of the FFT ($22.68 \, \%$)
+    However, the error in the magnitude of the peak ($54.2 \, \%$) was still larger than that of the FFT ($22.68 \, \%$).
+
     If the time domain GP was an exact fit to the latent function, as the interval of angular frequency between samples around the peak tended to zero, so would this error.
     This is not possible with the FFT because the location of the spectrum samples are determined by the time domain samples, both of which must be evenly spaced, meaning that spectrum samples could fall either side of a sharp peak, which creates an uncertainty of $\pm$ half the sample interval.
 
     Furthermore, since the frequency interval is inversely proportional to the total time period, the difference between the error of the peak of the GP model and the FFT is more pronounced for data over a shorter time period.
-    For instance, using only the first $64$ points of the same dataset gave the FFT an error in the angular frequency of the peak of $0.574 \, rad \, s^{-1}$ versus $0.054 \, rad \, s^{-1}$ for the GP model, a significant difference.
+    For instance, using only the first $64$ points of the same dataset gave the FFT an error in the angular frequency of the peak of $0.574 \, rad \, s^{-1}$ versus $0.054 \, rad \, s^{-1}$ for the GP model - a significant improvement.
     In addition, the error in the magnitude of the peak ($60.64 \, \%$) even beat that of the FFT ($685 \, \%$), which performed very poorly for this short dataset.
     This means that this proposed GP model may be better suited for use cases in which there is limited time for testing, such as in the aforementioned example of hypersonic wind tunnel tests of scramjets.
 
@@ -748,7 +748,7 @@
     If enough data was still present to faithfully represent the system, the GP would not be significantly affected which would allow the test data to still be used.
     On the other hand, if the standard FFT was used, the test would either need to repeated at added cost, or additional steps would need to be taken to preprocess the data, adding complication.
 
-    However, more impressively, this feature allows frequencies to be detected that would be above the Nyquist limit for the DFT with the same number of datapoints over the same sampling period.
+    However, more impressively, this feature allows frequencies to be detected that would be above the Nyquist limit for the FFT with the same number of datapoints over the same sampling period.
     This is because for a given time period and number of samples available, many can be bunched in a portion of the time period in order to capture the behaviour of high frequency signal components, leaving a few points over the full period of time to capture well damping information related to the exponential decay of the signal.
     For example, when increasing the model stiffness to $k = 20,000 \, Nm^{-1}$, and fitting the GP to datapoints sampled over the period at random points in a triangular distribution, it was able to detect the true peak at $141.4 \, rad \, s^{-1}$ with an error of less than $0.1 \, rad \, s^{-1}$.
     The FFT of an equivalent dataset containing the same number of datapoints sampled evenly over the same time period for the same system peaked at $59.7 \, rad \, s^{-1}$, which is an artifact of aliasing caused by the true peak being reflected about the Nyquist limit of $100.5 \, rad \, s^{-1}$.
@@ -780,7 +780,7 @@
     Therefore, one could not confidently conclude that the system is below the fatigue limit without a conservative factor of safety.
 
     In contrast, ``rather than relying on large factors of safety to account for uncertainty''~\cite{Rogers2023} which could add unnecessary weight to overly strengthen the component, the uncertainty information is encoded in the posterior covariance of the GP's Fourier transform.
-    Therefore, it would be possible to calculate a confidence interval of say, $3 \sigma$ for the prediction, and if this is entirely below the fatigue limit, one can conclude that the component passes the test without the need for a conservative safety factor, increasing the performance of the engine.
+    Therefore, it would be possible to calculate a confidence interval of, say, $3 \sigma$ for the prediction, and if this is entirely below the fatigue limit, one can conclude that the component passes the test without the need for a conservative safety factor, increasing the performance of the engine.
 
     \section{Directions for Future Work}
     \subsection{Alternative Kernels}
@@ -789,7 +789,7 @@
     For instance, a periodic kernel would be well suited since the latent function is cyclic in nature.
     To also capture the exponential decay over time, a ``compound'' kernel could be formed by multiplying it with the Squared Exponential Kernel~\cite{duvenaud2014kernel}.
     Although the posterior mean of the GP's Fourier transform showed good robustness to noise versus the FFT, if this compound kernel eliminated overfitting, this could significantly improve the robustness to noise of the posterior mean of the Fourier transform further.
-    However, if the kernel is too complicated, the required analytical Fourier Transform of the kernel may become intractable.
+    However, if the kernel is too complicated, the required analytical Fourier transform of the kernel may become intractable.
 
     \subsection{Computation Time and Scaling to Large Data}
     Although this new Gaussian Process (GP) method of performing the Fourier transform is promising, one major disadvantage of this GP model is it struggles to scale large datasets due to the long computation time, especially the hyperparameter training phase since it is of $O(N^3)$\nomenclature[L24]{$O()$}{Big O notation, used to describe the complexity - or ``Order'' of an algorithm}, which is poor compared to $O(N \log{N})$ for the Fast Fourier Transform (FFT)~\cite{murphy2023probabilistic}.
@@ -798,19 +798,20 @@
 
     To address this, a sparse GP approximation could be employed to allow both the NLML and prediction functions to scale to large data.
     One type of sparse GP approximation is the Fully Independent Training Conditional (FITC)~\cite{q-candela}.
-    This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, and $N \gg M$. \nomenclature[L21]{$M$}{Number of inducing points in Sparse GP}
+    This would reduce the complexity of the training phase from $O(N^3)$ to $O(MN^2)$, where M is a set of inducing points chosen to be a subset of the original training points, and $N \gg M$. \nomenclature[L21]{$M$}{The number of inducing points in Sparse GP}
     After this is complete, the hyperparameters could be optimised and the GP could be fit for functions containing more than $10,000$ data points in a significantly reduced computation time.
     However, in practice an implementation could not be found that was numerically stable enough for the NLML values to match the basic GP when the set of inducing points is exactly the same as the test dataset, which they should.
-    This lead to poor convergence and was likely due to the matrix operations involved such as determinants and inverses that can be unstable for large matrices.
+    This led to poor convergence and was likely due to the matrix operations involved such as determinants and inverses that can be unstable for large matrices.
 
-    To progress further, one may have better performance implementing a different sparse GP approximation such as the Variational Free Energy (VFE) approach, which works by approximating the posterior distribution, rather than the prior~\cite{murphy2023probabilistic}.
+    To progress further, one may have better performance implementing an alternative sparse GP approximation such as the Variational Free Energy (VFE) approach, which works by approximating the posterior distribution, rather than the prior~\cite{murphy2023probabilistic}.
 
 %    \subsection{and another subsection}
 %    \textcolor{red}{ New kernel types; multi degree of freedom / dimension GP's!!!!; different solver types? etc.}
 
     \section{Conclusion}
-    Overall, this paper explores a new paradigm of ``probabilistic numerics'' over traditional numerical methods that allowed the Fourier transform to be performed through the use of a Gaussian Process (GP) machine learning model.
-    This model showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error in magnitude versus the true analytical Fourier transform by a factor of $11.64$.
+    Overall, this paper explored a new paradigm of ``probabilistic numerics'' over traditional numerical methods that allowed the Fourier transform to be performed through the use of a Gaussian Process (GP) machine learning model.
+    This model showed significantly better robustness to noise compared to the industry standard Fast Fourier Transform (FFT), exhibiting an improved Mean Squared Error in magnitude versus the true analytical Fourier transform by a factor of $9.66$.
+
     The identification of dynamic systems often uses the ``Frequency Response Function'', which relies on the ``Fourier transform'' to convert data from a function of time to a function of frequency.
     Therefore, the model could allow dynamic systems to be identified more accurately in across industry where data is noisy, from aviation to renewable power generation.
     This would help to design structures that last longer before failing from fatigue, and that are less likely to fail structurally from excessive excitation under external forces.
