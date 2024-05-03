@@ -13,5 +13,8 @@ git.sh
 *.log
 *.nlo
 *.nls
+*.toc
+*.out
 figures/to-be-used
+figures/~$*
 

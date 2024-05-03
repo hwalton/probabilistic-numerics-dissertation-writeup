@@ -14,4 +14,7 @@ rm dissertation.ilg
 rm dissertation.log
 rm dissertation.nlo
 rm dissertation.nls
+rm dissertation.out
+rm dissertation.toc
+rm wordcount.txt
 # Add any other generated files you want to delete
